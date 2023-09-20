@@ -234,6 +234,9 @@ class Cart extends StatelessWidget {
                 );
               },
               text: "الانتقال لإتمام الطلب",
+              height: 60,
+              width: 343,
+              radius: 15,
             ),
           ],
         ),
@@ -250,8 +253,9 @@ class _Item extends StatelessWidget {
     return Container(
       width: 342,
       height: 94,
-      padding: EdgeInsets.symmetric(
-        horizontal: 16,
+      padding: EdgeInsets.only(
+        right: 6,
+        left: 16,
       ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(
@@ -273,7 +277,7 @@ class _Item extends StatelessWidget {
             child: Row(
               children: [
                 Image.network(
-                  "https://avatars.mds.yandex.net/get-images-cbir/4829046/5bEDDWrMSh2Loudd_AKJ_g8001/ocr",
+                  "https://thimar.amr.aait-d.com/public/dashboardAssets/images/backgrounds/avatar.jpg",
                   width: 92,
                   height: 78,
                 ),

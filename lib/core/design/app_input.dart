@@ -12,7 +12,9 @@ class AppInput extends StatefulWidget {
     this.isFilled = false,
     this.isEnabled = true,
     this.labelText,
-    this.validator, this.minLines, this.maxLines,
+    this.validator,
+    this.minLines,
+    this.maxLines,
   });
 
   final TextEditingController? controller;
@@ -104,15 +106,17 @@ class _AppInputState extends State<AppInput> {
         labelStyle: const TextStyle(
           fontSize: 15,
         ),
-        prefixIcon: widget.prefixIcon != null ? Padding(
-          padding: const EdgeInsets.all(12),
-          child: SvgPicture.asset(
-            widget.prefixIcon!,
-            fit: BoxFit.scaleDown,
-            height: 20,
-            width: 32,
-          ),
-        ) : null,
+        prefixIcon: widget.prefixIcon != null
+            ? Padding(
+                padding: const EdgeInsets.all(12),
+                child: SvgPicture.asset(
+                  widget.prefixIcon!,
+                  fit: BoxFit.scaleDown,
+                  height: 20,
+                  width: 32,
+                ),
+              )
+            : null,
         suffixIcon: widget.isPassword
             ? IconButton(
                 onPressed: () {
@@ -130,8 +134,7 @@ class _AppInputState extends State<AppInput> {
       enabled: widget.isEnabled,
       minLines: widget.minLines,
       maxLines: widget.maxLines,
-      onTapOutside: (event)
-      {
+      onTapOutside: (event) {
         FocusManager.instance.primaryFocus?.unfocus();
       },
     );

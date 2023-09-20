@@ -8,7 +8,7 @@ class CategoryCubit extends Cubit<CategoryStates> {
 
 void getCategories() async {
   emit(
-    CategoryLoadingStates(),
+    CategoryLoadingState(),
   );
   final response = await DioHelper().getFromServer(
     url: "categories",

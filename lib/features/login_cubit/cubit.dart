@@ -7,13 +7,12 @@ import 'package:thimar_app/core/logic/helper_methods.dart';
 import 'package:thimar_app/features/login_cubit/states.dart';
 import 'package:thimar_app/views/main/home/home/view.dart';
 
-
 class LoginCubit extends Cubit<LoginStates> {
   LoginCubit() : super(LoginStates());
 
-  final phoneNumberController = TextEditingController();
+  final phoneNumberController = TextEditingController(text: "966123456789009");
 
-  final passwordController = TextEditingController();
+  final passwordController = TextEditingController(text: "123456789");
 
   void userLogin() async {
     emit(
@@ -42,7 +41,9 @@ class LoginCubit extends Cubit<LoginStates> {
         LoginSuccessState(),
       );
     } else {
-      showSnackBar(response.msg);
+      showSnackBar(
+        response.msg,
+      );
       emit(
         LoginFailedState(),
       );

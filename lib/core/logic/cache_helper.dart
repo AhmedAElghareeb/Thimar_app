@@ -3,11 +3,12 @@ import 'package:thimar_app/models/login.dart';
 
 class CacheHelper {
   static late SharedPreferences _prefs;
+
   static Future<void> init() async {
     _prefs = await SharedPreferences.getInstance();
   }
 
-  static    getToken() async {
+  static getToken() async {
     await _prefs.getString("token");
   }
 
@@ -18,8 +19,8 @@ class CacheHelper {
     await _prefs.setString("email", user.data.email);
     await _prefs.setString("fullname", user.data.fullname);
     await _prefs.setString("token", user.data.token);
-    // await _prefs.setString("cityId", user.data.city.id);
-    // await _prefs.setString("cityName", user.data.city.name);
+    await _prefs.setString("cityId", user.data.city.id);
+    await _prefs.setString("cityName", user.data.city.name);
     await _prefs.setBool("isActive", user.data.isActive);
     await _prefs.setInt("userCartCount", user.data.userCartCount);
     await _prefs.setInt("unreadNotifications", user.data.unreadNotifications);

@@ -22,23 +22,23 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    LoginCubit cubit = BlocProvider.of(context);
-    return Container(
-      color: Colors.white,
-      child: Stack(
-        children: [
-          SvgPicture.asset(
-            "assets/images/logo/bg.svg",
-            width: double.infinity,
-            height: double.infinity,
-            fit: BoxFit.fill,
-          ),
-          Scaffold(
-            backgroundColor: Colors.transparent,
-            body: BlocBuilder(
-              bloc: cubit,
-              builder: (context, state) {
-                return SafeArea(
+    return BlocProvider(
+      create: (context) => LoginCubit(),
+      child: Builder(builder: (context) {
+        LoginCubit cubit = BlocProvider.of(context);
+        return Container(
+          color: Colors.white,
+          child: Stack(
+            children: [
+              SvgPicture.asset(
+                "assets/images/logo/bg.svg",
+                width: double.infinity,
+                height: double.infinity,
+                fit: BoxFit.fill,
+              ),
+              Scaffold(
+                backgroundColor: Colors.transparent,
+                body: SafeArea(
                   child: ListView(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 16,
@@ -117,26 +117,29 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(
                         height: 22,
                       ),
-                      Builder(builder: (context) {
-                        if (state is LoginLoadingState) {
-                          return Center(
-                            child: CircularProgressIndicator(
+                      BlocBuilder(
+                        bloc: cubit,
+                        builder: (context, state) {
+                          if(state is LoginLoadingState)
+                          {
+                            return Center(child: CircularProgressIndicator(
                               color: Theme.of(context).primaryColor,
-                            ),
-                          );
-                        }
-                        return AppButton(
-                          onTap: () {
-                            if (_formKey.currentState!.validate()) {
-                              cubit.userLogin();
-                            }
-                          },
-                          text: "تسجيل الدخول",
-                          radius: 15,
-                          height: 60,
-                          width: 343,
-                        );
-                      }),
+                            ),);
+                          } else {
+                            return AppButton(
+                              onTap: () {
+                                if (_formKey.currentState!.validate()) {
+                                  cubit.userLogin();
+                                }
+                              },
+                              text: "تسجيل الدخول",
+                              radius: 15,
+                              height: 60,
+                              width: 343,
+                            );
+                          }
+                        },
+                      ),
                       const SizedBox(
                         height: 45,
                       ),
@@ -170,12 +173,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ],
                   ),
-                );
-              },
-            ),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      }),
     );
   }
 }

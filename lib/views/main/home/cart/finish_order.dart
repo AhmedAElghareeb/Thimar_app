@@ -2,10 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:thimar_app/core/design/app_button.dart';
 
-
-
-
-
 class FinishOrder extends StatelessWidget {
   FinishOrder({super.key});
 
@@ -554,6 +550,9 @@ class FinishOrder extends StatelessWidget {
             AppButton(
               onTap: () {},
               text: "إنهاء الطلب",
+              radius: 15,
+              width: 343,
+              height: 60,
             ),
           ],
         ),

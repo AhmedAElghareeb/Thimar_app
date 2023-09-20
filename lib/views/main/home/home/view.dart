@@ -10,6 +10,7 @@ import 'package:thimar_app/features/category_cubit/cubit.dart';
 import 'package:thimar_app/features/category_cubit/states.dart';
 import 'package:thimar_app/features/category_products_cubit/cubit.dart';
 import 'package:thimar_app/features/category_products_cubit/states.dart';
+import 'package:thimar_app/views/main/home/cart/view.dart';
 import 'package:thimar_app/views/main/home/category/view.dart';
 import 'package:thimar_app/views/main/home/product_details/view.dart';
 import 'package:thimar_app/models/slider_model.dart';
@@ -171,11 +172,11 @@ class _HomeScreenState extends State<HomeScreen> {
               bloc: cubit,
               builder: (context, state) {
                 print(state.runtimeType.toString());
-                if (state is CategoryProductsFailedStates) {
+                if (state is CategoryProductsFailedState) {
                   return Center(
                     child: Text("FAILED.."),
                   );
-                } else if (state is CategoryProductsSuccessStates) {
+                } else if (state is CategoryProductsSuccessState) {
                   return GridView.builder(
                     physics: NeverScrollableScrollPhysics(),
                     padding: const EdgeInsets.symmetric(
@@ -297,9 +298,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             height: 3,
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(
-                              right: 1,
-                            ),
+                            padding: EdgeInsets.zero,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -317,7 +316,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                     ),
                                     SizedBox(
-                                      width: 5,
+                                      width: 3,
                                     ),
                                     Align(
                                       alignment: Alignment.bottomRight,
@@ -337,7 +336,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Align(
                                   alignment: Alignment.centerLeft,
                                   child: Container(
-                                    margin: EdgeInsets.only(left: 10),
+                                    margin: EdgeInsets.only(left: 12),
                                     width: 30,
                                     height: 30,
                                     decoration: BoxDecoration(
@@ -468,30 +467,38 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
             Badge(
               alignment: AlignmentDirectional.topStart,
-              padding: EdgeInsets.all(5),
-              label: Center(
-                child: Text(
-                  "3",
-                  style: TextStyle(
-                    fontSize: 6,
-                    fontWeight: FontWeight.bold,
-                    color: Color(
-                      0xffFFFFFF,
-                    ),
+              padding: EdgeInsets.symmetric(
+                horizontal: 4,
+                vertical: 2,
+              ),
+              label: Text(
+                "3",
+                style: TextStyle(
+                  fontSize: 6,
+                  fontWeight: FontWeight.bold,
+                  color: Color(
+                    0xffFFFFFF,
                   ),
                 ),
               ),
               backgroundColor: Theme.of(context).primaryColor,
-              child: Container(
-                height: 33,
-                width: 33,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor.withOpacity(.13),
-                  borderRadius: BorderRadius.circular(
-                    9,
+              child: GestureDetector(
+                onTap: ()
+                {
+                  navigateTo(
+                    Cart(),
+                  );
+                },
+                child: Container(
+                  height: 33,
+                  width: 33,
+                  padding: EdgeInsets.all(7),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor.withOpacity(.13),
+                    borderRadius: BorderRadius.circular(
+                      9,
+                    ),
                   ),
-                ),
-                child: Center(
                   child: SvgPicture.asset("assets/images/icons/cart.svg"),
                 ),
               ),

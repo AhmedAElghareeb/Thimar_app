@@ -8,20 +8,20 @@ class CategoryProductsCubit extends Cubit<CategoryProductsStates> {
 
   void getCategoryProducts() async {
     emit(
-      CategoryProductsLoadingStates(),
+      CategoryProductsLoadingState(),
     );
     final response = await DioHelper().getFromServer(
-      url: "categories/1",
+      url: "products",
     );
     if (response.success) {
       final list = CategoryProductsModel.fromJson(response.response!.data).data;
       emit(
-        CategoryProductsSuccessStates(
+        CategoryProductsSuccessState(
           list: list,
         ),
       );
     } else {
-      emit(CategoryProductsFailedStates(),);
+      emit(CategoryProductsFailedState(),);
     }
   }
 }

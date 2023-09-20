@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:thimar_app/core/logic/cache_helper.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
+import 'package:thimar_app/views/auth/login.dart';
 import 'package:thimar_app/views/main/account/about_us.dart';
 import 'package:thimar_app/views/main/account/address/address.dart';
 import 'package:thimar_app/views/main/account/contact_us.dart';
 import 'package:thimar_app/views/main/account/edit_profile.dart';
 import 'package:thimar_app/views/main/account/sugestions and complaints.dart';
 import 'package:thimar_app/views/main/account/policy.dart';
+import 'package:thimar_app/views/main/account/terms_conditions.dart';
 import 'package:thimar_app/views/main/account/wallet/wallet.dart';
 
 class AccountScreen extends StatelessWidget {
@@ -53,7 +56,7 @@ class AccountScreen extends StatelessWidget {
                       ),
                     ),
                     child: Image.network(
-                        "https://thimar.amr.aait-d.com/public/dashboardAssets/images/backgrounds/avatar.jpg",
+                      "https://thimar.amr.aait-d.com/public/dashboardAssets/images/backgrounds/avatar.jpg",
                     ),
                   ),
                   SizedBox(
@@ -683,48 +686,55 @@ class AccountScreen extends StatelessWidget {
                       horizontal: 14,
                       vertical: 15,
                     ),
-                    child: Row(
-                      children: [
-                        SvgPicture.asset(
-                          "assets/images/icons/accountIcons/conditions.svg",
-                          width: 18,
-                          height: 18,
-                          fit: BoxFit.scaleDown,
-                        ),
-                        SizedBox(
-                          width: 9,
-                        ),
-                        Text(
-                          "الشروط والأحكام",
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).primaryColor,
+                    child: GestureDetector(
+                      onTap: () {
+                        navigateTo(
+                          TermsAndConditions(),
+                        );
+                      },
+                      child: Row(
+                        children: [
+                          SvgPicture.asset(
+                            "assets/images/icons/accountIcons/conditions.svg",
+                            width: 18,
+                            height: 18,
+                            fit: BoxFit.scaleDown,
                           ),
-                        ),
-                        SizedBox(
-                          width: 180,
-                        ),
-                        Container(
-                          width: 20,
-                          height: 20,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            border: Border.all(
+                          SizedBox(
+                            width: 9,
+                          ),
+                          Text(
+                            "الشروط والأحكام",
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 180,
+                          ),
+                          Container(
+                            width: 20,
+                            height: 20,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(
+                                color: Color(
+                                  0xffB2BCA8,
+                                ),
+                              ),
+                            ),
+                            child: Icon(
+                              Icons.arrow_forward,
+                              size: 12,
                               color: Color(
                                 0xffB2BCA8,
                               ),
                             ),
                           ),
-                          child: Icon(
-                            Icons.arrow_forward,
-                            size: 12,
-                            color: Color(
-                              0xffB2BCA8,
-                            ),
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                   Padding(
@@ -782,52 +792,59 @@ class AccountScreen extends StatelessWidget {
             SizedBox(
               height: 20,
             ),
-            Container(
-              width: double.infinity,
-              height: 50,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(
-                  17,
+            GestureDetector(
+              onTap: ()
+              {
+                CacheHelper.removeLoginData();
+                navigateTo(LoginScreen(),);
+              },
+              child: Container(
+                width: double.infinity,
+                height: 50,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(
+                    17,
+                  ),
+                  color: Color(
+                    0xffFFFFFF,
+                  ),
                 ),
-                color: Color(
-                  0xffFFFFFF,
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 14,
-                  vertical: 15,
-                ),
-                child: Row(
-                  children: [
-                    Text(
-                      "تسجيل الخروج",
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 218,
-                    ),
-                    Container(
-                      width: 20,
-                      height: 20,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: Color(0xffFFFFFF),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(1),
-                        child: SvgPicture.asset(
-                          "assets/images/icons/accountIcons/exit.svg",
-                          width: 18,
-                          height: 18,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 14,
+                    vertical: 15,
+                  ),
+                  child: Row(
+                    children: [
+                      Text(
+                        "تسجيل الخروج",
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).primaryColor,
                         ),
                       ),
-                    ),
-                  ],
+                      SizedBox(
+                        width: 218,
+                      ),
+                      Container(
+                        width: 20,
+                        height: 20,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: Color(0xffFFFFFF),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(1),
+                          child: SvgPicture.asset(
+                            "assets/images/icons/accountIcons/exit.svg",
+                            width: 18,
+                            height: 18,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
