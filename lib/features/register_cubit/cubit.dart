@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:thimar_app/core/logic/dio_helper.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
-import 'package:thimar_app/models/cities/cities.dart';
+import 'package:thimar_app/features/register_cubit/states.dart';
+import 'package:thimar_app/models/cities.dart';
 import 'package:thimar_app/views/auth/verify_code.dart';
 
-part 'states.dart';
 
 class RegisterCubit extends Cubit<RegisterStates> {
   RegisterCubit() : super(RegisterStates());
@@ -24,9 +24,9 @@ class RegisterCubit extends Cubit<RegisterStates> {
     emit(
       RegisterLoadingState(),
     );
-    final response = await DioHelper().sendData(
-      "client_register",
-      data: {
+    final response = await DioHelper().sendToServer(
+      url: "client_register",
+      body: {
         "fullname": nameController.text,
         "phone": phoneNumberController.text,
         "password": passwordController.text,
@@ -35,8 +35,11 @@ class RegisterCubit extends Cubit<RegisterStates> {
         "city_id": selectedCity!.id,
       },
     );
-    if (response.isSuccess) {
-      showSnackBar(response.message, typ: MessageType.success);
+    if (response.success) {
+      showSnackBar(
+        response.msg,
+        typ: MessageType.success,
+      );
       navigateTo(
         VerifyCode(
           isActive: true,
@@ -48,12 +51,10 @@ class RegisterCubit extends Cubit<RegisterStates> {
       );
     } else {
       showSnackBar(
-        response.message,
+        response.msg,
       );
       emit(
-        RegisterFailedState(
-          msg: response.message,
-        ),
+        RegisterFailedState(),
       );
     }
   }

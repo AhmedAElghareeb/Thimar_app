@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:thimar_app/core/design/app_button.dart';
 import 'package:thimar_app/core/design/app_input.dart';
-import 'package:thimar_app/core/design/logo.dart';
+import 'package:thimar_app/core/design/auth_header.dart';
 import 'package:thimar_app/core/logic/dio_helper.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
 import 'package:thimar_app/views/auth/login.dart';
 import 'package:thimar_app/views/auth/verify_code.dart';
 
 class ForgetPassword extends StatefulWidget {
-  const ForgetPassword({super.key});
+  ForgetPassword({super.key, required this.phone});
+
+  final String phone;
 
   @override
   State<ForgetPassword> createState() => _ForgetPasswordState();
@@ -25,14 +27,14 @@ class _ForgetPasswordState extends State<ForgetPassword> {
   void forgetPassword() async {
     isLoading = true;
     setState(() {});
-    final response = await DioHelper().sendData(
-      "forget_password",
-      data: {
+    final response = await DioHelper().sendToServer(
+      url: "forget_password",
+      body: {
         "phone": phoneNumberController.text,
       },
     );
-    if (response.isSuccess) {
-      showSnackBar(response.message, typ: MessageType.success);
+    if (response.success) {
+      showSnackBar(response.msg, typ: MessageType.success);
       navigateTo(
         VerifyCode(
           isActive: false,
@@ -40,7 +42,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
         ),
       );
     } else {
-      showSnackBar(response.message);
+      showSnackBar(response.msg);
     }
     isLoading = false;
     setState(() {});
@@ -67,7 +69,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                   vertical: 20,
                 ),
                 children: [
-                  CustomLogo(
+                  AuthHeader(
                     text1: "نسيت كلمة المرور",
                     text2: "أدخل رقم الجوال المرتبط بحسابك",
                   ),
@@ -87,7 +89,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                       },
                       prefixIcon: "assets/images/icons/appInputIcons/call.svg",
                       isPhone: true,
-                      keyboardType: TextInputType.number,
+                      keyboardType: TextInputType.phone,
                     ),
                   ),
                   const SizedBox(
@@ -106,6 +108,9 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                             }
                           },
                           text: "تأكيد رقم الجوال",
+                    radius: 15,
+                    width: 343,
+                    height: 60,
                         ),
                   const SizedBox(
                     height: 45,

@@ -7,21 +7,26 @@ class AppButton extends StatelessWidget {
     required this.text,
     this.backColor,
     this.textColor,
+    this.width,
+    this.height,
+    this.radius,
   });
 
-  late VoidCallback onTap;
-  late String text;
-  late Color? backColor;
-  late Color? textColor;
-
+  final VoidCallback onTap;
+  final String text;
+  final Color? backColor;
+  final Color? textColor;
+  final double? width, height, radius;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 343,
-      height: 60,
+      width: width,
+      height: height,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(
+          radius!,
+        ),
         color: backColor ?? Theme.of(context).primaryColor,
       ),
       child: MaterialButton(

@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 class DotButton extends StatelessWidget {
   DotButton({super.key, required this.text, required this.onTap});
 
-  late String text;
-  late VoidCallback onTap;
+  final String text;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {

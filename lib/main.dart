@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:thimar_app/core/logic/cache_helper.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
+import 'package:thimar_app/features/category_cubit/cubit.dart';
+import 'package:thimar_app/features/category_products_cubit/cubit.dart';
 import 'package:thimar_app/features/login_cubit/cubit.dart';
+import 'package:thimar_app/features/products_cubit/cubit.dart';
+import 'package:thimar_app/features/products_details/cubit.dart';
 import 'package:thimar_app/features/register_cubit/cubit.dart';
-import 'package:thimar_app/views/auth/login.dart';
-
+import 'package:thimar_app/views/auth/splash.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  CacheHelper.init();
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
       statusBarColor: getMaterialColor(),
@@ -29,6 +35,18 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => RegisterCubit(),
+        ),
+        BlocProvider(
+          create: (context) => CategoryCubit(),
+        ),
+        BlocProvider(
+          create: (context) => CategoryProductsCubit(),
+        ),
+        BlocProvider(
+          create: (context) => ProductsCubit(),
+        ),
+        BlocProvider(
+          create: (context) => ShowProductsDetailsCubit(),
         ),
       ],
       child: MaterialApp(
@@ -80,7 +98,7 @@ class MyApp extends StatelessWidget {
           textDirection: TextDirection.rtl,
           child: child!,
         ),
-        home: LoginScreen(),
+        home: SplashScreen(),
       ),
     );
   }

@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:thimar_app/models/cities/cities.dart';
+import 'package:thimar_app/models/cities.dart';
 
 
 

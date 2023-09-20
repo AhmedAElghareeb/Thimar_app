@@ -3,13 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:thimar_app/core/design/app_button.dart';
 import 'package:thimar_app/core/design/app_input.dart';
-import 'package:thimar_app/core/design/logo.dart';
-import 'package:thimar_app/core/logic/dio_helper.dart';
+import 'package:thimar_app/core/design/auth_header.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
 import 'package:thimar_app/features/register_cubit/cubit.dart';
-import 'package:thimar_app/models/cities/cities.dart';
+import 'package:thimar_app/features/register_cubit/states.dart';
 import 'package:thimar_app/views/auth/login.dart';
-import 'package:thimar_app/views/auth/verify_code.dart';
 import 'package:thimar_app/views/sheets/cities.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -22,49 +20,9 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  // CityModel? selectedCity;
-  //
-  // final nameController = TextEditingController();
-  //
-  // final phoneNumberController = TextEditingController();
-  //
-  // final passwordController = TextEditingController();
-  //
-  // final confirmPasswordController = TextEditingController();
-  // bool isLoading = false;
-  //
-  // void userRegister() async {
-  //   isLoading = true;
-  //   setState(() {});
-  //   final response = await DioHelper().sendData(
-  //     "client_register",
-  //     data: {
-  //       "fullname": nameController.text,
-  //       "phone": phoneNumberController.text,
-  //       "password": passwordController.text,
-  //       "password_confirmation": confirmPasswordController.text,
-  //       "country_id": 1,
-  //       "city_id": selectedCity!.id,
-  //     },
-  //   );
-  //   if (response.isSuccess) {
-  //     showSnackBar(response.message, typ: MessageType.success);
-  //     navigateTo(
-  //       VerifyCode(
-  //         isActive: true,
-  //       ),
-  //     );
-  //   } else {
-  //     showSnackBar(response.message);
-  //   }
-  //   isLoading = false;
-  //   setState(() {});
-  // }
-
   @override
   Widget build(BuildContext context) {
     RegisterCubit cubit = BlocProvider.of(context);
-
     return Container(
       color: Colors.white,
       child: Stack(
@@ -88,7 +46,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       vertical: 20,
                     ),
                     children: [
-                      CustomLogo(
+                      AuthHeader(
                         text1: "مرحبا بك مرة أخرى",
                         text2: "يمكنك تسجيل حساب جديد الأن",
                       ),
@@ -123,7 +81,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         prefixIcon:
                             "assets/images/icons/appInputIcons/call.svg",
                         isPhone: true,
-                        keyboardType: TextInputType.number,
+                        keyboardType: TextInputType.phone,
                       ),
                       const SizedBox(
                         height: 16,
@@ -193,6 +151,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             "assets/images/icons/appInputIcons/lock.svg",
                         keyboardType: TextInputType.visiblePassword,
                         isPassword: true,
+                        maxLines: 1,
                       ),
                       const SizedBox(
                         height: 16,
@@ -214,6 +173,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             "assets/images/icons/appInputIcons/lock.svg",
                         keyboardType: TextInputType.visiblePassword,
                         isPassword: true,
+                        maxLines: 1,
                       ),
                       const SizedBox(
                         height: 24,
@@ -234,6 +194,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 }
                               },
                               text: "تسجيل",
+                            radius: 15,
+                            width: 343,
+                            height: 60,
                             );
                         },
                       ),

@@ -1,12 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:thimar_app/core/logic/cache_helper.dart';
 import 'package:thimar_app/core/logic/dio_helper.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
-import 'package:thimar_app/views/main/home/home_view/view/home.dart';
+import 'package:thimar_app/features/login_cubit/states.dart';
+import 'package:thimar_app/views/main/home/home/view.dart';
 
-part 'states.dart';
 
 class LoginCubit extends Cubit<LoginStates> {
   LoginCubit() : super(LoginStates());
@@ -16,10 +16,12 @@ class LoginCubit extends Cubit<LoginStates> {
   final passwordController = TextEditingController();
 
   void userLogin() async {
-    emit(LoginLoadingState());
-    final response = await DioHelper().sendData(
-      "login",
-      data: {
+    emit(
+      LoginLoadingState(),
+    );
+    final response = await DioHelper().sendToServer(
+      url: "login",
+      body: {
         "phone": phoneNumberController.text,
         "password": passwordController.text,
         "type": Platform.operatingSystem,
@@ -27,24 +29,22 @@ class LoginCubit extends Cubit<LoginStates> {
         "user_type": "client",
       },
     );
-    if (response.isSuccess) {
-      showSnackBar(response.message, typ: MessageType.success);
-      // var model = LoginModel.fromJson(response.data);
-      // final pref = await SharedPreferences.getInstance();
-      // pref.setString("token", model.data.token);
-      // pref.setString("name", model.data.fullname);
-      // pref.setString("phone", model.data.phone);
-      // pref.setString("image", model.data.image);
-      // navigateTo(
-      //   HomeScreen(),
-      // );
+    if (response.success) {
+      CacheHelper.saveLoginData(response.response!.data);
+      showSnackBar(
+        response.msg,
+        typ: MessageType.success,
+      );
+      navigateTo(
+        HomeScreen(),
+      );
       emit(
         LoginSuccessState(),
       );
     } else {
-      showSnackBar(response.message);
+      showSnackBar(response.msg);
       emit(
-        LoginFailedState(msg: response.message ?? ""),
+        LoginFailedState(),
       );
     }
   }

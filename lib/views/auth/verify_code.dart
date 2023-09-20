@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:thimar_app/core/design/app_button.dart';
-import 'package:thimar_app/core/design/logo.dart';
+import 'package:thimar_app/core/design/auth_header.dart';
 import 'package:thimar_app/core/logic/dio_helper.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
 import 'package:thimar_app/views/auth/create_new_password.dart';
@@ -33,28 +33,31 @@ class _VerifyCodeState extends State<VerifyCode> {
   void userVerify() async {
     isLoading = true;
     setState(() {});
-    final response = await DioHelper().sendData(
-      "verify",
-      data: {
+    final response = await DioHelper().sendToServer(
+      url: "verify",
+      body: {
         "code": pinCodeController.text,
         "phone": widget.phone,
         "device_token": "test",
         "type": Platform.operatingSystem,
       },
     );
-    if (response.isSuccess) {
-      showSnackBar(response.message, typ: MessageType.success);
+    if (response.success) {
+      showSnackBar(response.msg, typ: MessageType.success);
       if (widget.isActive) {
         navigateTo(
           LoginScreen(),
         );
       } else {
         navigateTo(
-          CreateNewPassword(),
+          CreateNewPassword(
+            phone: widget.phone,
+            pinCode: pinCodeController.text,
+          ),
         );
       }
     } else {
-      showSnackBar(response.message);
+      showSnackBar(response.msg);
     }
     isLoading = false;
     setState(() {});
@@ -79,7 +82,7 @@ class _VerifyCodeState extends State<VerifyCode> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
                 children: [
-                  CustomLogo(
+                  AuthHeader(
                     text1:
                         widget.isActive ? "تفعيل الحساب" : "نسيت كلمة المرور",
                     text2: "أدخل الكود المكون من 4 أرقام المرسل علي رقم",
@@ -149,6 +152,9 @@ class _VerifyCodeState extends State<VerifyCode> {
                             }
                           },
                           text: "تأكيد الكود",
+                    radius: 15,
+                    width: 343,
+                    height: 60,
                         ),
                   const SizedBox(
                     height: 27,
@@ -181,6 +187,7 @@ class _VerifyCodeState extends State<VerifyCode> {
                           ),
                         )
                       : CircularCountDownTimer(
+                    isReverse: true,
                           width: 66,
                           height: 69,
                           duration: 90,

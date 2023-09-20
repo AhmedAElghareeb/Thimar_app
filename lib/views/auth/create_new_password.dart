@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:thimar_app/core/design/app_button.dart';
 import 'package:thimar_app/core/design/app_input.dart';
-import 'package:thimar_app/core/design/logo.dart';
+import 'package:thimar_app/core/design/auth_header.dart';
+import 'package:thimar_app/core/logic/dio_helper.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
 import 'package:thimar_app/views/auth/login.dart';
 
-
 class CreateNewPassword extends StatefulWidget {
-  CreateNewPassword({super.key});
+  CreateNewPassword({super.key, required this.phone, required this.pinCode});
+
+  final String phone;
+  final String pinCode;
 
   @override
   State<CreateNewPassword> createState() => _CreateNewPasswordState();
@@ -20,6 +23,40 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
   final passwordController = TextEditingController();
 
   final confirmPasswordController = TextEditingController();
+
+  bool isLoading = false;
+
+  void resetPassword() async {
+    isLoading = true;
+    setState(
+      () {},
+    );
+    final response = await DioHelper().sendToServer(
+      url: "reset_password",
+      body: {
+        "phone": widget.phone,
+        "code": widget.pinCode,
+        "password": passwordController.text,
+      },
+    );
+    if (response.success) {
+      showSnackBar(
+        response.msg,
+        typ: MessageType.success,
+      );
+      navigateTo(
+        LoginScreen(),
+      );
+    } else {
+      showSnackBar(
+        response.msg,
+      );
+    }
+    isLoading = false;
+    setState(
+      () {},
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +81,7 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
                     vertical: 20,
                   ),
                   children: [
-                    CustomLogo(
+                    AuthHeader(
                       text1: "نسيت كلمة المرور",
                       text2: "أدخل كلمة المرور الجديدة",
                     ),
@@ -64,6 +101,7 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
                       prefixIcon: "assets/images/icons/appInputIcons/lock.svg",
                       keyboardType: TextInputType.visiblePassword,
                       isPassword: true,
+                      maxLines: 1,
                     ),
                     const SizedBox(
                       height: 16,
@@ -75,8 +113,8 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "حقل تأكيد كلمة المرور مطلوب";
-                        } else if (value.toString() != passwordController.text)
-                        {
+                        } else if (value.toString() !=
+                            passwordController.text) {
                           return "كلمتا المرور غير متطابقتين";
                         }
                         return null;
@@ -84,6 +122,7 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
                       prefixIcon: "assets/images/icons/appInputIcons/lock.svg",
                       keyboardType: TextInputType.visiblePassword,
                       isPassword: true,
+                      maxLines: 1,
                     ),
                     const SizedBox(
                       height: 25,
@@ -91,12 +130,13 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
                     AppButton(
                       onTap: () {
                         if (_formKey.currentState!.validate()) {
-                          navigateTo(
-                            LoginScreen(),
-                          );
+                          resetPassword();
                         }
                       },
                       text: "تأكيد كلمة المرور",
+                      radius: 15,
+                      width: 343,
+                      height: 60,
                     ),
                     const SizedBox(
                       height: 45,

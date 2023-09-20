@@ -8,7 +8,8 @@ void navigateTo(Widget page, {bool removeHistory = false}) {
       MaterialPageRoute(
         builder: (context) => page,
       ),
-      (route) => removeHistory);
+      (route) => true,
+  );
 }
 
 MaterialColor getMaterialColor() {

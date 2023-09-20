@@ -2,12 +2,10 @@ import 'dart:async';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:thimar_app/core/logic/cache_helper.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
 import 'package:thimar_app/views/auth/login.dart';
-import 'package:thimar_app/views/main/home/home_view/view/home.dart';
-
-
+import 'package:thimar_app/views/main/view.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -17,7 +15,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
   @override
   void initState() {
     super.initState();
@@ -25,11 +22,9 @@ class _SplashScreenState extends State<SplashScreen> {
         Duration(
           seconds: 3,
         ), () async {
-      final pref = await SharedPreferences.getInstance();
-      final token = pref.getString("token");
-      if (token != null && token.isNotEmpty) {
+      if (CacheHelper.getToken()!=null) {
         navigateTo(
-          HomeScreen(),
+          HomeView(),
         );
       } else {
         navigateTo(
@@ -61,14 +56,13 @@ class _SplashScreenState extends State<SplashScreen> {
             fit: BoxFit.fill,
           ),
           Center(
-            child: FlipInY(
-              child: ElasticInUp(
-                child: SvgPicture.asset(
-                  "assets/images/logo/logo1.svg",
-                  width: 160,
-                  height: 160,
-                  fit: BoxFit.fill,
-                ),
+            child: Flash(
+              animate: true,
+              child: SvgPicture.asset(
+                "assets/images/logo/logo1.svg",
+                width: 160,
+                height: 160,
+                fit: BoxFit.fill,
               ),
             ),
           ),
