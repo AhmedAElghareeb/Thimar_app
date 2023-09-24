@@ -12,6 +12,22 @@ class CacheHelper {
     await _prefs.getString("token");
   }
 
+  static Future<bool> saveImageProfile(String url) async {
+    return await _prefs.setString("image", url);
+  }
+
+  static String getImage() {
+    return _prefs.getString("image") ?? "https://thimar.amr.aait-d.com/public/dashboardAssets/images/backgrounds/avatar.jpg";
+  }
+
+  static String getPhone() {
+    return _prefs.getString("phone") ?? "";
+  }
+
+  static String getFullName() {
+    return _prefs.getString("fullname") ?? "";
+  }
+
   static Future saveLoginData(LoginModel user) async {
     await _prefs.setString("image", user.data.image);
     await _prefs.setInt("id", user.data.id);

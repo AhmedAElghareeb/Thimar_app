@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:thimar_app/core/design/dot_button.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
@@ -10,79 +11,74 @@ class Address extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 12,
-            vertical: 28,
+      appBar: AppBar(
+        title: const Text(
+          "العناوين",
+        ),
+        leading: Padding(
+          padding: EdgeInsets.all(
+            10.w.h,
           ),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  GestureDetector(
-                    child: Container(
-                      width: 32,
-                      height: 32,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(9),
-                        color: Color(
-                          0xff707070,
-                        ).withOpacity(0.1),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                          right: 7,
-                        ),
-                        child: Icon(
-                          Icons.arrow_back_ios,
-                          size: 16,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                      ),
-                    ),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                  SizedBox(
-                    width: 95,
-                  ),
-                  Text(
-                    "العناوين",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                  ),
-                ],
+          child: GestureDetector(
+            child: Container(
+              width: 32.w,
+              height: 32.h,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(9.r),
+                color: const Color(
+                  0xff707070,
+                ).withOpacity(0.1),
               ),
-              SizedBox(
-                height: 42,
-              ),
-              ListView.separated(
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemBuilder: (context, index) => _Item(),
-                separatorBuilder: (context, index) => SizedBox(
-                  height: 20,
+              child: Padding(
+                padding: EdgeInsets.only(
+                  right: 7.w,
                 ),
-                itemCount: 4,
+                child: Icon(
+                  Icons.arrow_back_ios,
+                  size: 16.w.h,
+                  color: Theme.of(context).primaryColor,
+                ),
               ),
-              SizedBox(
-                height: 20,
-              ),
-              DotButton(
-                text: "إضافة عنوان",
-                onTap: () {
-                  navigateTo(
-                    AddAddress(),
-                  );
-                },
-              ),
-            ],
+            ),
+            onTap: () {
+              Navigator.pop(context);
+            },
           ),
+        ),
+      ),
+      body: SafeArea(
+        child: ListView(
+          padding: EdgeInsets.symmetric(
+            horizontal: 12.w,
+            vertical: 28.h,
+          ),
+          children: [
+            Column(
+              children: [
+                ListView.separated(
+                  scrollDirection: Axis.vertical,
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) => const _Item(),
+                  separatorBuilder: (context, index) => SizedBox(
+                    height: 20.h,
+                  ),
+                  itemCount: 4,
+                ),
+                SizedBox(
+                  height: 20.h,
+                ),
+                DotButton(
+                  text: "إضافة عنوان",
+                  onTap: () {
+                    navigateTo(
+                      const AddAddress(),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
@@ -95,11 +91,11 @@ class _Item extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 343,
-      height: 100,
+      width: 343.w,
+      height: 97.h,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
-        color: Color(
+        borderRadius: BorderRadius.circular(15.r),
+        color: const Color(
           0xffffffff,
         ),
         border: Border.all(
@@ -112,76 +108,76 @@ class _Item extends StatelessWidget {
           Row(
             children: [
               Padding(
-                padding: const EdgeInsets.only(
-                  right: 16,
+                padding: EdgeInsets.only(
+                  right: 16.w,
                 ),
                 child: Text(
                   "المنزل",
                   style: TextStyle(
-                    fontSize: 15,
+                    fontSize: 15.sp,
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).primaryColor,
                   ),
                 ),
               ),
               SizedBox(
-                width: 208,
+                width: 217.w,
               ),
               Padding(
-                padding: const EdgeInsets.all(5),
+                padding: EdgeInsets.all(5.w.h),
                 child: SvgPicture.asset(
                   "assets/images/icons/addressIcons/delete.svg",
-                  width: 24,
-                  height: 24,
+                  width: 24.w,
+                  height: 24.h,
                   fit: BoxFit.scaleDown,
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(5),
+                padding: EdgeInsets.all(5.w.h),
                 child: SvgPicture.asset(
                   "assets/images/icons/addressIcons/edit.svg",
-                  width: 24,
-                  height: 24,
+                  width: 24.w,
+                  height: 24.h,
                   fit: BoxFit.scaleDown,
                 ),
               ),
             ],
           ),
           SizedBox(
-            height: 3,
+            height: 3.h,
           ),
           Padding(
-            padding: const EdgeInsets.only(right: 16),
+            padding: EdgeInsets.only(right: 16.w),
             child: Text(
               "العنوان : 119 طريق الملك عبدالعزيز",
               style: TextStyle(
-                fontSize: 14,
+                fontSize: 14.sp,
                 fontWeight: FontWeight.w400,
                 color: Theme.of(context).primaryColor,
               ),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(right: 16),
+            padding: EdgeInsets.only(right: 16.w),
             child: Text(
               "الوصف",
               style: TextStyle(
-                fontSize: 14,
+                fontSize: 14.sp,
                 fontWeight: FontWeight.w300,
-                color: Color(
+                color: const Color(
                   0xff999797,
                 ),
               ),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(right: 16),
+            padding: EdgeInsets.only(right: 16.w),
             child: Text(
               "رقم الجوال",
               style: TextStyle(
-                fontSize: 14,
+                fontSize: 14.sp,
                 fontWeight: FontWeight.w300,
-                color: Color(
+                color: const Color(
                   0xff999797,
                 ),
               ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:thimar_app/core/design/app_button.dart';
+import 'package:thimar_app/core/design/app_input.dart';
 
 class FinishOrder extends StatelessWidget {
   FinishOrder({super.key});
@@ -11,28 +13,30 @@ class FinishOrder extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "إتمام الطلب",
         ),
         leading: Padding(
-          padding: const EdgeInsets.all(10),
+          padding: EdgeInsets.all(
+            10.w.h,
+          ),
           child: GestureDetector(
             child: Container(
-              width: 32,
-              height: 32,
+              width: 32.w,
+              height: 32.h,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(9),
-                color: Color(
+                borderRadius: BorderRadius.circular(9.r),
+                color: const Color(
                   0xff707070,
                 ).withOpacity(0.1),
               ),
               child: Padding(
-                padding: const EdgeInsets.only(
-                  right: 7,
+                padding: EdgeInsets.only(
+                  right: 7.w,
                 ),
                 child: Icon(
                   Icons.arrow_back_ios,
-                  size: 16,
+                  size: 16.w.h,
                   color: Theme.of(context).primaryColor,
                 ),
               ),
@@ -45,28 +49,31 @@ class FinishOrder extends StatelessWidget {
       ),
       body: SafeArea(
         child: ListView(
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 31),
+          padding: EdgeInsets.symmetric(
+            horizontal: 16.w,
+            vertical: 31.h,
+          ),
           children: [
             Text(
               "الإسم : محمد",
               style: TextStyle(
-                  fontSize: 17,
+                  fontSize: 17.sp,
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).primaryColor),
             ),
             SizedBox(
-              height: 11,
+              height: 11.h,
             ),
             Text(
               "الجوال : 05068285914",
               style: TextStyle(
-                fontSize: 17,
+                fontSize: 17.sp,
                 fontWeight: FontWeight.bold,
                 color: Theme.of(context).primaryColor,
               ),
             ),
             SizedBox(
-              height: 36,
+              height: 36.h,
             ),
             Column(
               children: [
@@ -76,53 +83,53 @@ class FinishOrder extends StatelessWidget {
                     Text(
                       "اختر عنوان التوصيل",
                       style: TextStyle(
-                        fontSize: 17,
+                        fontSize: 17.sp,
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).primaryColor,
                       ),
                     ),
-                    Container(
+                    SizedBox(
+                      width: 26.w,
+                      height: 26.h,
                       child: FloatingActionButton(
                         onPressed: () {},
-                        child: Icon(
-                          Icons.add,
-                          color: Theme.of(context).primaryColor,
-                          size: 22,
-                        ),
                         mini: true,
-                        backgroundColor: Color(0xff4C8613).withOpacity(
+                        backgroundColor: const Color(0xff4C8613).withOpacity(
                           0.13,
                         ),
                         elevation: 0.0,
                         shape: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(
-                            9,
+                            9.r,
                           ),
                           borderSide: BorderSide(
-                            color: Color(
+                            color: const Color(
                               0xffFFFFFF,
                             ).withOpacity(0.14),
                           ),
                         ),
+                        child: Icon(
+                          Icons.add,
+                          color: Theme.of(context).primaryColor,
+                          size: 22.w.h,
+                        ),
                       ),
-                      width: 26,
-                      height: 26,
                     ),
                   ],
                 ),
                 SizedBox(
-                  height: 18,
+                  height: 18.h,
                 ),
                 Container(
-                  width: 339,
-                  height: 33,
+                  width: 339.w,
+                  height: 33.h,
                   padding: EdgeInsets.symmetric(
-                    horizontal: 13,
-                    vertical: 8,
+                    horizontal: 13.w,
+                    vertical: 8.h,
                   ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(
-                      17,
+                      17.r,
                     ),
                     border: Border.all(
                       color: Theme.of(context).primaryColor,
@@ -134,7 +141,7 @@ class FinishOrder extends StatelessWidget {
                       Text(
                         "المنزل : 119 طريق الملك عبدالعزيز",
                         style: TextStyle(
-                          fontSize: 15,
+                          fontSize: 15.sp,
                           fontWeight: FontWeight.w400,
                           color: Theme.of(context).primaryColor,
                         ),
@@ -142,7 +149,7 @@ class FinishOrder extends StatelessWidget {
                       Icon(
                         Icons.keyboard_arrow_down_sharp,
                         color: Theme.of(context).primaryColor,
-                        size: 20,
+                        size: 20.w.h,
                       ),
                     ],
                   ),
@@ -150,7 +157,7 @@ class FinishOrder extends StatelessWidget {
               ],
             ),
             SizedBox(
-              height: 32,
+              height: 32.h,
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -158,40 +165,54 @@ class FinishOrder extends StatelessWidget {
                 Text(
                   "تحديد وقت التوصيل",
                   style: TextStyle(
-                    fontSize: 17,
+                    fontSize: 17.sp,
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).primaryColor,
                   ),
                 ),
                 SizedBox(
-                  height: 13,
+                  height: 13.h,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () async {
+                        final day = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(
+                            1900,
+                          ),
+                          lastDate: DateTime(
+                            2050,
+                          ),
+                        );
+                        if (day != null) {
+                          print(day);
+                        }
+                      },
                       child: Container(
-                        width: 150,
-                        height: 60,
+                        width: 163.w,
+                        height: 60.h,
                         padding: EdgeInsets.symmetric(
-                          horizontal: 13,
+                          horizontal: 13.w,
                         ),
                         decoration: BoxDecoration(
                           boxShadow: [
                             BoxShadow(
-                              blurRadius: 1,
-                              color: Color(
+                              blurRadius: 1.r,
+                              color: const Color(
                                 0xff000000,
                               ).withOpacity(
                                 0.16,
                               ),
                               blurStyle: BlurStyle.outer,
-                              offset: Offset(0, 6),
+                              offset: Offset(0.w, 6.h),
                             ),
                           ],
                           borderRadius: BorderRadius.circular(
-                            15,
+                            15.r,
                           ),
                         ),
                         child: Row(
@@ -200,15 +221,15 @@ class FinishOrder extends StatelessWidget {
                             Text(
                               "اختر اليوم والتاريخ",
                               style: TextStyle(
-                                fontSize: 15,
+                                fontSize: 15.sp,
                                 fontWeight: FontWeight.w400,
                                 color: Theme.of(context).primaryColor,
                               ),
                             ),
                             SvgPicture.asset(
                               "assets/images/date.svg",
-                              width: 17,
-                              height: 17,
+                              width: 17.w,
+                              height: 17.h,
                               fit: BoxFit.scaleDown,
                             ),
                           ],
@@ -216,28 +237,39 @@ class FinishOrder extends StatelessWidget {
                       ),
                     ),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () async {
+                        final time = await showTimePicker(
+                          context: context,
+                          initialTime: TimeOfDay.now(),
+                        );
+                        if (time != null) {
+                          print(time);
+                        }
+                      },
                       child: Container(
-                        width: 150,
-                        height: 60,
+                        width: 163.w,
+                        height: 60.h,
                         padding: EdgeInsets.symmetric(
-                          horizontal: 13,
+                          horizontal: 13.w,
                         ),
                         decoration: BoxDecoration(
                           boxShadow: [
                             BoxShadow(
-                              blurRadius: 1,
-                              color: Color(
+                              blurRadius: 1.r,
+                              color: const Color(
                                 0xff000000,
                               ).withOpacity(
                                 0.16,
                               ),
                               blurStyle: BlurStyle.outer,
-                              offset: Offset(0, 6),
+                              offset: Offset(
+                                0.w,
+                                6.h,
+                              ),
                             ),
                           ],
                           borderRadius: BorderRadius.circular(
-                            15,
+                            15.r,
                           ),
                         ),
                         child: Row(
@@ -246,15 +278,15 @@ class FinishOrder extends StatelessWidget {
                             Text(
                               "اختر الوقت",
                               style: TextStyle(
-                                fontSize: 15,
+                                fontSize: 15.sp,
                                 fontWeight: FontWeight.w400,
                                 color: Theme.of(context).primaryColor,
                               ),
                             ),
                             SvgPicture.asset(
                               "assets/images/time.svg",
-                              width: 17,
-                              height: 17,
+                              width: 17.w,
+                              height: 17.h,
                               fit: BoxFit.scaleDown,
                             ),
                           ],
@@ -266,7 +298,7 @@ class FinishOrder extends StatelessWidget {
               ],
             ),
             SizedBox(
-              height: 22,
+              height: 22.h,
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -274,45 +306,22 @@ class FinishOrder extends StatelessWidget {
                 Text(
                   "ملاحظات وتعليمات",
                   style: TextStyle(
-                    fontSize: 17,
+                    fontSize: 17.sp,
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).primaryColor,
                   ),
                 ),
                 SizedBox(
-                  height: 7,
+                  height: 7.h,
                 ),
-                TextFormField(
+                AppInput(
                   controller: notesController,
-                  keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(
-                        7,
-                      ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(
-                        7,
-                      ),
-                      borderSide: BorderSide(
-                        color: Color(
-                          0xffE5E5E5,
-                        ),
-                      ),
-                    ),
-                    fillColor: Color(
-                      0xffffffff,
-                    ),
-                    filled: true,
-                  ),
-                  minLines: 3,
-                  maxLines: 7,
+                  minLines: 5,
                 ),
               ],
             ),
             SizedBox(
-              height: 26,
+              height: 26.h,
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -320,23 +329,23 @@ class FinishOrder extends StatelessWidget {
                 Text(
                   "اختر طريقة الدفع",
                   style: TextStyle(
-                    fontSize: 17,
+                    fontSize: 17.sp,
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).primaryColor,
                   ),
                 ),
                 SizedBox(
-                  height: 19,
+                  height: 19.h,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      width: 103,
-                      height: 49,
+                      width: 104.w,
+                      height: 50.h,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(
-                          11,
+                          11.r,
                         ),
                         border: Border.all(
                           color: Theme.of(context).primaryColor,
@@ -347,17 +356,17 @@ class FinishOrder extends StatelessWidget {
                         children: [
                           SvgPicture.asset(
                             "assets/images/money.svg",
-                            width: 29,
-                            height: 23,
+                            width: 29.w,
+                            height: 23.h,
                             fit: BoxFit.scaleDown,
                           ),
                           SizedBox(
-                            width: 6,
+                            width: 6.w,
                           ),
                           Text(
                             "كاش",
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 18.sp,
                               fontWeight: FontWeight.bold,
                               color: Theme.of(context).primaryColor,
                             ),
@@ -366,14 +375,14 @@ class FinishOrder extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      width: 103,
-                      height: 49,
+                      width: 104.w,
+                      height: 50.h,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(
-                          11,
+                          11.r,
                         ),
                         border: Border.all(
-                          color: Color(
+                          color: const Color(
                             0xffE9E9E9,
                           ),
                         ),
@@ -383,21 +392,21 @@ class FinishOrder extends StatelessWidget {
                         children: [
                           SvgPicture.asset(
                             "assets/images/visa.svg",
-                            width: 63,
-                            height: 19,
+                            width: 63.w,
+                            height: 19.h,
                           ),
                         ],
                       ),
                     ),
                     Container(
-                      width: 103,
-                      height: 49,
+                      width: 104.w,
+                      height: 50.h,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(
-                          11,
+                          11.r,
                         ),
                         border: Border.all(
-                          color: Color(
+                          color: const Color(
                             0xffE9E9E9,
                           ),
                         ),
@@ -407,8 +416,8 @@ class FinishOrder extends StatelessWidget {
                         children: [
                           SvgPicture.asset(
                             "assets/images/master.svg",
-                            width: 43,
-                            height: 33,
+                            width: 43.w,
+                            height: 33.h,
                           ),
                         ],
                       ),
@@ -418,7 +427,7 @@ class FinishOrder extends StatelessWidget {
               ],
             ),
             SizedBox(
-              height: 16,
+              height: 16.h,
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -426,23 +435,26 @@ class FinishOrder extends StatelessWidget {
                 Text(
                   "ملخص الطلب",
                   style: TextStyle(
-                    fontSize: 17,
+                    fontSize: 17.sp,
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).primaryColor,
                   ),
                 ),
                 SizedBox(
-                  height: 13,
+                  height: 13.h,
                 ),
                 Container(
-                  width: 342,
-                  height: 139,
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 9),
+                  width: 342.w,
+                  height: 139.h,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.w,
+                    vertical: 9.h,
+                  ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(
-                      13,
+                      13.r,
                     ),
-                    color: Color(
+                    color: const Color(
                       0xffF3F8EE,
                     ),
                   ),
@@ -454,7 +466,7 @@ class FinishOrder extends StatelessWidget {
                           Text(
                             "إجمالي المنتجات",
                             style: TextStyle(
-                              fontSize: 15,
+                              fontSize: 15.sp,
                               fontWeight: FontWeight.w400,
                               color: Theme.of(context).primaryColor,
                             ),
@@ -462,7 +474,7 @@ class FinishOrder extends StatelessWidget {
                           Text(
                             "180 ر.س",
                             style: TextStyle(
-                              fontSize: 15,
+                              fontSize: 15.sp,
                               fontWeight: FontWeight.w400,
                               color: Theme.of(context).primaryColor,
                             ),
@@ -470,7 +482,7 @@ class FinishOrder extends StatelessWidget {
                         ],
                       ),
                       SizedBox(
-                        height: 11,
+                        height: 11.h,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -478,7 +490,7 @@ class FinishOrder extends StatelessWidget {
                           Text(
                             "سعر التوصيل",
                             style: TextStyle(
-                              fontSize: 15,
+                              fontSize: 15.sp,
                               fontWeight: FontWeight.w400,
                               color: Theme.of(context).primaryColor,
                             ),
@@ -486,7 +498,7 @@ class FinishOrder extends StatelessWidget {
                           Text(
                             "40 ر.س",
                             style: TextStyle(
-                              fontSize: 15,
+                              fontSize: 15.sp,
                               fontWeight: FontWeight.w400,
                               color: Theme.of(context).primaryColor,
                             ),
@@ -494,7 +506,7 @@ class FinishOrder extends StatelessWidget {
                         ],
                       ),
                       SizedBox(
-                        height: 11,
+                        height: 11.h,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -502,7 +514,7 @@ class FinishOrder extends StatelessWidget {
                           Text(
                             "الخصم",
                             style: TextStyle(
-                              fontSize: 15,
+                              fontSize: 15.sp,
                               fontWeight: FontWeight.w400,
                               color: Theme.of(context).primaryColor,
                             ),
@@ -510,21 +522,21 @@ class FinishOrder extends StatelessWidget {
                           Text(
                             "-40 ر.س",
                             style: TextStyle(
-                              fontSize: 15,
+                              fontSize: 15.sp,
                               fontWeight: FontWeight.w400,
                               color: Theme.of(context).primaryColor,
                             ),
                           ),
                         ],
                       ),
-                      Divider(),
+                      const Divider(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
                             "المجموع",
                             style: TextStyle(
-                              fontSize: 15,
+                              fontSize: 15.sp,
                               fontWeight: FontWeight.w400,
                               color: Theme.of(context).primaryColor,
                             ),
@@ -532,7 +544,7 @@ class FinishOrder extends StatelessWidget {
                           Text(
                             "180 ر.س",
                             style: TextStyle(
-                              fontSize: 15,
+                              fontSize: 15.sp,
                               fontWeight: FontWeight.w400,
                               color: Theme.of(context).primaryColor,
                             ),
@@ -545,14 +557,14 @@ class FinishOrder extends StatelessWidget {
               ],
             ),
             SizedBox(
-              height: 16,
+              height: 16.h,
             ),
             AppButton(
               onTap: () {},
               text: "إنهاء الطلب",
-              radius: 15,
-              width: 343,
-              height: 60,
+              radius: 15.r,
+              width: 343.w,
+              height: 60.h,
             ),
           ],
         ),

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:thimar_app/core/design/app_button.dart';
-
-
-
 
 class ConvertToVip extends StatelessWidget {
   const ConvertToVip({super.key});
@@ -11,28 +9,28 @@ class ConvertToVip extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "تحويل لحساب VIP",
         ),
         leading: Padding(
-          padding: const EdgeInsets.all(10),
+          padding: EdgeInsets.all(10.w.h),
           child: GestureDetector(
             child: Container(
-              width: 32,
-              height: 32,
+              width: 32.w,
+              height: 32.h,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(9),
-                color: Color(
+                borderRadius: BorderRadius.circular(9.r),
+                color: const Color(
                   0xff707070,
                 ).withOpacity(0.1),
               ),
               child: Padding(
-                padding: const EdgeInsets.only(
-                  right: 7,
+                padding: EdgeInsets.only(
+                  right: 7.w,
                 ),
                 child: Icon(
                   Icons.arrow_back_ios,
-                  size: 16,
+                  size: 16.w.h,
                   color: Theme.of(context).primaryColor,
                 ),
               ),
@@ -46,171 +44,87 @@ class ConvertToVip extends StatelessWidget {
       body: SafeArea(
         child: ListView(
           padding: EdgeInsets.only(
-            right: 30,
-            left: 30,
+            right: 30.w,
+            left: 30.w,
           ),
           children: [
             Image.network(
               "https://jpsrenewableenergy.co.uk/wp-content/uploads/2019/11/jps-20year-inverter-guarantee.png",
-              width: 82,
-              height: 102,
+              width: 82.w,
+              height: 102.h,
             ),
             SizedBox(
-              height: 13,
+              height: 13.h,
             ),
             Center(
               child: Text(
                 "حساب Vip",
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: 20.sp,
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).primaryColor,
                 ),
               ),
             ),
             SizedBox(
-              height: 2,
+              height: 2.h,
             ),
             Center(
               child: Text(
                 "150 ر.س/شهريا",
                 style: TextStyle(
-                  fontSize: 24,
+                  fontSize: 24.sp,
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).primaryColor,
                 ),
               ),
             ),
             SizedBox(
-              height: 18,
+              height: 1.h,
             ),
-            Center(
+            const Center(
               child: Text(
                 "هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك أن تولد مثل هذا النص أو العديد من النصوص الأخرى إضافة إلى زيادة عدد الحروف التى يولدها التطبيق.",
               ),
             ),
             SizedBox(
-              height: 5,
+              height: 5.h,
             ),
             Row(
               children: [
                 CircleAvatar(
                   backgroundColor: Theme.of(context).primaryColor,
-                  radius: 12,
+                  radius: 12.r,
                   child: Icon(
                     Icons.done,
-                    color: Color(
+                    color: const Color(
                       0xffFFFFFF,
                     ),
-                    size: 18,
+                    size: 18.w.h,
                   ),
                 ),
                 SizedBox(
-                  width: 7,
+                  width: 7.w,
                 ),
                 Text(
                   "تسوق من المتجر ودفع التكاليف شهريا",
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
-                    fontSize: 15,
+                    fontSize: 15.sp,
                     color: Theme.of(context).primaryColor,
                   ),
                 ),
               ],
             ),
             SizedBox(
-              height: 16,
-            ),
-            Row(
-              children: [
-                CircleAvatar(
-                  backgroundColor: Theme.of(context).primaryColor,
-                  radius: 12,
-                  child: Icon(
-                    Icons.done,
-                    color: Color(
-                      0xffFFFFFF,
-                    ),
-                    size: 18,
-                  ),
-                ),
-                SizedBox(
-                  width: 7,
-                ),
-                Text(
-                  "خصومات وكوبونات مخصصه لك",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 15,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 16,
-            ),
-            Row(
-              children: [
-                CircleAvatar(
-                  backgroundColor: Theme.of(context).primaryColor,
-                  radius: 12,
-                  child: Icon(
-                    Icons.done,
-                    color: Color(
-                      0xffFFFFFF,
-                    ),
-                    size: 18,
-                  ),
-                ),
-                SizedBox(
-                  width: 7,
-                ),
-                Text(
-                  "دعم فني 24/7",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 15,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 16,
-            ),
-            Row(
-              children: [
-                CircleAvatar(
-                  backgroundColor: Theme.of(context).primaryColor,
-                  radius: 12,
-                  child: Icon(
-                    Icons.done,
-                    color: Color(
-                      0xffFFFFFF,
-                    ),
-                    size: 18,
-                  ),
-                ),
-                SizedBox(
-                  width: 7,
-                ),
-                Text(
-                  "تسوق من المتجر ودفع التكاليف شهريا",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 15,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 150,
+              height: 150.h,
             ),
             AppButton(
               onTap: () {},
               text: "طلب تحويل",
+              width: 343.w,
+              height: 60.h,
+              radius: 15.r,
             ),
           ],
         ),

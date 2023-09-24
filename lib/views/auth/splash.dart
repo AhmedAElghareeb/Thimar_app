@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:thimar_app/core/logic/cache_helper.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
@@ -19,7 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Timer(
-        Duration(
+        const Duration(
           seconds: 3,
         ), () async {
       if (CacheHelper.getToken()!=null) {
@@ -41,12 +42,12 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Stack(
         children: [
           Positioned(
-            bottom: -50,
-            right: -150,
+            bottom: -50.h,
+            right: -150.w,
             child: Image.asset(
               "assets/images/logo/bottom.png",
-              height: 300,
-              width: 450,
+              height: 300.h,
+              width: 450.w,
             ),
           ),
           SvgPicture.asset(
@@ -60,8 +61,8 @@ class _SplashScreenState extends State<SplashScreen> {
               animate: true,
               child: SvgPicture.asset(
                 "assets/images/logo/logo1.svg",
-                width: 160,
-                height: 160,
+                width: 160.w,
+                height: 160.h,
                 fit: BoxFit.fill,
               ),
             ),

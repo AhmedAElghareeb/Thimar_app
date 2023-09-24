@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class OrderDetails extends StatelessWidget {
@@ -8,28 +9,31 @@ class OrderDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "تفاصيل الطلب",
         ),
         leading: Padding(
-          padding: const EdgeInsets.all(10),
+          padding: EdgeInsets.symmetric(
+            horizontal: 10.w,
+            vertical: 10.h,
+          ),
           child: GestureDetector(
             child: Container(
-              width: 32,
-              height: 32,
+              width: 32.w,
+              height: 32.h,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(9),
-                color: Color(
+                borderRadius: BorderRadius.circular(9.r),
+                color: const Color(
                   0xff707070,
                 ).withOpacity(0.1),
               ),
               child: Padding(
-                padding: const EdgeInsets.only(
-                  right: 7,
+                padding: EdgeInsets.only(
+                  right: 7.w,
                 ),
                 child: Icon(
                   Icons.arrow_back_ios,
-                  size: 16,
+                  size: 16.w.h,
                   color: Theme.of(context).primaryColor,
                 ),
               ),
@@ -43,23 +47,23 @@ class OrderDetails extends StatelessWidget {
       body: SafeArea(
         child: ListView(
           padding: EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 21,
+            horizontal: 16.w,
+            vertical: 21.h,
           ),
           children: [
             Container(
-              height: 109,
+              height: 109.h,
               padding: EdgeInsets.symmetric(
-                horizontal: 14,
-                vertical: 10,
+                horizontal: 14.w,
+                vertical: 10.h,
               ),
               decoration: BoxDecoration(
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.02),
-                    blurRadius: 17,
+                    blurRadius: 17.r,
                     blurStyle: BlurStyle.outer,
-                    offset: Offset(0, 6),
+                    offset: Offset(0.w, 6.h),
                   ),
                 ],
               ),
@@ -74,20 +78,20 @@ class OrderDetails extends StatelessWidget {
                             Text(
                               "طلب #4587",
                               style: TextStyle(
-                                fontSize: 17,
+                                fontSize: 17.sp,
                                 fontWeight: FontWeight.bold,
                                 color: Theme.of(context).primaryColor,
                               ),
                             ),
                             SizedBox(
-                              height: 8,
+                              height: 8.h,
                             ),
                             Text(
                               "27,يونيو,2021",
                               style: TextStyle(
-                                fontSize: 14,
+                                fontSize: 14.sp,
                                 fontWeight: FontWeight.w300,
-                                color: Color(
+                                color: const Color(
                                   0xff9C9C9C,
                                 ),
                               ),
@@ -100,11 +104,11 @@ class OrderDetails extends StatelessWidget {
                         children: [
                           Container(
                             padding: EdgeInsets.symmetric(
-                              horizontal: 11,
-                              vertical: 5,
+                              horizontal: 11.w,
+                              vertical: 5.h,
                             ),
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(7),
+                              borderRadius: BorderRadius.circular(7.r),
                               color: Theme.of(context)
                                   .primaryColor
                                   .withOpacity(0.13),
@@ -113,7 +117,7 @@ class OrderDetails extends StatelessWidget {
                               child: Text(
                                 "بإنتظار الموافقة",
                                 style: TextStyle(
-                                  fontSize: 11,
+                                  fontSize: 11.sp,
                                   fontWeight: FontWeight.bold,
                                   color: Theme.of(context).primaryColor,
                                 ),
@@ -121,13 +125,13 @@ class OrderDetails extends StatelessWidget {
                             ),
                           ),
                           SizedBox(
-                            height: 4,
+                            height: 4.h,
                           ),
                           Text(
                             "180ر.س",
                             style: TextStyle(
                               fontWeight: FontWeight.w900,
-                              fontSize: 15,
+                              fontSize: 15.sp,
                               color: Theme.of(context).primaryColor,
                             ),
                           ),
@@ -135,7 +139,7 @@ class OrderDetails extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Divider(),
+                  const Divider(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -144,37 +148,37 @@ class OrderDetails extends StatelessWidget {
                           ...List.generate(
                             3,
                             (index) => Container(
-                              width: 25,
-                              height: 25,
+                              width: 25.w,
+                              height: 25.h,
                               clipBehavior: Clip.antiAlias,
                               margin: EdgeInsetsDirectional.only(
-                                end: 3,
+                                end: 3.w,
                               ),
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(7),
+                                borderRadius: BorderRadius.circular(7.r),
                                 border: Border.all(
-                                  color: Color(
+                                  color: const Color(
                                     0xff61B80C,
                                   ).withOpacity(0.06),
                                 ),
                               ),
                               child: Image.network(
                                 "https://avatars.mds.yandex.net/i?id=1cf01f05034f49faab8c420bdbb317165b831aee-4841096-images-thumbs&ref=rim&n=33&w=236&h=200",
-                                width: 25,
-                                height: 25,
+                                width: 25.w,
+                                height: 25.h,
                                 fit: BoxFit.fill,
                               ),
                             ),
                           ),
                           Container(
-                            width: 25,
-                            height: 25,
+                            width: 25.w,
+                            height: 25.h,
                             clipBehavior: Clip.antiAlias,
                             margin: EdgeInsetsDirectional.only(
-                              end: 3,
+                              end: 3.w,
                             ),
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(7),
+                              borderRadius: BorderRadius.circular(7.r),
                               color: Theme.of(context)
                                   .primaryColor
                                   .withOpacity(0.13),
@@ -183,7 +187,7 @@ class OrderDetails extends StatelessWidget {
                               child: Text(
                                 "+2",
                                 style: TextStyle(
-                                  fontSize: 11,
+                                  fontSize: 11.sp,
                                   fontWeight: FontWeight.bold,
                                   color: Theme.of(context).primaryColor,
                                 ),
@@ -193,11 +197,11 @@ class OrderDetails extends StatelessWidget {
                         ],
                       ),
                       Container(
-                        width: 25,
-                        height: 25,
+                        width: 25.w,
+                        height: 25.h,
                         clipBehavior: Clip.antiAlias,
                         margin: EdgeInsetsDirectional.only(
-                          end: 3,
+                          end: 3.w,
                         ),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(7),
@@ -218,7 +222,7 @@ class OrderDetails extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 16,
+              height: 16.h,
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -226,28 +230,34 @@ class OrderDetails extends StatelessWidget {
                 Text(
                   "عنوان التوصيل",
                   style: TextStyle(
-                    fontSize: 17,
+                    fontSize: 17.sp,
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).primaryColor,
                   ),
                 ),
                 SizedBox(
-                  height: 19,
+                  height: 19.h,
                 ),
                 Container(
-                  width: 343,
-                  height: 83,
-                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                  width: 343.w,
+                  height: 83.h,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 15.w,
+                    vertical: 10.h,
+                  ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(
-                      15,
+                      15.r,
                     ),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withOpacity(0.02),
-                        blurRadius: 17,
+                        blurRadius: 17.r,
                         blurStyle: BlurStyle.outer,
-                        offset: Offset(0, 6),
+                        offset: Offset(
+                          0.w,
+                          6.h,
+                        ),
                       ),
                     ],
                   ),
@@ -260,33 +270,33 @@ class OrderDetails extends StatelessWidget {
                           Text(
                             "المنزل",
                             style: TextStyle(
-                              fontSize: 15,
+                              fontSize: 15.sp,
                               fontWeight: FontWeight.w400,
                               color: Theme.of(context).primaryColor,
                             ),
                           ),
                           SizedBox(
-                            height: 5,
+                            height: 5.h,
                           ),
                           Text(
                             "شقة 40",
                             style: TextStyle(
-                              fontSize: 12,
+                              fontSize: 12.sp,
                               fontWeight: FontWeight.w300,
-                              color: Color(
+                              color: const Color(
                                 0xff999797,
                               ),
                             ),
                           ),
                           SizedBox(
-                            height: 4,
+                            height: 4.h,
                           ),
                           Text(
                             "شارع العليا الرياض 12521 السعودية",
                             style: TextStyle(
-                              fontSize: 12,
+                              fontSize: 12.sp,
                               fontWeight: FontWeight.w300,
-                              color: Color(
+                              color: const Color(
                                 0xff000000,
                               ),
                             ),
@@ -295,8 +305,8 @@ class OrderDetails extends StatelessWidget {
                       ),
                       Image.network(
                         "https://avatars.mds.yandex.net/get-images-cbir/1355359/FinMwbTflOGvNBLnYfRHOg1684/ocr",
-                        width: 72,
-                        height: 62,
+                        width: 72.w,
+                        height: 62.h,
                       ),
                     ],
                   ),
@@ -304,7 +314,7 @@ class OrderDetails extends StatelessWidget {
               ],
             ),
             SizedBox(
-              height: 16,
+              height: 16.h,
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -312,23 +322,26 @@ class OrderDetails extends StatelessWidget {
                 Text(
                   "ملخص الطلب",
                   style: TextStyle(
-                    fontSize: 17,
+                    fontSize: 17.sp,
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).primaryColor,
                   ),
                 ),
                 SizedBox(
-                  height: 19,
+                  height: 19.h,
                 ),
                 Container(
-                  width: 342,
-                  height: 148,
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 9),
+                  width: 342.w,
+                  height: 148.h,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.w,
+                    vertical: 9.h,
+                  ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(
-                      13,
+                      13.r,
                     ),
-                    color: Color(
+                    color: const Color(
                       0xffF3F8EE,
                     ),
                   ),
@@ -340,7 +353,7 @@ class OrderDetails extends StatelessWidget {
                           Text(
                             "إجمالي المنتجات",
                             style: TextStyle(
-                              fontSize: 15,
+                              fontSize: 15.sp,
                               fontWeight: FontWeight.w400,
                               color: Theme.of(context).primaryColor,
                             ),
@@ -348,7 +361,7 @@ class OrderDetails extends StatelessWidget {
                           Text(
                             "180 ر.س",
                             style: TextStyle(
-                              fontSize: 15,
+                              fontSize: 15.sp,
                               fontWeight: FontWeight.w400,
                               color: Theme.of(context).primaryColor,
                             ),
@@ -356,7 +369,7 @@ class OrderDetails extends StatelessWidget {
                         ],
                       ),
                       SizedBox(
-                        height: 11,
+                        height: 11.h,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -364,7 +377,7 @@ class OrderDetails extends StatelessWidget {
                           Text(
                             "سعر التوصيل",
                             style: TextStyle(
-                              fontSize: 15,
+                              fontSize: 15.sp,
                               fontWeight: FontWeight.w400,
                               color: Theme.of(context).primaryColor,
                             ),
@@ -372,7 +385,7 @@ class OrderDetails extends StatelessWidget {
                           Text(
                             "40 ر.س",
                             style: TextStyle(
-                              fontSize: 15,
+                              fontSize: 15.sp,
                               fontWeight: FontWeight.w400,
                               color: Theme.of(context).primaryColor,
                             ),
@@ -380,16 +393,16 @@ class OrderDetails extends StatelessWidget {
                         ],
                       ),
                       SizedBox(
-                        height: 11,
+                        height: 11.h,
                       ),
-                      Divider(),
+                      const Divider(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
                             "المجموع",
                             style: TextStyle(
-                              fontSize: 15,
+                              fontSize: 15.sp,
                               fontWeight: FontWeight.w400,
                               color: Theme.of(context).primaryColor,
                             ),
@@ -397,32 +410,32 @@ class OrderDetails extends StatelessWidget {
                           Text(
                             "180 ر.س",
                             style: TextStyle(
-                              fontSize: 15,
+                              fontSize: 15.sp,
                               fontWeight: FontWeight.w400,
                               color: Theme.of(context).primaryColor,
                             ),
                           ),
                         ],
                       ),
-                      Divider(),
+                      const Divider(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
                             "تم الدفع بواسطة",
                             style: TextStyle(
-                              fontSize: 15,
+                              fontSize: 15.sp,
                               fontWeight: FontWeight.w400,
                               color: Theme.of(context).primaryColor,
                             ),
                           ),
                           SizedBox(
-                            width: 16,
+                            width: 16.w,
                           ),
                           SvgPicture.asset(
                             "assets/images/visa_colored.svg",
-                            width: 50,
-                            height: 15,
+                            width: 50.w,
+                            height: 15.h,
                           ),
                         ],
                       ),
@@ -436,19 +449,19 @@ class OrderDetails extends StatelessWidget {
       ),
       bottomNavigationBar: Container(
         margin: EdgeInsets.only(
-          right: 16,
-          left: 16,
-          bottom: 16,
+          right: 16.w,
+          left: 16.w,
+          bottom: 16.h,
         ),
-        height: 60,
+        height: 60.h,
         child: FilledButton(
           onPressed: () {},
           child: Text(
             "إلغاء الطلب",
             style: TextStyle(
-              fontSize: 15,
+              fontSize: 15.sp,
               fontWeight: FontWeight.bold,
-              color: Color(
+              color: const Color(
                 0xffFF0000,
               ),
             ),

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class AuthHeader extends StatelessWidget {
-  AuthHeader({
+  const AuthHeader({
     super.key,
     required this.text1,
     required this.text2,
@@ -17,34 +18,34 @@ class AuthHeader extends StatelessWidget {
       children: [
         SvgPicture.asset(
           "assets/images/logo/logo1.svg",
-          width: 130,
-          height: 125,
+          width: 130.w,
+          height: 125.h,
         ),
-        const SizedBox(
-          height: 21,
+        SizedBox(
+          height: 21.h,
         ),
         Align(
           alignment: Alignment.centerRight,
           child: Text(
             text1,
             style: TextStyle(
-              fontSize: 16,
+              fontSize: 16.sp,
               fontWeight: FontWeight.bold,
               color: Theme.of(context).primaryColor,
             ),
           ),
         ),
-        const SizedBox(
-          height: 10,
+        SizedBox(
+          height: 10.h,
         ),
         Align(
           alignment: Alignment.centerRight,
           child: Text(
             text2,
-            style: const TextStyle(
-              fontSize: 16,
+            style: TextStyle(
+              fontSize: 16.sp,
               fontWeight: FontWeight.w300,
-              color: Color(0xFF707070),
+              color: const Color(0xFF707070),
             ),
           ),
         ),

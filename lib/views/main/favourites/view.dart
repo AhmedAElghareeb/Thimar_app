@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:thimar_app/models/favourites_model.dart';
 
 class FavouritesScreen extends StatefulWidget {
@@ -11,7 +12,8 @@ class FavouritesScreen extends StatefulWidget {
 class _FavouritesScreenState extends State<FavouritesScreen> {
   List<FavouritesModel> list = [
     FavouritesModel(
-      image: "https://avatars.mds.yandex.net/get-images-cbir/1606199/5bEDDWrMSh2Loudd_AKJ_g6446/ocr",
+      image:
+          "https://spfood.es/wa-data/public/shop/products/95/04/495/images/333/333.970.jpg",
       title: "طماطم",
       body: "السعر / 1كجم",
       priceBefore: "45ر.س",
@@ -19,7 +21,8 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
       discount: "45% -",
     ),
     FavouritesModel(
-      image: "https://avatars.mds.yandex.net/get-images-cbir/2827919/FU9v-KTGu8YWnzL0LrSJNA5770/ocr",
+      image:
+          "https://avatars.mds.yandex.net/i?id=2d6afa9c074f3d9b120b09417e4b7425559f4cfd-8492261-images-thumbs&n=13",
       title: "جزر",
       body: "السعر / 1كجم",
       priceBefore: "48ر.س",
@@ -27,7 +30,8 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
       discount: "45% -",
     ),
     FavouritesModel(
-      image: "https://avatars.mds.yandex.net/get-images-cbir/2827919/FU9v-KTGu8YWnzL0LrSJNA5770/ocr",
+      image:
+      "https://avatars.mds.yandex.net/i?id=2d6afa9c074f3d9b120b09417e4b7425559f4cfd-8492261-images-thumbs&n=13",
       title: "جزر",
       body: "السعر / 1كجم",
       priceBefore: "48ر.س",
@@ -35,18 +39,119 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
       discount: "45% -",
     ),
     FavouritesModel(
-      image: "https://avatars.mds.yandex.net/get-images-cbir/1606199/5bEDDWrMSh2Loudd_AKJ_g6446/ocr",
-      title: "طماطم",
+      image:
+      "https://avatars.mds.yandex.net/i?id=2d6afa9c074f3d9b120b09417e4b7425559f4cfd-8492261-images-thumbs&n=13",
+      title: "جزر",
       body: "السعر / 1كجم",
-      priceBefore: "45ر.س",
+      priceBefore: "48ر.س",
       priceAfter: "56ر.س",
       discount: "45% -",
     ),
     FavouritesModel(
-      image: "https://avatars.mds.yandex.net/get-images-cbir/1606199/5bEDDWrMSh2Loudd_AKJ_g6446/ocr",
-      title: "طماطم",
+      image:
+      "https://avatars.mds.yandex.net/i?id=2d6afa9c074f3d9b120b09417e4b7425559f4cfd-8492261-images-thumbs&n=13",
+      title: "جزر",
       body: "السعر / 1كجم",
-      priceBefore: "45ر.س",
+      priceBefore: "48ر.س",
+      priceAfter: "56ر.س",
+      discount: "45% -",
+    ),
+    FavouritesModel(
+      image:
+      "https://avatars.mds.yandex.net/i?id=2d6afa9c074f3d9b120b09417e4b7425559f4cfd-8492261-images-thumbs&n=13",
+      title: "جزر",
+      body: "السعر / 1كجم",
+      priceBefore: "48ر.س",
+      priceAfter: "56ر.س",
+      discount: "45% -",
+    ),
+    FavouritesModel(
+      image:
+      "https://avatars.mds.yandex.net/i?id=2d6afa9c074f3d9b120b09417e4b7425559f4cfd-8492261-images-thumbs&n=13",
+      title: "جزر",
+      body: "السعر / 1كجم",
+      priceBefore: "48ر.س",
+      priceAfter: "56ر.س",
+      discount: "45% -",
+    ),
+    FavouritesModel(
+      image:
+      "https://avatars.mds.yandex.net/i?id=2d6afa9c074f3d9b120b09417e4b7425559f4cfd-8492261-images-thumbs&n=13",
+      title: "جزر",
+      body: "السعر / 1كجم",
+      priceBefore: "48ر.س",
+      priceAfter: "56ر.س",
+      discount: "45% -",
+    ),
+    FavouritesModel(
+      image:
+      "https://avatars.mds.yandex.net/i?id=2d6afa9c074f3d9b120b09417e4b7425559f4cfd-8492261-images-thumbs&n=13",
+      title: "جزر",
+      body: "السعر / 1كجم",
+      priceBefore: "48ر.س",
+      priceAfter: "56ر.س",
+      discount: "45% -",
+    ),
+    FavouritesModel(
+      image:
+      "https://avatars.mds.yandex.net/i?id=2d6afa9c074f3d9b120b09417e4b7425559f4cfd-8492261-images-thumbs&n=13",
+      title: "جزر",
+      body: "السعر / 1كجم",
+      priceBefore: "48ر.س",
+      priceAfter: "56ر.س",
+      discount: "45% -",
+    ),
+    FavouritesModel(
+      image:
+      "https://avatars.mds.yandex.net/i?id=2d6afa9c074f3d9b120b09417e4b7425559f4cfd-8492261-images-thumbs&n=13",
+      title: "جزر",
+      body: "السعر / 1كجم",
+      priceBefore: "48ر.س",
+      priceAfter: "56ر.س",
+      discount: "45% -",
+    ),
+    FavouritesModel(
+      image:
+      "https://avatars.mds.yandex.net/i?id=2d6afa9c074f3d9b120b09417e4b7425559f4cfd-8492261-images-thumbs&n=13",
+      title: "جزر",
+      body: "السعر / 1كجم",
+      priceBefore: "48ر.س",
+      priceAfter: "56ر.س",
+      discount: "45% -",
+    ),
+    FavouritesModel(
+      image:
+      "https://avatars.mds.yandex.net/i?id=2d6afa9c074f3d9b120b09417e4b7425559f4cfd-8492261-images-thumbs&n=13",
+      title: "جزر",
+      body: "السعر / 1كجم",
+      priceBefore: "48ر.س",
+      priceAfter: "56ر.س",
+      discount: "45% -",
+    ),
+    FavouritesModel(
+      image:
+      "https://avatars.mds.yandex.net/i?id=2d6afa9c074f3d9b120b09417e4b7425559f4cfd-8492261-images-thumbs&n=13",
+      title: "جزر",
+      body: "السعر / 1كجم",
+      priceBefore: "48ر.س",
+      priceAfter: "56ر.س",
+      discount: "45% -",
+    ),
+    FavouritesModel(
+      image:
+      "https://avatars.mds.yandex.net/i?id=2d6afa9c074f3d9b120b09417e4b7425559f4cfd-8492261-images-thumbs&n=13",
+      title: "جزر",
+      body: "السعر / 1كجم",
+      priceBefore: "48ر.س",
+      priceAfter: "56ر.س",
+      discount: "45% -",
+    ),
+    FavouritesModel(
+      image:
+      "https://avatars.mds.yandex.net/i?id=2d6afa9c074f3d9b120b09417e4b7425559f4cfd-8492261-images-thumbs&n=13",
+      title: "جزر",
+      body: "السعر / 1كجم",
+      priceBefore: "48ر.س",
       priceAfter: "56ر.س",
       discount: "45% -",
     ),
@@ -61,7 +166,9 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
   bool isLoading = true;
 
   getData() async {
-    await Future.delayed(Duration(seconds: 3));
+    await Future.delayed(
+      const Duration(seconds: 3),
+    );
     isLoading = false;
     setState(() {});
   }
@@ -70,25 +177,30 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "المفضلة",
         ),
       ),
       body: isLoading
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(),
             )
-          : GridView.builder(
-              itemBuilder: (context, index) => _Item(model: list[index]),
-              itemCount: list.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 11,
-                mainAxisSpacing: 2,
-                childAspectRatio: 0.73,
+          : ListView(
+            children: [
+              GridView.builder(
+                itemBuilder: (context, index) => _Item(model: list[index]),
+                itemCount: list.length,
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 11.w,
+                  mainAxisSpacing: 2.h,
+                  childAspectRatio: 0.70,
+                ),
+                shrinkWrap: true,
               ),
-              shrinkWrap: true,
-            ),
+            ],
+          ),
     );
   }
 }
@@ -102,22 +214,22 @@ class _Item extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
-        top: 29,
-        right: 5,
-        left: 5,
+        top: 29.h,
+        right: 5.w,
+        left: 5.w,
       ),
       child: Container(
-        height: 215,
-        width: 163,
+        height: 215.h,
+        width: 163.w,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: Color(
+          borderRadius: BorderRadius.circular(10.r),
+          color: const Color(
             0xffffffff,
           ),
           boxShadow: [
             BoxShadow(
-              blurRadius: 5,
-              color: Color(
+              blurRadius: 5.r,
+              color: const Color(
                 0xfff5f5f5,
               ),
             ),
@@ -126,42 +238,42 @@ class _Item extends StatelessWidget {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(
-                top: 9,
-                left: 9,
-                right: 9,
+              padding: EdgeInsets.only(
+                top: 9.h,
+                left: 9.w,
+                right: 9.w,
               ),
               child: Stack(
                 children: [
                   Image.network(
                     model.image,
-                    width: 146,
-                    height: 117,
+                    width: 146.w,
+                    height: 117.h,
                   ),
                   Align(
                     alignment: AlignmentDirectional.topEnd,
                     child: Padding(
-                      padding: const EdgeInsetsDirectional.only(
-                        end: 2,
-                        top: 1
+                      padding: EdgeInsetsDirectional.only(
+                        end: 2.h,
+                        top: 1.h,
                       ),
                       child: Container(
-                        width: 54,
-                        height: 20,
+                        width: 54.w,
+                        height: 20.h,
                         decoration: BoxDecoration(
                           color: Theme.of(context).primaryColor,
-                          borderRadius: const BorderRadius.only(
-                            bottomRight: Radius.circular(25),
-                            topLeft: Radius.circular(10),
+                          borderRadius: BorderRadius.only(
+                            bottomRight: Radius.circular(25.r),
+                            topLeft: Radius.circular(10.r),
                           ),
                         ),
                         child: Center(
                           child: Text(
                             model.discount,
                             style: TextStyle(
-                              fontSize: 14,
+                              fontSize: 14.sp,
                               fontWeight: FontWeight.bold,
-                              color: Color(
+                              color: const Color(
                                 0xffFFFFFF,
                               ),
                             ),
@@ -173,58 +285,58 @@ class _Item extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(
-              height: 2,
+            SizedBox(
+              height: 2.h,
             ),
             Align(
               alignment: Alignment.topRight,
               child: Padding(
-                padding: const EdgeInsets.only(
-                  right: 9,
+                padding: EdgeInsets.only(
+                  right: 9.w,
                 ),
                 child: Text(
                   model.title,
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 16.sp,
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).primaryColor,
                   ),
                 ),
               ),
             ),
-            const SizedBox(
-              height: 4,
+            SizedBox(
+              height: 4.h,
             ),
             Align(
               alignment: Alignment.topRight,
               child: Padding(
                 padding: EdgeInsets.only(
-                  right: 10,
+                  right: 10.w,
                 ),
                 child: Text(
                   model.body,
                   style: TextStyle(
-                    fontSize: 12,
-                    color: Color(0xFF808080),
+                    fontSize: 12.sp,
+                    color: const Color(0xFF808080),
                   ),
                 ),
               ),
             ),
-            const SizedBox(
-              height: 3,
+            SizedBox(
+              height: 3.h,
             ),
             Row(
               children: [
                 Align(
                   alignment: Alignment.topRight,
                   child: Padding(
-                    padding: const EdgeInsets.only(
-                      right: 9,
+                    padding: EdgeInsets.only(
+                      right: 9.w,
                     ),
                     child: Text(
                       model.priceBefore,
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 16.sp,
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).primaryColor,
                       ),
@@ -239,7 +351,7 @@ class _Item extends StatelessWidget {
                       model.priceAfter,
                       textAlign: TextAlign.justify,
                       style: TextStyle(
-                        fontSize: 13,
+                        fontSize: 13.sp,
                         color: Theme.of(context).primaryColor,
                         decoration: TextDecoration.lineThrough,
                       ),
@@ -249,24 +361,24 @@ class _Item extends StatelessWidget {
                 Align(
                   alignment: Alignment.topLeft,
                   child: Padding(
-                    padding: const EdgeInsets.only(
-                      left: 10,
-                      right: 27,
+                    padding: EdgeInsets.only(
+                      left: 10.w,
+                      right: 27.w,
                     ),
                     child: Container(
-                      width: 30,
-                      height: 30,
+                      width: 30.w,
+                      height: 30.h,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4),
+                        borderRadius: BorderRadius.circular(4.r),
                         color: Theme.of(context).primaryColor.withOpacity(0.8),
                       ),
                       child: IconButton(
                         padding: EdgeInsets.zero,
                         onPressed: () {},
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.add_rounded,
-                          color: Color(0xFFFFFFFF),
-                          size: 16,
+                          color: const Color(0xFFFFFFFF),
+                          size: 16.w.h,
                         ),
                       ),
                     ),

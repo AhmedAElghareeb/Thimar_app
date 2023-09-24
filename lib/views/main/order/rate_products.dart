@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:thimar_app/core/design/app_button.dart';
+import 'package:thimar_app/core/design/app_input.dart';
 
 
 
@@ -10,28 +12,31 @@ class RateProducts extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "تقييم المنتجات",
         ),
         leading: Padding(
-          padding: const EdgeInsets.all(10),
+          padding: EdgeInsets.symmetric(
+            horizontal: 10.w,
+            vertical: 10.h,
+          ),
           child: GestureDetector(
             child: Container(
-              width: 32,
-              height: 32,
+              width: 32.w,
+              height: 32.h,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(9),
-                color: Color(
+                borderRadius: BorderRadius.circular(9.r),
+                color: const Color(
                   0xff707070,
                 ).withOpacity(0.1),
               ),
               child: Padding(
-                padding: const EdgeInsets.only(
-                  right: 7,
+                padding: EdgeInsets.only(
+                  right: 7.w,
                 ),
                 child: Icon(
                   Icons.arrow_back_ios,
-                  size: 16,
+                  size: 16.w.h,
                   color: Theme.of(context).primaryColor,
                 ),
               ),
@@ -43,25 +48,28 @@ class RateProducts extends StatelessWidget {
         ),
       ),
       body: ListView(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 41,
+        padding: EdgeInsets.symmetric(
+          horizontal: 16.w,
+          vertical: 41.h,
         ),
         children: [
           ListView.separated(
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) => _Item(),
             itemCount: 2,
             separatorBuilder: (context, index) => SizedBox(
-              height: 16,
+              height: 16.h,
             ),
           ),
-          SizedBox(height: 16,),
+          SizedBox(height: 16.h,),
           AppButton(
             onTap: () {},
             text: "تقييم",
+            width: 343.w,
+            height: 60.h,
+            radius: 15.r,
           ),
         ],
       ),
@@ -77,17 +85,17 @@ class _Item extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 225,
-      width: 343,
+      height: 225.h,
+      width: 343.w,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
-        color: Color(
+        borderRadius: BorderRadius.circular(15.r),
+        color: const Color(
           0xffffffff,
         ),
         boxShadow: [
           BoxShadow(
-            blurRadius: 2,
-            color: Color(
+            blurRadius: 2.r,
+            color: const Color(
               0xfff5f5f5,
             ),
           ),
@@ -96,19 +104,19 @@ class _Item extends StatelessWidget {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(
-              top: 8,
+            padding: EdgeInsets.only(
+              top: 8.h,
             ),
             child: Row(
               children: [
                 Image.network(
                   "https://www.seeds-gallery.com/2330-large_default/moneymaker-tomato-seeds.jpg",
-                  width: 75,
-                  height: 64,
+                  width: 75.w,
+                  height: 64.h,
                   fit: BoxFit.scaleDown,
                 ),
                 SizedBox(
-                  width: 10,
+                  width: 10.w,
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -116,44 +124,44 @@ class _Item extends StatelessWidget {
                     Text(
                       "طماطم",
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 16.sp,
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).primaryColor,
                       ),
                     ),
                     SizedBox(
-                      height: 4,
+                      height: 4.h,
                     ),
                     Text(
                       "السعر / 1كجم",
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: 12.sp,
                         fontWeight: FontWeight.w300,
-                        color: Color(
+                        color: const Color(
                           0xff808080,
                         ),
                       ),
                     ),
                     SizedBox(
-                      height: 4,
+                      height: 4.h,
                     ),
                     Row(
                       children: [
                         Text(
                           "45 ر.س",
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 16.sp,
                             fontWeight: FontWeight.bold,
                             color: Theme.of(context).primaryColor,
                           ),
                         ),
                         SizedBox(
-                          width: 3,
+                          width: 3.w,
                         ),
                         Text(
                           "56 ر.س",
                           style: TextStyle(
-                            fontSize: 13,
+                            fontSize: 13.sp,
                             fontWeight: FontWeight.w300,
                             color: Theme.of(context).primaryColor,
                             decoration: TextDecoration.lineThrough,
@@ -167,11 +175,11 @@ class _Item extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: 26,
+            height: 26.h,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            children: const [
               Icon(
                 Icons.star,
                 color: Color(0xffFF9529),
@@ -197,41 +205,17 @@ class _Item extends StatelessWidget {
             ],
           ),
           SizedBox(
-            height: 14,
+            height: 14.h,
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 11,
+            padding: EdgeInsets.symmetric(
+              horizontal: 11.w,
             ),
-            child: TextFormField(
+            child: AppInput(
               controller: productComment,
-              keyboardType: TextInputType.text,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                  borderSide: const BorderSide(
-                    color: Color(
-                      0xff8B8B8B,
-                    ),
-                  ),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                  borderSide: const BorderSide(
-                    color: Color(
-                      0xffDCDCDC,
-                    ),
-                  ),
-                ),
-                hintText: "تعليق المنتج",
-                hintStyle: const TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w300,
-                  color: Color(0xFF9C9C9C),
-                ),
-              ),
-              minLines: 2,
-              maxLines: 10,
+              labelText: "تعليق المنتج",
+              minLines: 3,
+              maxLines: 7,
             ),
           ),
         ],

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:thimar_app/core/design/app_button.dart';
@@ -9,7 +10,6 @@ import 'package:thimar_app/core/logic/dio_helper.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
 import 'package:thimar_app/views/auth/create_new_password.dart';
 import 'package:thimar_app/views/auth/login.dart';
-
 
 class VerifyCode extends StatefulWidget {
   final bool isActive;
@@ -46,7 +46,7 @@ class _VerifyCodeState extends State<VerifyCode> {
       showSnackBar(response.msg, typ: MessageType.success);
       if (widget.isActive) {
         navigateTo(
-          LoginScreen(),
+          const LoginScreen(),
         );
       } else {
         navigateTo(
@@ -79,8 +79,10 @@ class _VerifyCodeState extends State<VerifyCode> {
             backgroundColor: Colors.transparent,
             body: SafeArea(
               child: ListView(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                padding: EdgeInsets.symmetric(
+                  horizontal: 16.w,
+                  vertical: 20.h,
+                ),
                 children: [
                   AuthHeader(
                     text1:
@@ -91,18 +93,18 @@ class _VerifyCodeState extends State<VerifyCode> {
                     children: [
                       Text(
                         "الجوال ${widget.phone}+",
-                        style: const TextStyle(
-                          fontSize: 16,
+                        style: TextStyle(
+                          fontSize: 16.sp,
                           fontWeight: FontWeight.w300,
-                          color: Color(0xFF707070),
+                          color: const Color(0xFF707070),
                         ),
                       ),
                       TextButton(
                         onPressed: () {},
                         child: Text(
                           "تغيير رقم الجوال",
-                          style: const TextStyle(
-                            fontSize: 16,
+                          style: TextStyle(
+                            fontSize: 16.sp,
                             fontWeight: FontWeight.w500,
                             decoration: TextDecoration.underline,
                           ),
@@ -110,8 +112,8 @@ class _VerifyCodeState extends State<VerifyCode> {
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 30,
+                  SizedBox(
+                    height: 30.h,
                   ),
                   Form(
                     key: _formKey,
@@ -121,9 +123,9 @@ class _VerifyCodeState extends State<VerifyCode> {
                       controller: pinCodeController,
                       pinTheme: PinTheme(
                         shape: PinCodeFieldShape.box,
-                        borderRadius: BorderRadius.circular(15),
-                        fieldHeight: 60,
-                        fieldWidth: 70,
+                        borderRadius: BorderRadius.circular(15.r),
+                        fieldHeight: 60.h,
+                        fieldWidth: 70.w,
                         inactiveColor: const Color(0xffF3F3F3),
                         selectedColor: Theme.of(context).primaryColor,
                       ),
@@ -136,8 +138,8 @@ class _VerifyCodeState extends State<VerifyCode> {
                       keyboardType: TextInputType.number,
                     ),
                   ),
-                  const SizedBox(
-                    height: 37,
+                  SizedBox(
+                    height: 37.h,
                   ),
                   isLoading
                       ? Center(
@@ -152,23 +154,23 @@ class _VerifyCodeState extends State<VerifyCode> {
                             }
                           },
                           text: "تأكيد الكود",
-                    radius: 15,
-                    width: 343,
-                    height: 60,
+                          radius: 15.r,
+                          width: 343.w,
+                          height: 60.h,
                         ),
-                  const SizedBox(
-                    height: 27,
+                  SizedBox(
+                    height: 27.h,
                   ),
-                  const Text(
+                  Text(
                     "لم تستلم الكود؟ \n يمكنك اعادة ارسال الكود بعد",
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 16,
-                      color: Color(0xFF707070),
+                      fontSize: 16.sp,
+                      color: const Color(0xFF707070),
                     ),
                   ),
-                  const SizedBox(
-                    height: 22,
+                  SizedBox(
+                    height: 22.h,
                   ),
                   isTimerFinished
                       ? Center(
@@ -177,26 +179,26 @@ class _VerifyCodeState extends State<VerifyCode> {
                               isTimerFinished = false;
                               setState(() {});
                             },
-                            child: const Text(
+                            child: Text(
                               "إعادة إرسال",
                               style: TextStyle(
-                                fontSize: 15,
+                                fontSize: 15.sp,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
                         )
                       : CircularCountDownTimer(
-                    isReverse: true,
-                          width: 66,
-                          height: 69,
+                          isReverse: true,
+                          width: 66.w,
+                          height: 69.h,
                           duration: 90,
                           fillColor: const Color(0xffD8D8D8),
                           ringColor: Theme.of(context).primaryColor,
-                          strokeWidth: 3,
+                          strokeWidth: 3.w,
                           textFormat: CountdownTextFormat.MM_SS,
                           textStyle: TextStyle(
-                            fontSize: 21,
+                            fontSize: 21.sp,
                             fontWeight: FontWeight.w400,
                             color: Theme.of(context).primaryColor,
                           ),
@@ -206,8 +208,8 @@ class _VerifyCodeState extends State<VerifyCode> {
                             setState(() {});
                           },
                         ),
-                  const SizedBox(
-                    height: 45,
+                  SizedBox(
+                    height: 45.h,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -216,21 +218,21 @@ class _VerifyCodeState extends State<VerifyCode> {
                         "لديك حساب بالفعل ؟",
                         style: TextStyle(
                           color: Theme.of(context).primaryColor,
-                          fontSize: 15,
+                          fontSize: 15.sp,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       TextButton(
                         onPressed: () {
                           navigateTo(
-                            LoginScreen(),
+                            const LoginScreen(),
                           );
                         },
                         child: Text(
                           "تسجيل الدخول",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 18,
+                            fontSize: 18.sp,
                             color: Theme.of(context).primaryColor,
                           ),
                         ),

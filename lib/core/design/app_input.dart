@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class AppInput extends StatefulWidget {
   AppInput({
+    super.key,
     this.controller,
     this.prefixIcon,
     this.keyboardType = TextInputType.text,
@@ -43,10 +45,10 @@ class _AppInputState extends State<AppInput> {
       decoration: InputDecoration(
         icon: widget.keyboardType == TextInputType.phone
             ? Container(
-                height: 60,
-                width: 69,
+                height: 60.h,
+                width: 69.w,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
+                  borderRadius: BorderRadius.circular(15.r),
                   color: Colors.white,
                   border: Border.all(
                     color: const Color(
@@ -59,17 +61,17 @@ class _AppInputState extends State<AppInput> {
                   children: [
                     Image.asset(
                       "assets/images/icons/appInputIcons/saudi.png",
-                      width: 32,
-                      height: 20,
+                      width: 32.w,
+                      height: 20.h,
                       fit: BoxFit.scaleDown,
                     ),
-                    const SizedBox(
-                      height: 2,
+                    SizedBox(
+                      height: 2.h,
                     ),
                     Text(
                       "966+",
                       style: TextStyle(
-                        fontSize: 15,
+                        fontSize: 15.sp,
                         color: Theme.of(context).primaryColor,
                       ),
                     ),
@@ -78,7 +80,7 @@ class _AppInputState extends State<AppInput> {
               )
             : null,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(15.r),
           borderSide: const BorderSide(
             color: Color(
               0xffF3F3F3,
@@ -87,7 +89,7 @@ class _AppInputState extends State<AppInput> {
         ),
         filled: widget.isFilled,
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(15.r),
           borderSide: const BorderSide(
             color: Color(
               0xffF3F3F3,
@@ -95,7 +97,7 @@ class _AppInputState extends State<AppInput> {
           ),
         ),
         disabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(15.r),
           borderSide: const BorderSide(
             color: Color(
               0xffF3F3F3,
@@ -103,17 +105,17 @@ class _AppInputState extends State<AppInput> {
           ),
         ),
         labelText: widget.labelText,
-        labelStyle: const TextStyle(
-          fontSize: 15,
+        labelStyle: TextStyle(
+          fontSize: 15.sp,
         ),
         prefixIcon: widget.prefixIcon != null
             ? Padding(
-                padding: const EdgeInsets.all(12),
+                padding: EdgeInsets.all(12.r),
                 child: SvgPicture.asset(
                   widget.prefixIcon!,
                   fit: BoxFit.scaleDown,
-                  height: 20,
-                  width: 32,
+                  height: 20.h,
+                  width: 32.w,
                 ),
               )
             : null,

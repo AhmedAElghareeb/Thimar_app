@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:thimar_app/core/design/app_button.dart';
 import 'package:thimar_app/core/design/app_input.dart';
@@ -42,16 +43,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   key: _formKey,
                   child: ListView(
                     padding: EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 20,
+                      horizontal: 16.w,
+                      vertical: 20.h,
                     ),
                     children: [
-                      AuthHeader(
+                      const AuthHeader(
                         text1: "مرحبا بك مرة أخرى",
                         text2: "يمكنك تسجيل حساب جديد الأن",
                       ),
-                      const SizedBox(
-                        height: 22,
+                      SizedBox(
+                        height: 22.h,
                       ),
                       AppInput(
                         controller: cubit.nameController,
@@ -66,8 +67,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             "assets/images/icons/appInputIcons/person.svg",
                         keyboardType: TextInputType.name,
                       ),
-                      const SizedBox(
-                        height: 16,
+                      SizedBox(
+                        height: 16.h,
                       ),
                       AppInput(
                         controller: cubit.phoneNumberController,
@@ -83,15 +84,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         isPhone: true,
                         keyboardType: TextInputType.phone,
                       ),
-                      const SizedBox(
-                        height: 16,
+                      SizedBox(
+                        height: 16.h,
                       ),
                       StatefulBuilder(
                         builder: (context, setState) => GestureDetector(
                           onTap: () async {
                             var result = await showModalBottomSheet(
                               context: context,
-                              builder: (context) => CitiesSheets(),
+                              builder: (context) => const CitiesSheets(),
                             );
                             if (result != null) {
                               cubit.selectedCity = result;
@@ -103,6 +104,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             children: [
                               Expanded(
                                 child: AbsorbPointer(
+                                  absorbing: true,
                                   child: AppInput(
                                     labelText:
                                         cubit.selectedCity?.name ?? "المدينة",
@@ -115,7 +117,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     prefixIcon:
                                         "assets/images/icons/appInputIcons/flag.svg",
                                   ),
-                                  absorbing: true,
                                 ),
                               ),
                               if (cubit.selectedCity != null)
@@ -126,7 +127,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   },
                                   icon: Icon(
                                     Icons.clear,
-                                    size: 24,
+                                    size: 24.w.h,
                                     color: Colors.red,
                                   ),
                                 ),
@@ -134,8 +135,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        height: 16,
+                      SizedBox(
+                        height: 16.h,
                       ),
                       AppInput(
                         obscureText: true,
@@ -153,8 +154,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         isPassword: true,
                         maxLines: 1,
                       ),
-                      const SizedBox(
-                        height: 16,
+                      SizedBox(
+                        height: 16.h,
                       ),
                       AppInput(
                         obscureText: true,
@@ -175,8 +176,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         isPassword: true,
                         maxLines: 1,
                       ),
-                      const SizedBox(
-                        height: 24,
+                      SizedBox(
+                        height: 24.h,
                       ),
                       Builder(
                         builder: (context) {
@@ -194,14 +195,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 }
                               },
                               text: "تسجيل",
-                            radius: 15,
-                            width: 343,
-                            height: 60,
+                            radius: 15.r,
+                            width: 343.w,
+                            height: 60.h,
                             );
                         },
                       ),
-                      const SizedBox(
-                        height: 45,
+                      SizedBox(
+                        height: 45.h,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -210,21 +211,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             "لديك حساب بالفعل ؟",
                             style: TextStyle(
                               color: Theme.of(context).primaryColor,
-                              fontSize: 15,
+                              fontSize: 15.sp,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           TextButton(
                             onPressed: () {
                               navigateTo(
-                                LoginScreen(),
+                                const LoginScreen(),
                               );
                             },
                             child: Text(
                               "تسجيل الدخول",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 18,
+                                fontSize: 18.sp,
                                 color: Theme.of(context).primaryColor,
                               ),
                             ),

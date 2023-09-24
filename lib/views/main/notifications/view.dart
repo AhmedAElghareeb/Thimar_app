@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:thimar_app/models/notifications_model.dart';
 
 class NotificationsScreen extends StatefulWidget {
@@ -27,7 +28,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     ),
     NotificationModel(
       image:
-      "https://img.freepik.com/free-vector/speech-bubble_53876-43873.jpg?w=740&t=st=1694029114~exp=1694029714~hmac=1c0d0bc90609e58ff236b3c73f11ca86a4174852b91096419757401909b41327",
+          "https://img.freepik.com/free-vector/speech-bubble_53876-43873.jpg?w=740&t=st=1694029114~exp=1694029714~hmac=1c0d0bc90609e58ff236b3c73f11ca86a4174852b91096419757401909b41327",
       title: "تم قبول طلبك رقم 3",
       body: "اهلا",
       time: "منذ ساعتين",
@@ -43,7 +44,9 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   bool isLoading = true;
 
   getData() async {
-    await Future.delayed(Duration(seconds: 3));
+    await Future.delayed(
+      const Duration(seconds: 3),
+    );
     isLoading = false;
     setState(() {});
   }
@@ -52,17 +55,22 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "الإشعارات",
         ),
       ),
       body: isLoading
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(),
             )
           : ListView.builder(
-              padding: EdgeInsets.all(16),
-              itemBuilder: (context, index) => _Item(model: list[index]),
+              padding: EdgeInsets.symmetric(
+                horizontal: 16.w,
+                vertical: 16.h,
+              ),
+              itemBuilder: (context, index) => _Item(
+                model: list[index],
+              ),
               itemCount: list.length,
             ),
       // bottomNavigationBar: HomeNavBar(),
@@ -73,24 +81,27 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
 class _Item extends StatelessWidget {
   final NotificationModel model;
 
-  _Item({
+  const _Item({
     required this.model,
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(
-        bottom: 16,
+      padding: EdgeInsets.only(
+        bottom: 16.h,
       ),
       child: Row(
         children: [
           Container(
-            height: 33,
-            width: 33,
-            padding: EdgeInsets.all(6.5),
+            height: 33.h,
+            width: 33.w,
+            padding: EdgeInsets.symmetric(
+              horizontal: 6.5.w,
+              vertical: 6.5.h
+            ),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(9),
+              borderRadius: BorderRadius.circular(9.r),
               color: Theme.of(context).primaryColor.withOpacity(0.13),
             ),
             child: Image.network(
@@ -99,7 +110,7 @@ class _Item extends StatelessWidget {
             ),
           ),
           SizedBox(
-            width: 10,
+            width: 10.w,
           ),
           Expanded(
             child: Column(
@@ -108,23 +119,23 @@ class _Item extends StatelessWidget {
                 Text(
                   model.title,
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: 12.sp,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
                 Text(
                   model.body,
                   style: TextStyle(
-                      fontSize: 10,
+                      fontSize: 10.sp,
                       fontWeight: FontWeight.w300,
-                      color: Color(
+                      color: const Color(
                         0xff989898,
                       )),
                 ),
                 Text(
                   model.time,
                   style: TextStyle(
-                    fontSize: 10,
+                    fontSize: 10.sp,
                     fontWeight: FontWeight.w400,
                   ),
                 ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:thimar_app/core/logic/cache_helper.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
@@ -7,10 +8,11 @@ import 'package:thimar_app/views/main/account/about_us.dart';
 import 'package:thimar_app/views/main/account/address/address.dart';
 import 'package:thimar_app/views/main/account/contact_us.dart';
 import 'package:thimar_app/views/main/account/edit_profile.dart';
+import 'package:thimar_app/views/main/account/faqs.dart';
 import 'package:thimar_app/views/main/account/sugestions and complaints.dart';
 import 'package:thimar_app/views/main/account/policy.dart';
 import 'package:thimar_app/views/main/account/terms_conditions.dart';
-import 'package:thimar_app/views/main/account/wallet/wallet.dart';
+import 'package:thimar_app/views/main/account/wallet/view.dart';
 
 class AccountScreen extends StatelessWidget {
   const AccountScreen({super.key});
@@ -22,12 +24,12 @@ class AccountScreen extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              width: double.infinity,
-              height: 217,
+              width: 375.w,
+              height: 217.h,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
-                  bottomRight: Radius.circular(40),
-                  bottomLeft: Radius.circular(40),
+                  bottomRight: Radius.circular(40.r),
+                  bottomLeft: Radius.circular(40.r),
                 ),
                 color: Theme.of(context).primaryColor,
               ),
@@ -37,50 +39,54 @@ class AccountScreen extends StatelessWidget {
                   Text(
                     "حسابي",
                     style: TextStyle(
-                      fontSize: 20,
+                      fontSize: 20.sp,
                       fontWeight: FontWeight.bold,
-                      color: Color(
+                      color: const Color(
                         0xffFFFFFF,
                       ),
                     ),
                   ),
                   SizedBox(
-                    height: 23,
+                    height: 23.h,
                   ),
                   Container(
-                    width: 76,
-                    height: 71,
+                    width: 76.w,
+                    height: 71.h,
+                    clipBehavior: Clip.antiAlias,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(
-                        15,
+                        15.r,
                       ),
                     ),
                     child: Image.network(
                       "https://thimar.amr.aait-d.com/public/dashboardAssets/images/backgrounds/avatar.jpg",
+                      width: 76.w,
+                      height: 71.h,
+                      fit: BoxFit.fill,
                     ),
                   ),
                   SizedBox(
-                    height: 2,
+                    height: 2.h,
                   ),
                   Text(
                     "محمد علي",
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.bold,
-                      color: Color(
+                      color: const Color(
                         0xffFFFFFF,
                       ),
                     ),
                   ),
                   SizedBox(
-                    height: 4,
+                    height: 4.h,
                   ),
                   Text(
                     "96654787856+",
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.w400,
-                      color: Color(
+                      color: const Color(
                         0xffA2D273,
                       ),
                     ),
@@ -89,69 +95,69 @@ class AccountScreen extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 20,
+              height: 20.h,
             ),
             Container(
-              width: double.infinity,
-              height: 151,
+              width: 342.w,
+              height: 152.h,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(
-                  17,
+                  17.r,
                 ),
-                color: Color(
+                color: const Color(
                   0xffFFFFFF,
                 ),
               ),
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 15,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 14.w,
+                      vertical: 15.h,
                     ),
                     child: GestureDetector(
                       onTap: () {
                         navigateTo(
-                          EditProfile(),
+                          const EditProfile(),
                         );
                       },
                       child: Row(
                         children: [
                           SvgPicture.asset(
                             "assets/images/icons/accountIcons/person.svg",
-                            width: 14,
-                            height: 18,
+                            width: 14.w,
+                            height: 18.h,
                             fit: BoxFit.scaleDown,
                           ),
                           SizedBox(
-                            width: 9,
+                            width: 7.w,
                           ),
                           Text(
                             "البيانات الشخصية",
                             style: TextStyle(
-                              fontSize: 13,
+                              fontSize: 13.sp,
                               fontWeight: FontWeight.bold,
                               color: Theme.of(context).primaryColor,
                             ),
                           ),
                           SizedBox(
-                            width: 179,
+                            width: 179.w,
                           ),
                           Container(
-                            width: 20,
-                            height: 20,
+                            width: 18.w,
+                            height: 18.h,
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
+                              borderRadius: BorderRadius.circular(5.r),
                               border: Border.all(
-                                color: Color(
+                                color: const Color(
                                   0xffB2BCA8,
                                 ),
                               ),
                             ),
                             child: Icon(
                               Icons.arrow_forward,
-                              size: 12,
-                              color: Color(
+                              size: 12.w.h,
+                              color: const Color(
                                 0xffB2BCA8,
                               ),
                             ),
@@ -161,53 +167,53 @@ class AccountScreen extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 15,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 14.w,
+                      vertical: 15.h,
                     ),
                     child: GestureDetector(
                       onTap: () {
                         navigateTo(
-                          Wallet(),
+                          const WalletView(),
                         );
                       },
                       child: Row(
                         children: [
                           SvgPicture.asset(
                             "assets/images/icons/accountIcons/wallet.svg",
-                            width: 18,
-                            height: 18,
+                            width: 18.w,
+                            height: 18.h,
                             fit: BoxFit.scaleDown,
                           ),
                           SizedBox(
-                            width: 9,
+                            width: 7.w,
                           ),
                           Text(
                             "المحفظة",
                             style: TextStyle(
-                              fontSize: 13,
+                              fontSize: 13.sp,
                               fontWeight: FontWeight.bold,
                               color: Theme.of(context).primaryColor,
                             ),
                           ),
                           SizedBox(
-                            width: 220,
+                            width: 220.w,
                           ),
                           Container(
-                            width: 20,
-                            height: 20,
+                            width: 18.w,
+                            height: 18.h,
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
+                              borderRadius: BorderRadius.circular(5.r),
                               border: Border.all(
-                                color: Color(
+                                color: const Color(
                                   0xffB2BCA8,
                                 ),
                               ),
                             ),
                             child: Icon(
                               Icons.arrow_forward,
-                              size: 12,
-                              color: Color(
+                              size: 12.w.h,
+                              color: const Color(
                                 0xffB2BCA8,
                               ),
                             ),
@@ -217,53 +223,53 @@ class AccountScreen extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 15,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 14.w,
+                      vertical: 15.h,
                     ),
                     child: GestureDetector(
                       onTap: () {
                         navigateTo(
-                          Address(),
+                          const Address(),
                         );
                       },
                       child: Row(
                         children: [
                           SvgPicture.asset(
                             "assets/images/icons/accountIcons/address.svg",
-                            width: 16,
-                            height: 18,
+                            width: 16.w,
+                            height: 18.h,
                             fit: BoxFit.scaleDown,
                           ),
                           SizedBox(
-                            width: 9,
+                            width: 7.w,
                           ),
                           Text(
                             "العناوين",
                             style: TextStyle(
-                              fontSize: 13,
+                              fontSize: 13.sp,
                               fontWeight: FontWeight.bold,
                               color: Theme.of(context).primaryColor,
                             ),
                           ),
                           SizedBox(
-                            width: 228,
+                            width: 228.w,
                           ),
                           Container(
-                            width: 20,
-                            height: 20,
+                            width: 18.w,
+                            height: 18.h,
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
+                              borderRadius: BorderRadius.circular(5.r),
                               border: Border.all(
-                                color: Color(
+                                color: const Color(
                                   0xffB2BCA8,
                                 ),
                               ),
                             ),
                             child: Icon(
                               Icons.arrow_forward,
-                              size: 12,
-                              color: Color(
+                              size: 12.w.h,
+                              color: const Color(
                                 0xffB2BCA8,
                               ),
                             ),
@@ -276,118 +282,124 @@ class AccountScreen extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 20,
+              height: 20.h,
             ),
             Container(
-              width: double.infinity,
-              height: 255,
+              width: 342.w,
+              height: 244.h,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(
-                  17,
+                  17.r,
                 ),
-                color: Color(
+                color: const Color(
                   0xffFFFFFF,
                 ),
               ),
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 15,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 14.w,
+                      vertical: 15.h,
                     ),
-                    child: Row(
-                      children: [
-                        SvgPicture.asset(
-                          "assets/images/icons/accountIcons/question.svg",
-                          width: 18,
-                          height: 18,
-                          fit: BoxFit.scaleDown,
-                        ),
-                        SizedBox(
-                          width: 9,
-                        ),
-                        Text(
-                          "أسئلة متكررة",
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).primaryColor,
+                    child: GestureDetector(
+                      onTap: ()
+                      {
+                        navigateTo(const Faqs(),);
+                      },
+                      child: Row(
+                        children: [
+                          SvgPicture.asset(
+                            "assets/images/icons/accountIcons/question.svg",
+                            width: 18.w,
+                            height: 18.h,
+                            fit: BoxFit.scaleDown,
                           ),
-                        ),
-                        SizedBox(
-                          width: 200,
-                        ),
-                        Container(
-                          width: 20,
-                          height: 20,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            border: Border.all(
-                              color: Color(
+                          SizedBox(
+                            width: 7.w,
+                          ),
+                          Text(
+                            "أسئلة متكررة",
+                            style: TextStyle(
+                              fontSize: 13.sp,
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 200.w,
+                          ),
+                          Container(
+                            width: 18.w,
+                            height: 18.h,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5.r),
+                              border: Border.all(
+                                color: const Color(
+                                  0xffB2BCA8,
+                                ),
+                              ),
+                            ),
+                            child: Icon(
+                              Icons.arrow_forward,
+                              size: 12.w.h,
+                              color: const Color(
                                 0xffB2BCA8,
                               ),
                             ),
                           ),
-                          child: Icon(
-                            Icons.arrow_forward,
-                            size: 12,
-                            color: Color(
-                              0xffB2BCA8,
-                            ),
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 15,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 14.w,
+                      vertical: 15.h,
                     ),
                     child: GestureDetector(
                       onTap: () {
                         navigateTo(
-                          PolicyView(),
+                          const PolicyView(),
                         );
                       },
                       child: Row(
                         children: [
                           SvgPicture.asset(
                             "assets/images/icons/accountIcons/policy.svg",
-                            width: 16,
-                            height: 18,
+                            width: 16.w,
+                            height: 18.h,
                             fit: BoxFit.scaleDown,
                           ),
                           SizedBox(
-                            width: 9,
+                            width: 7.w,
                           ),
                           Text(
                             "سياسة الخصوصية",
                             style: TextStyle(
-                              fontSize: 13,
+                              fontSize: 13.sp,
                               fontWeight: FontWeight.bold,
                               color: Theme.of(context).primaryColor,
                             ),
                           ),
                           SizedBox(
-                            width: 169,
+                            width: 169.w,
                           ),
                           Container(
-                            width: 20,
-                            height: 20,
+                            width: 18.w,
+                            height: 18.h,
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
+                              borderRadius: BorderRadius.circular(5.r),
                               border: Border.all(
-                                color: Color(
+                                color: const Color(
                                   0xffB2BCA8,
                                 ),
                               ),
                             ),
                             child: Icon(
                               Icons.arrow_forward,
-                              size: 12,
-                              color: Color(
+                              size: 12.w.h,
+                              color: const Color(
                                 0xffB2BCA8,
                               ),
                             ),
@@ -397,53 +409,53 @@ class AccountScreen extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 15,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 14.w,
+                      vertical: 15.h,
                     ),
                     child: GestureDetector(
                       onTap: () {
                         navigateTo(
-                          ContactUs(),
+                          const ContactUs(),
                         );
                       },
                       child: Row(
                         children: [
                           SvgPicture.asset(
                             "assets/images/icons/accountIcons/contact_us.svg",
-                            width: 18,
-                            height: 18,
+                            width: 18.w,
+                            height: 18.h,
                             fit: BoxFit.scaleDown,
                           ),
                           SizedBox(
-                            width: 9,
+                            width: 7.w,
                           ),
                           Text(
                             "تواصل معنا",
                             style: TextStyle(
-                              fontSize: 13,
+                              fontSize: 13.sp,
                               fontWeight: FontWeight.bold,
                               color: Theme.of(context).primaryColor,
                             ),
                           ),
                           SizedBox(
-                            width: 206,
+                            width: 206.w,
                           ),
                           Container(
-                            width: 20,
-                            height: 20,
+                            width: 18.w,
+                            height: 18.h,
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
+                              borderRadius: BorderRadius.circular(5.r),
                               border: Border.all(
-                                color: Color(
+                                color: const Color(
                                   0xffB2BCA8,
                                 ),
                               ),
                             ),
                             child: Icon(
                               Icons.arrow_forward,
-                              size: 12,
-                              color: Color(
+                              size: 12.w.h,
+                              color: const Color(
                                 0xffB2BCA8,
                               ),
                             ),
@@ -453,53 +465,53 @@ class AccountScreen extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 15,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 14.w,
+                      vertical: 15.h,
                     ),
                     child: GestureDetector(
                       onTap: () {
                         navigateTo(
-                          SugestionsAndComplaints(),
+                          const SugestionsAndComplaints(),
                         );
                       },
                       child: Row(
                         children: [
                           SvgPicture.asset(
                             "assets/images/icons/accountIcons/proposal.svg",
-                            width: 18,
-                            height: 18,
+                            width: 18.w,
+                            height: 18.h,
                             fit: BoxFit.scaleDown,
                           ),
                           SizedBox(
-                            width: 9,
+                            width: 7.w,
                           ),
                           Text(
                             "الشكاوي والأقتراحات",
                             style: TextStyle(
-                              fontSize: 13,
+                              fontSize: 13.sp,
                               fontWeight: FontWeight.bold,
                               color: Theme.of(context).primaryColor,
                             ),
                           ),
                           SizedBox(
-                            width: 160,
+                            width: 160.w,
                           ),
                           Container(
-                            width: 20,
-                            height: 20,
+                            width: 18.w,
+                            height: 18.h,
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
+                              borderRadius: BorderRadius.circular(5.r),
                               border: Border.all(
-                                color: Color(
+                                color: const Color(
                                   0xffB2BCA8,
                                 ),
                               ),
                             ),
                             child: Icon(
                               Icons.arrow_forward,
-                              size: 12,
-                              color: Color(
+                              size: 12.w.h,
+                              color: const Color(
                                 0xffB2BCA8,
                               ),
                             ),
@@ -509,47 +521,47 @@ class AccountScreen extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 15,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 14.w,
+                      vertical: 15.h,
                     ),
                     child: Row(
                       children: [
                         SvgPicture.asset(
                           "assets/images/icons/accountIcons/sharing.svg",
-                          width: 18,
-                          height: 18,
+                          width: 18.w,
+                          height: 18.h,
                           fit: BoxFit.scaleDown,
                         ),
                         SizedBox(
-                          width: 9,
+                          width: 7.w,
                         ),
                         Text(
                           "مشاركة التطبيق",
                           style: TextStyle(
-                            fontSize: 13,
+                            fontSize: 13.sp,
                             fontWeight: FontWeight.bold,
                             color: Theme.of(context).primaryColor,
                           ),
                         ),
                         SizedBox(
-                          width: 183,
+                          width: 183.w,
                         ),
                         Container(
-                          width: 20,
-                          height: 20,
+                          width: 18.w,
+                          height: 18.h,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
+                            borderRadius: BorderRadius.circular(5.r),
                             border: Border.all(
-                              color: Color(
+                              color: const Color(
                                 0xffB2BCA8,
                               ),
                             ),
                           ),
                           child: Icon(
                             Icons.arrow_forward,
-                            size: 12,
-                            color: Color(
+                            size: 12.w.h,
+                            color: const Color(
                               0xffB2BCA8,
                             ),
                           ),
@@ -561,69 +573,69 @@ class AccountScreen extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 20,
+              height: 20.h,
             ),
             Container(
-              width: double.infinity,
-              height: 210,
+              width: 342.w,
+              height: 197.h,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(
-                  17,
+                  17.r,
                 ),
-                color: Color(
+                color: const Color(
                   0xffFFFFFF,
                 ),
               ),
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 15,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 14.w,
+                      vertical: 15.h,
                     ),
                     child: GestureDetector(
                       onTap: () {
                         navigateTo(
-                          AboutUs(),
+                          const AboutUs(),
                         );
                       },
                       child: Row(
                         children: [
                           SvgPicture.asset(
                             "assets/images/icons/accountIcons/about_us.svg",
-                            width: 18,
-                            height: 18,
+                            width: 18.w,
+                            height: 18.h,
                             fit: BoxFit.scaleDown,
                           ),
                           SizedBox(
-                            width: 9,
+                            width: 7.w,
                           ),
                           Text(
                             "عن التطبيق",
                             style: TextStyle(
-                              fontSize: 13,
+                              fontSize: 13.sp,
                               fontWeight: FontWeight.bold,
                               color: Theme.of(context).primaryColor,
                             ),
                           ),
                           SizedBox(
-                            width: 208,
+                            width: 208.w,
                           ),
                           Container(
-                            width: 20,
-                            height: 20,
+                            width: 18.w,
+                            height: 18.h,
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
+                              borderRadius: BorderRadius.circular(5.r),
                               border: Border.all(
-                                color: Color(
+                                color: const Color(
                                   0xffB2BCA8,
                                 ),
                               ),
                             ),
                             child: Icon(
                               Icons.arrow_forward,
-                              size: 12,
-                              color: Color(
+                              size: 12.w.h,
+                              color: const Color(
                                 0xffB2BCA8,
                               ),
                             ),
@@ -633,47 +645,47 @@ class AccountScreen extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 15,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 14.w,
+                      vertical: 15.h,
                     ),
                     child: Row(
                       children: [
                         SvgPicture.asset(
                           "assets/images/icons/accountIcons/lang.svg",
-                          width: 18,
-                          height: 18,
+                          width: 18.w,
+                          height: 18.h,
                           fit: BoxFit.scaleDown,
                         ),
                         SizedBox(
-                          width: 9,
+                          width: 7.w,
                         ),
                         Text(
                           "تغيير اللغة",
                           style: TextStyle(
-                            fontSize: 13,
+                            fontSize: 13.sp,
                             fontWeight: FontWeight.bold,
                             color: Theme.of(context).primaryColor,
                           ),
                         ),
                         SizedBox(
-                          width: 213,
+                          width: 213.w,
                         ),
                         Container(
-                          width: 20,
-                          height: 20,
+                          width: 18.w,
+                          height: 18.h,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
+                            borderRadius: BorderRadius.circular(5.r),
                             border: Border.all(
-                              color: Color(
+                              color: const Color(
                                 0xffB2BCA8,
                               ),
                             ),
                           ),
                           child: Icon(
                             Icons.arrow_forward,
-                            size: 12,
-                            color: Color(
+                            size: 12.w.h,
+                            color: const Color(
                               0xffB2BCA8,
                             ),
                           ),
@@ -682,53 +694,53 @@ class AccountScreen extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 15,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 14.w,
+                      vertical: 15.h,
                     ),
                     child: GestureDetector(
                       onTap: () {
                         navigateTo(
-                          TermsAndConditions(),
+                          const TermsAndConditions(),
                         );
                       },
                       child: Row(
                         children: [
                           SvgPicture.asset(
                             "assets/images/icons/accountIcons/conditions.svg",
-                            width: 18,
-                            height: 18,
+                            width: 18.w,
+                            height: 18.h,
                             fit: BoxFit.scaleDown,
                           ),
                           SizedBox(
-                            width: 9,
+                            width: 7.w,
                           ),
                           Text(
                             "الشروط والأحكام",
                             style: TextStyle(
-                              fontSize: 13,
+                              fontSize: 13.sp,
                               fontWeight: FontWeight.bold,
                               color: Theme.of(context).primaryColor,
                             ),
                           ),
                           SizedBox(
-                            width: 180,
+                            width: 180.w,
                           ),
                           Container(
-                            width: 20,
-                            height: 20,
+                            width: 18.w,
+                            height: 18.h,
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
+                              borderRadius: BorderRadius.circular(5.r),
                               border: Border.all(
-                                color: Color(
+                                color: const Color(
                                   0xffB2BCA8,
                                 ),
                               ),
                             ),
                             child: Icon(
                               Icons.arrow_forward,
-                              size: 12,
-                              color: Color(
+                              size: 12.w.h,
+                              color: const Color(
                                 0xffB2BCA8,
                               ),
                             ),
@@ -738,47 +750,47 @@ class AccountScreen extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 15,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 14.w,
+                      vertical: 15.h,
                     ),
                     child: Row(
                       children: [
                         SvgPicture.asset(
                           "assets/images/icons/accountIcons/app_rate.svg",
-                          width: 18,
-                          height: 18,
+                          width: 18.w,
+                          height: 18.h,
                           fit: BoxFit.scaleDown,
                         ),
                         SizedBox(
-                          width: 9,
+                          width: 7.w,
                         ),
                         Text(
                           "تقييم التطبيق",
                           style: TextStyle(
-                            fontSize: 13,
+                            fontSize: 13.sp,
                             fontWeight: FontWeight.bold,
                             color: Theme.of(context).primaryColor,
                           ),
                         ),
                         SizedBox(
-                          width: 197,
+                          width: 197.w,
                         ),
                         Container(
-                          width: 20,
-                          height: 20,
+                          width: 18.w,
+                          height: 18.h,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
+                            borderRadius: BorderRadius.circular(5.r),
                             border: Border.all(
-                              color: Color(
+                              color: const Color(
                                 0xffB2BCA8,
                               ),
                             ),
                           ),
                           child: Icon(
                             Icons.arrow_forward,
-                            size: 12,
-                            color: Color(
+                            size: 12.w.h,
+                            color: const Color(
                               0xffB2BCA8,
                             ),
                           ),
@@ -790,56 +802,56 @@ class AccountScreen extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 20,
+              height: 20.h,
             ),
             GestureDetector(
               onTap: ()
               {
                 CacheHelper.removeLoginData();
-                navigateTo(LoginScreen(),);
+                navigateTo(const LoginScreen(),);
               },
               child: Container(
-                width: double.infinity,
-                height: 50,
+                width: 342.w,
+                height: 50.h,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(
-                    17,
+                    17.r,
                   ),
-                  color: Color(
+                  color: const Color(
                     0xffFFFFFF,
                   ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 14,
-                    vertical: 15,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 14.w,
+                    vertical: 15.h,
                   ),
                   child: Row(
                     children: [
                       Text(
                         "تسجيل الخروج",
                         style: TextStyle(
-                          fontSize: 13,
+                          fontSize: 13.sp,
                           fontWeight: FontWeight.bold,
                           color: Theme.of(context).primaryColor,
                         ),
                       ),
                       SizedBox(
-                        width: 218,
+                        width: 216.w,
                       ),
                       Container(
-                        width: 20,
-                        height: 20,
+                        width: 18.w,
+                        height: 18.h,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: Color(0xffFFFFFF),
+                          borderRadius: BorderRadius.circular(5.r),
+                          color: const Color(0xffFFFFFF),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.all(1),
+                          padding: EdgeInsets.all(1.w.h),
                           child: SvgPicture.asset(
                             "assets/images/icons/accountIcons/exit.svg",
-                            width: 18,
-                            height: 18,
+                            width: 18.w,
+                            height: 18.h,
                           ),
                         ),
                       ),

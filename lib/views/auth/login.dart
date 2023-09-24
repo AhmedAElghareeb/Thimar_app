@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:thimar_app/core/design/app_button.dart';
 import 'package:thimar_app/core/design/app_input.dart';
@@ -40,17 +41,17 @@ class _LoginScreenState extends State<LoginScreen> {
                 backgroundColor: Colors.transparent,
                 body: SafeArea(
                   child: ListView(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 20,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.w,
+                      vertical: 20.h,
                     ),
                     children: [
-                      AuthHeader(
+                      const AuthHeader(
                         text1: "مرحبا بك مرة أخرى",
                         text2: "يمكنك تسجيل الدخول الأن",
                       ),
-                      const SizedBox(
-                        height: 28,
+                      SizedBox(
+                        height: 28.h,
                       ),
                       Form(
                         key: _formKey,
@@ -70,8 +71,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   "assets/images/icons/appInputIcons/call.svg",
                               keyboardType: TextInputType.phone,
                             ),
-                            const SizedBox(
-                              height: 16,
+                            SizedBox(
+                              height: 16.h,
                             ),
                             AppInput(
                               obscureText: true,
@@ -92,8 +93,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           ],
                         ),
                       ),
-                      const SizedBox(
-                        height: 19,
+                      SizedBox(
+                        height: 19.h,
                       ),
                       Align(
                         alignment: Alignment.centerLeft,
@@ -105,17 +106,17 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             );
                           },
-                          child: const Text(
+                          child: Text(
                             "هل نسيت كلمة المرور؟",
                             style: TextStyle(
-                              color: Color(0xFF707070),
-                              fontSize: 16,
+                              color: const Color(0xFF707070),
+                              fontSize: 16.sp,
                             ),
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        height: 22,
+                      SizedBox(
+                        height: 22.h,
                       ),
                       BlocBuilder(
                         bloc: cubit,
@@ -133,15 +134,15 @@ class _LoginScreenState extends State<LoginScreen> {
                                 }
                               },
                               text: "تسجيل الدخول",
-                              radius: 15,
-                              height: 60,
-                              width: 343,
+                              radius: 15.r,
+                              height: 60.h,
+                              width: 343.w,
                             );
                           }
                         },
                       ),
-                      const SizedBox(
-                        height: 45,
+                      SizedBox(
+                        height: 45.h,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -150,21 +151,21 @@ class _LoginScreenState extends State<LoginScreen> {
                             "ليس لديك حساب ؟",
                             style: TextStyle(
                               color: Theme.of(context).primaryColor,
-                              fontSize: 15,
+                              fontSize: 15.sp,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           TextButton(
                             onPressed: () {
                               navigateTo(
-                                RegisterScreen(),
+                                const RegisterScreen(),
                               );
                             },
                             child: Text(
                               "تسجيل الأن",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 18,
+                                fontSize: 18.sp,
                                 color: Theme.of(context).primaryColor,
                               ),
                             ),

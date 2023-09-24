@@ -1,7 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:thimar_app/core/design/app_button.dart';
 import 'package:thimar_app/core/design/app_input.dart';
@@ -10,14 +10,16 @@ import 'package:thimar_app/features/category_cubit/cubit.dart';
 import 'package:thimar_app/features/category_cubit/states.dart';
 import 'package:thimar_app/features/category_products_cubit/cubit.dart';
 import 'package:thimar_app/features/category_products_cubit/states.dart';
+import 'package:thimar_app/features/slider_images/cubit.dart';
+import 'package:thimar_app/features/slider_images/states.dart';
 import 'package:thimar_app/views/main/home/cart/view.dart';
 import 'package:thimar_app/views/main/home/category/view.dart';
 import 'package:thimar_app/views/main/home/product_details/view.dart';
-import 'package:thimar_app/models/slider_model.dart';
 
 class HomeScreen extends StatefulWidget {
   final int? id;
-  HomeScreen({super.key, this.id});
+
+  const HomeScreen({super.key, this.id});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -26,42 +28,19 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final searchController = TextEditingController();
 
-  int currentIndex = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    getSliderImages();
-  }
-
-  bool isLoading = true;
-
-  late SlidersModel model;
-
-  void getSliderImages() async {
-    final response = await Dio().get(
-      "https://thimar.amr.aait-d.com/public/api/sliders",
-    );
-    model = SlidersModel.fromJson(
-      response.data,
-    );
-    isLoading = false;
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
     CategoryProductsCubit cubit = BlocProvider.of(context);
     cubit.getCategoryProducts();
     return Scaffold(
-      appBar: MainAppBar(),
+      appBar: const MainAppBar(),
       body: SafeArea(
         child: ListView(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 15,
+              padding:  EdgeInsets.symmetric(
+                horizontal: 16.w,
+                vertical: 15.h,
               ),
               child: AppInput(
                 controller: searchController,
@@ -71,68 +50,20 @@ class _HomeScreenState extends State<HomeScreen> {
                 prefixIcon: "assets/images/icons/Search.svg",
               ),
             ),
-            isLoading
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : StatefulBuilder(
-                    builder: (context, setState) => Column(
-                      children: [
-                        CarouselSlider(
-                          items: List.generate(
-                            model.data.length,
-                            (index) => Image.network(
-                              model.data[index].media,
-                              height: 164,
-                              width: double.infinity,
-                              fit: BoxFit.fill,
-                            ),
-                          ),
-                          options: CarouselOptions(
-                            height: 164,
-                            autoPlay: true,
-                            viewportFraction: 1,
-                            onPageChanged: (index, reason) {
-                              currentIndex = index;
-                              setState(() {});
-                            },
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: List.generate(
-                            model.data.length,
-                            (index) => Padding(
-                              padding: const EdgeInsetsDirectional.only(
-                                end: 3,
-                              ),
-                              child: CircleAvatar(
-                                radius: currentIndex == index ? 4 : 2,
-                                backgroundColor: currentIndex == index
-                                    ? Theme.of(context).primaryColor
-                                    : Color(0xff707070),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-            const SizedBox(
-              height: 29,
+            SizedBox(
+              height: 29.h,
             ),
+            const SliderImages(),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
+                  Text(
                     "الأقسام",
                     style: TextStyle(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w900,
+                      fontSize: 15.sp
                     ),
                   ),
                   TextButton(
@@ -140,61 +71,62 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Text(
                       "عرض الكل",
                       style: TextStyle(
-                        color: Theme.of(context).primaryColor,
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.w300
                       ),
                     ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(
-              height: 18,
+            SizedBox(
+              height: 18.h,
             ),
             const SectionsSlider(),
-            const SizedBox(
-              height: 27.9,
+            SizedBox(
+              height: 27.9.h,
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16,
+              padding: EdgeInsets.symmetric(
+                horizontal: 16.w,
               ),
               child: Text(
                 "الأصناف",
                 style: TextStyle(
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w900,
+                  fontSize: 15.sp
                 ),
               ),
             ),
-            const SizedBox(
-              height: 7,
+            SizedBox(
+              height: 7.h,
             ),
             BlocBuilder(
               bloc: cubit,
               builder: (context, state) {
-                print(state.runtimeType.toString());
                 if (state is CategoryProductsFailedState) {
-                  return Center(
+                  return const Center(
                     child: Text("FAILED.."),
                   );
                 } else if (state is CategoryProductsSuccessState) {
                   return GridView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
+                    physics: const NeverScrollableScrollPhysics(),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.w,
                     ),
                     itemCount: state.list.length,
                     itemBuilder: (context, index) => Container(
-                      height: 250,
-                      width: 163,
+                      height: 250.h,
+                      width: 163.w,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(17),
-                        color: Color(
+                        borderRadius: BorderRadius.circular(17.r),
+                        color: const Color(
                           0xffffffff,
                         ),
                         boxShadow: [
                           BoxShadow(
-                            blurRadius: 5,
-                            color: Color(
+                            blurRadius: 5.r,
+                            color: const Color(
                               0xfff5f5f5,
                             ),
                           ),
@@ -202,103 +134,107 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       child: Column(
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              top: 9,
-                              left: 9,
-                              right: 9,
-                            ),
-                            child: Stack(
-                              children: [
-                                GestureDetector(
-                                  child: Container(
-                                    child: Image.network(
-                                      state.list[index].mainImage,
-                                      fit: BoxFit.cover,
-                                      width: 145,
-                                      height: 117,
+                          Stack(
+                            children: [
+                              GestureDetector(
+                                child: Container(
+                                  margin: EdgeInsets.only(
+                                    top: 9.h,
+                                    right: 9.w,
+                                    left: 9.w
+                                  ),
+                                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                                  decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.circular(11.r),),
+                                  child: Image.network(
+                                    state.list[index].mainImage,
+                                    fit: BoxFit.cover,
+                                    width: 145.w,
+                                    height: 117.h,
+                                  ),
+                                ),
+                                onTap: () {
+                                  navigateTo(
+                                    ProductDetails(
+                                      id: state.list[index].id,
                                     ),
-                                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(11)
+                                  );
+                                },
+                              ),
+                              Align(
+                                alignment: AlignmentDirectional.topEnd,
+                                child: Container(
+                                  margin: EdgeInsets.only(
+                                    top: 9.h,
+                                    left: 12.w
+                                  ),
+                                  width: 54.w,
+                                  height: 20.h,
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).primaryColor,
+                                    borderRadius: BorderRadius.only(
+                                      bottomRight: Radius.circular(25.r),
+                                      topLeft: Radius.circular(11.r),
                                     ),
                                   ),
-                                  onTap: () {
-                                    navigateTo(
-                                      ProductDetails(
-                                        id: state.list[index].id,
-                                      ),
-                                    );
-                                  },
-                                ),
-                                Align(
-                                  alignment: AlignmentDirectional.topEnd,
-                                  child: Container(
-                                    width: 54,
-                                    height: 20,
-                                    decoration: BoxDecoration(
-                                      color: Theme.of(context).primaryColor,
-                                      borderRadius: const BorderRadius.only(
-                                        bottomRight: Radius.circular(25),
-                                        topLeft: Radius.circular(11),
-                                      ),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        "${state.list[index].discount * 100} %",
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold,
-                                          color: Color(
-                                            0xffFFFFFF,
-                                          ),
+                                  child: Center(
+                                    child: Text(
+                                      "${state.list[index].discount * 100} %",
+                                      style: TextStyle(
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.bold,
+                                        color: const Color(
+                                          0xffFFFFFF,
                                         ),
                                       ),
                                     ),
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(
-                              right: 10,
+                            padding: EdgeInsets.only(
+                              right: 10.w,
                             ),
                             child: Align(
                               alignment: Alignment.topRight,
                               child: Text(
                                 state.list[index].title,
                                 style: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 16.sp,
                                   fontWeight: FontWeight.bold,
                                   color: Theme.of(context).primaryColor,
                                 ),
                               ),
                             ),
                           ),
-                          const SizedBox(
-                            height: 4,
+                          SizedBox(
+                            height: 4.h,
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(
-                              right: 10,
+                            padding: EdgeInsets.only(
+                              right: 11.w,
                             ),
                             child: Align(
                               alignment: Alignment.topRight,
                               child: Text(
                                 state.list[index].unit.name,
                                 style: TextStyle(
-                                  fontSize: 12,
-                                  color: Color(0xFF808080),
+                                  fontSize: 12.sp,
+                                  color: const Color(0xFF808080),
                                 ),
                               ),
                             ),
                           ),
-                          const SizedBox(
-                            height: 3,
+                          SizedBox(
+                            height: 3.h,
                           ),
                           Padding(
-                            padding: EdgeInsets.zero,
+                            padding: EdgeInsets.only(
+                              right: 9.w
+                            ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -309,14 +245,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                       child: Text(
                                         "${state.list[index].price} ر.س",
                                         style: TextStyle(
-                                          fontSize: 16,
+                                          fontSize: 16.sp,
                                           fontWeight: FontWeight.bold,
                                           color: Theme.of(context).primaryColor,
                                         ),
                                       ),
                                     ),
                                     SizedBox(
-                                      width: 3,
+                                      width: 3.w,
                                     ),
                                     Align(
                                       alignment: Alignment.bottomRight,
@@ -324,7 +260,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         "${state.list[index].priceBeforeDiscount} ر.س",
                                         textAlign: TextAlign.justify,
                                         style: TextStyle(
-                                          fontSize: 13,
+                                          fontSize: 13.sp,
                                           color: Theme.of(context).primaryColor,
                                           decoration:
                                               TextDecoration.lineThrough,
@@ -336,12 +272,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Align(
                                   alignment: Alignment.centerLeft,
                                   child: Container(
-                                    margin: EdgeInsets.only(left: 12),
-                                    width: 30,
-                                    height: 30,
+                                    margin: EdgeInsets.only(left: 10.w),
+                                    width: 30.w,
+                                    height: 30.h,
                                     decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(6),
-                                      color: Color(0xff61B80C,),
+                                      borderRadius: BorderRadius.circular(6.r),
+                                      color: const Color(
+                                        0xff61B80C,
+                                      ),
                                     ),
                                     child: IconButton(
                                       padding: EdgeInsets.zero,
@@ -352,10 +290,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                           ),
                                         );
                                       },
-                                      icon: const Icon(
+                                      icon: Icon(
                                         Icons.add_rounded,
-                                        color: Color(0xFFFFFFFF),
-                                        size: 16,
+                                        color: const Color(0xFFFFFFFF),
+                                        size: 16.w.h,
                                       ),
                                     ),
                                   ),
@@ -363,24 +301,26 @@ class _HomeScreenState extends State<HomeScreen> {
                               ],
                             ),
                           ),
-                          const SizedBox(
-                            height: 19,
+                          SizedBox(
+                            height: 19.h,
                           ),
                           Align(
                             alignment: Alignment.center,
                             child: Padding(
-                              padding: const EdgeInsets.only(
-                                left: 24,
-                                right: 24,
-                                bottom: 10,
+                              padding: EdgeInsets.only(
+                                left: 24.w,
+                                right: 24.w,
+                                bottom: 10.h,
                               ),
                               child: AppButton(
-                                onTap: (){},
+                                onTap: () {},
                                 text: "أضف للسلة",
-                                width: double.infinity,
-                                height: 30,
-                                radius: 9,
-                                backColor: Color(0xff61B80C,),
+                                width: 115.w,
+                                height: 30.h,
+                                radius: 9.r,
+                                backColor: const Color(
+                                  0xff61B80C,
+                                ),
                               ),
                             ),
                           ),
@@ -388,19 +328,17 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
+                    SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
-                      crossAxisSpacing: 11,
-                      mainAxisSpacing: 11,
-                      childAspectRatio: 0.55,
+                      crossAxisSpacing: 11.w,
+                      mainAxisSpacing: 11.h,
+                      childAspectRatio: 0.62,
                     ),
                     shrinkWrap: true,
                   );
                 } else {
-                  return Center(
-                    child: CircularProgressIndicator(
-                      color: Theme.of(context).primaryColor,
-                    ),
+                  return const Center(
+                    child: CircularProgressIndicator(),
                   );
                 }
               },
@@ -419,23 +357,23 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
-        height: 60,
-        padding: EdgeInsets.symmetric(horizontal: 16),
+        height: 60.h,
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: Row(
           children: [
             SvgPicture.asset(
               "assets/images/logo/logo1.svg",
-              width: 21,
-              height: 21,
+              width: 21.w,
+              height: 21.h,
               fit: BoxFit.scaleDown,
             ),
             SizedBox(
-              width: 3,
+              width: 3.w,
             ),
             Text(
               "سلة ثمار",
               style: TextStyle(
-                fontSize: 14,
+                fontSize: 14.sp,
                 color: Theme.of(context).primaryColor,
                 fontWeight: FontWeight.bold,
               ),
@@ -446,18 +384,18 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
                 TextSpan(
                   text: "التوصيل إلى",
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: 12.sp,
                     color: Theme.of(context).primaryColor,
                     fontWeight: FontWeight.w900,
                   ),
                   children: [
-                    TextSpan(
+                    const TextSpan(
                       text: "\n",
                     ),
                     TextSpan(
                       text: "شارع الملك فهد - جدة",
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.w400,
                       ),
                     ),
@@ -468,35 +406,34 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
             Badge(
               alignment: AlignmentDirectional.topStart,
               padding: EdgeInsets.symmetric(
-                horizontal: 4,
-                vertical: 2,
+                horizontal: 4.w,
+                vertical: 2.h,
               ),
               label: Text(
                 "3",
                 style: TextStyle(
-                  fontSize: 6,
+                  fontSize: 6.sp,
                   fontWeight: FontWeight.bold,
-                  color: Color(
+                  color: const Color(
                     0xffFFFFFF,
                   ),
                 ),
               ),
               backgroundColor: Theme.of(context).primaryColor,
               child: GestureDetector(
-                onTap: ()
-                {
+                onTap: () {
                   navigateTo(
                     Cart(),
                   );
                 },
                 child: Container(
-                  height: 33,
-                  width: 33,
-                  padding: EdgeInsets.all(7),
+                  height: 33.h,
+                  width: 33.w,
+                  padding: EdgeInsets.all(7.w.h),
                   decoration: BoxDecoration(
                     color: Theme.of(context).primaryColor.withOpacity(.13),
                     borderRadius: BorderRadius.circular(
-                      9,
+                      9.r,
                     ),
                   ),
                   child: SvgPicture.asset("assets/images/icons/cart.svg"),
@@ -510,7 +447,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(60);
+  Size get preferredSize => Size.fromHeight(60.h);
 }
 
 class SectionsSlider extends StatefulWidget {
@@ -526,28 +463,26 @@ class _SectionsSliderState extends State<SectionsSlider> {
     CategoryCubit cubit = BlocProvider.of(context);
     cubit.getCategories();
     return SizedBox(
-      height: 130,
-      width: double.infinity,
+      height: 103.h,
+      width: 375.w,
       child: BlocBuilder(
         bloc: cubit,
         builder: (context, state) {
           if (state is CategoryFailedState) {
-            return Center(
+            return const Center(
               child: Text("Failed"),
             );
           } else if (state is CategorySuccessState) {
             var model = state.list;
             return ListView.builder(
-              padding: EdgeInsetsDirectional.symmetric(
-                horizontal: 16
-              ),
+              padding: EdgeInsetsDirectional.symmetric(horizontal: 16.w),
               scrollDirection: Axis.horizontal,
               itemCount: model.length,
               itemBuilder: (context, index) => GestureDetector(
                 onTap: () {
                   navigateTo(
                     CategoryProducts(
-                      nameCategory: "${model[index].name}",
+                      nameCategory: model[index].name,
                       id: model[index].id,
                     ),
                   );
@@ -555,25 +490,33 @@ class _SectionsSliderState extends State<SectionsSlider> {
                 child: Column(
                   children: [
                     Container(
-                      child: Image.network(
-                        model[index].media,
-                        width: 73,
-                        height: 73,
-                      ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(
-                          15,
+                          30.r,
                         ),
                       ),
                       clipBehavior: Clip.antiAliasWithSaveLayer,
+                      child: Container(
+                        clipBehavior: Clip.antiAlias,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(
+                            12.r
+                          ),
+                        ),
+                        child: Image.network(
+                          model[index].media,
+                          width: 73.w,
+                          height: 73.h,
+                        ),
+                      ),
                     ),
                     SizedBox(
-                      height: .7,
+                      height: .7.h,
                     ),
                     Text(
                       model[index].name,
                       style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 20.sp,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -582,14 +525,90 @@ class _SectionsSliderState extends State<SectionsSlider> {
               ),
             );
           } else {
-            return Center(
-              child: CircularProgressIndicator(
-                color: Theme.of(context).primaryColor,
-              ),
+            return const Center(
+              child: CircularProgressIndicator(),
             );
           }
         },
       ),
+    );
+  }
+}
+
+class SliderImages extends StatefulWidget {
+  const SliderImages({super.key});
+
+  @override
+  State<SliderImages> createState() => _SliderImagesState();
+}
+
+class _SliderImagesState extends State<SliderImages> {
+
+  int currentIndex = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    GetSliderImagesCubit cubit = BlocProvider.of(context);
+    cubit.getSliderImages();
+    return BlocBuilder(
+      bloc: cubit,
+      builder: (context, state) {
+        if (state is GetSliderImagesLoadingState) {
+          return Center(
+            child: CircularProgressIndicator(
+              color: Theme.of(context).primaryColor,
+            ),
+          );
+        } else if (state is GetSliderImagesSuccessState) {
+          return Column(
+            children: [
+              CarouselSlider(
+                items: List.generate(
+                  state.list.length,
+                  (index) => Image.network(
+                    state.list[index].media,
+                    height: 164.h,
+                    width: double.infinity,
+                    fit: BoxFit.fill,
+                  ),
+                ),
+                options: CarouselOptions(
+                  height: 164.h,
+                  autoPlay: true,
+                  viewportFraction: 1,
+                  onPageChanged: (index, reason) {
+                    currentIndex = index;
+                  },
+                ),
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(
+                  state.list.length,
+                  (index) => Padding(
+                    padding: EdgeInsetsDirectional.only(
+                      end: 3.w,
+                    ),
+                    child: CircleAvatar(
+                      radius: currentIndex == index ? 4 : 2,
+                      backgroundColor: currentIndex == index
+                          ? Theme.of(context).primaryColor
+                          : const Color(0xff707070),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        } else {
+          return const Center(
+            child: Text("فشل فى ايجاد الصور"),
+          );
+        }
+      },
     );
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:thimar_app/core/design/app_button.dart';
+import 'package:thimar_app/core/design/app_input.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
 import 'package:thimar_app/views/main/home/cart/finish_order.dart';
 
@@ -13,28 +15,28 @@ class Cart extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "السلة",
         ),
         leading: Padding(
-          padding: const EdgeInsets.all(10),
+          padding: EdgeInsets.all(10.w.h),
           child: GestureDetector(
             child: Container(
-              width: 32,
-              height: 32,
+              width: 32.w,
+              height: 32.h,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(9),
-                color: Color(
+                borderRadius: BorderRadius.circular(9.r),
+                color: const Color(
                   0xff707070,
                 ).withOpacity(0.1),
               ),
               child: Padding(
-                padding: const EdgeInsets.only(
-                  right: 7,
+                padding: EdgeInsets.only(
+                  right: 7.w,
                 ),
                 child: Icon(
                   Icons.arrow_back_ios,
-                  size: 16,
+                  size: 16.w.h,
                   color: Theme.of(context).primaryColor,
                 ),
               ),
@@ -47,108 +49,76 @@ class Cart extends StatelessWidget {
       ),
       body: SafeArea(
         child: ListView(
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          padding: EdgeInsets.symmetric(
+            horizontal: 16.w,
+            vertical: 16.h,
+          ),
           children: [
             ListView.separated(
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) => _Item(),
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) => const _Item(),
               itemCount: 4,
               separatorBuilder: (context, index) => SizedBox(
-                height: 10,
-              ),
-            ),
-            SizedBox(height: 12,),
-            TextFormField(
-              controller: couponController,
-              keyboardType: TextInputType.text,
-              decoration: InputDecoration(
-                hintText: "عندك كوبون ؟ ادخل رقم الكوبون",
-                hintStyle: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w300,
-                  color: Color(
-                    0xffB9C9A8,
-                  ),
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(
-                    15,
-                  ),
-                  borderSide: BorderSide(
-                    color: Color(
-                      0xffffffff,
-                    ),
-                  ),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(
-                    15,
-                  ),
-                  borderSide: BorderSide(
-                    color: Color(
-                      0xffffffff,
-                    ),
-                  ),
-                ),
-                suffixIcon: GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    width: 79,
-                    height: 39,
-                    margin: EdgeInsets.only(
-                      left: 8,
-                      top: 8,
-                      bottom: 8,
-                    ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(
-                        10,
-                      ),
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    child: Center(
-                      child: Text(
-                        "تطبيق",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                          color: Color(
-                            0xffffffff,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                height: 10.h,
               ),
             ),
             SizedBox(
-              height: 10,
+              height: 12.h,
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: 255.w,
+                        child: AppInput(
+                          controller: couponController,
+                          labelText: "عندك كوبون ؟ ادخل رقم الكوبون",
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                AppButton(
+                  onTap: () {},
+                  text: "تطبيق",
+                  width: 79.w,
+                  height: 39.h,
+                  radius: 10.r,
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 10.h,
             ),
             Center(
               child: Text(
                 "جميع الأسعار تشمل قيمة الضريبة المضافة 15 %",
                 style: TextStyle(
-                  fontSize: 15,
+                  fontSize: 15.sp,
                   fontWeight: FontWeight.w400,
                   color: Theme.of(context).primaryColor,
                 ),
               ),
             ),
             SizedBox(
-              height: 14,
+              height: 14.h,
             ),
             Container(
-              width: 342,
-              height: 111,
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 9),
+              width: 343.w,
+              height: 111.h,
+              padding: EdgeInsets.symmetric(
+                horizontal: 16.w,
+                vertical: 9.h,
+              ),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(
-                  13,
+                  13.r,
                 ),
-                color: Color(
+                color: const Color(
                   0xffF3F8EE,
                 ),
               ),
@@ -160,7 +130,7 @@ class Cart extends StatelessWidget {
                       Text(
                         "إجمالي المنتجات",
                         style: TextStyle(
-                          fontSize: 15,
+                          fontSize: 15.sp,
                           fontWeight: FontWeight.w400,
                           color: Theme.of(context).primaryColor,
                         ),
@@ -168,7 +138,7 @@ class Cart extends StatelessWidget {
                       Text(
                         "180 ر.س",
                         style: TextStyle(
-                          fontSize: 15,
+                          fontSize: 15.sp,
                           fontWeight: FontWeight.w400,
                           color: Theme.of(context).primaryColor,
                         ),
@@ -176,7 +146,7 @@ class Cart extends StatelessWidget {
                     ],
                   ),
                   SizedBox(
-                    height: 11,
+                    height: 11.h,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -184,7 +154,7 @@ class Cart extends StatelessWidget {
                       Text(
                         "الخصم",
                         style: TextStyle(
-                          fontSize: 15,
+                          fontSize: 15.sp,
                           fontWeight: FontWeight.w400,
                           color: Theme.of(context).primaryColor,
                         ),
@@ -192,21 +162,21 @@ class Cart extends StatelessWidget {
                       Text(
                         "-40 ر.س",
                         style: TextStyle(
-                          fontSize: 15,
+                          fontSize: 15.sp,
                           fontWeight: FontWeight.w400,
                           color: Theme.of(context).primaryColor,
                         ),
                       ),
                     ],
                   ),
-                  Divider(),
+                  const Divider(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         "المجموع",
                         style: TextStyle(
-                          fontSize: 15,
+                          fontSize: 15.sp,
                           fontWeight: FontWeight.w400,
                           color: Theme.of(context).primaryColor,
                         ),
@@ -214,7 +184,7 @@ class Cart extends StatelessWidget {
                       Text(
                         "140 ر.س",
                         style: TextStyle(
-                          fontSize: 15,
+                          fontSize: 15.sp,
                           fontWeight: FontWeight.w400,
                           color: Theme.of(context).primaryColor,
                         ),
@@ -225,7 +195,7 @@ class Cart extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 11,
+              height: 11.h,
             ),
             AppButton(
               onTap: () {
@@ -234,9 +204,9 @@ class Cart extends StatelessWidget {
                 );
               },
               text: "الانتقال لإتمام الطلب",
-              height: 60,
-              width: 343,
-              radius: 15,
+              height: 60.h,
+              width: 343.w,
+              radius: 15.r,
             ),
           ],
         ),
@@ -251,22 +221,25 @@ class _Item extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 342,
-      height: 94,
+      width: 342.w,
+      height: 94.h,
       padding: EdgeInsets.only(
-        right: 6,
-        left: 16,
+        right: 6.w,
+        left: 16.w,
       ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(
-          15,
+          15.r,
         ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.02),
-            blurRadius: 17,
+            blurRadius: 17.r,
             blurStyle: BlurStyle.outer,
-            offset: Offset(0, 6),
+            offset: Offset(
+              0.w,
+              6.h,
+            ),
           )
         ],
       ),
@@ -276,13 +249,21 @@ class _Item extends StatelessWidget {
           Expanded(
             child: Row(
               children: [
-                Image.network(
-                  "https://thimar.amr.aait-d.com/public/dashboardAssets/images/backgrounds/avatar.jpg",
-                  width: 92,
-                  height: 78,
+                Container(
+                  clipBehavior: Clip.antiAlias,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(
+                      25.r,
+                    ),
+                  ),
+                  child: Image.network(
+                    "https://avatars.mds.yandex.net/i?id=02ddd2a087c23724f02d8b1fc6e388aa0e74c0d0-10933813-images-thumbs&n=13",
+                    width: 92.w,
+                    height: 78.h,
+                  ),
                 ),
                 SizedBox(
-                  width: 9,
+                  width: 9.w,
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -291,31 +272,31 @@ class _Item extends StatelessWidget {
                     Text(
                       "طماطم",
                       style: TextStyle(
-                        fontSize: 15,
+                        fontSize: 15.sp,
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).primaryColor,
                       ),
                     ),
                     SizedBox(
-                      height: 6,
+                      height: 6.h,
                     ),
                     Text(
                       "45 ر.س",
                       style: TextStyle(
-                        fontSize: 13,
+                        fontSize: 13.sp,
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).primaryColor,
                       ),
                     ),
                     SizedBox(
-                      height: 6,
+                      height: 6.h,
                     ),
                     Container(
-                      width: 72,
-                      height: 27,
+                      width: 72.w,
+                      height: 27.h,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(7),
-                        color: Color(
+                        borderRadius: BorderRadius.circular(7.r),
+                        color: const Color(
                           0xff707070,
                         ).withOpacity(
                           0.2,
@@ -324,63 +305,63 @@ class _Item extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Container(
+                          SizedBox(
+                            width: 23.w,
+                            height: 23.h,
                             child: FloatingActionButton(
                               onPressed: () {},
-                              child: Icon(
-                                Icons.add,
-                                color: Theme.of(context).primaryColor,
-                                size: 16,
-                              ),
                               mini: true,
-                              backgroundColor: Color(0xffFFFFFF),
+                              backgroundColor: const Color(0xffFFFFFF),
                               elevation: 0.0,
                               shape: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(
-                                  7,
+                                  7.r,
                                 ),
                                 borderSide: BorderSide(
-                                  color: Color(
+                                  color: const Color(
                                     0xff707070,
                                   ).withOpacity(0.1),
                                 ),
                               ),
+                              child: Icon(
+                                Icons.add,
+                                color: Theme.of(context).primaryColor,
+                                size: 16.w.h,
+                              ),
                             ),
-                            width: 23,
-                            height: 23,
                           ),
                           Text(
                             "5",
                             style: TextStyle(
-                              fontSize: 15,
+                              fontSize: 15.sp,
                               fontWeight: FontWeight.w400,
                               color: Theme.of(context).primaryColor,
                             ),
                           ),
-                          Container(
+                          SizedBox(
+                            width: 23.w,
+                            height: 23.h,
                             child: FloatingActionButton(
                               onPressed: () {},
-                              child: Icon(
-                                Icons.remove,
-                                color: Theme.of(context).primaryColor,
-                                size: 16,
-                              ),
                               mini: true,
-                              backgroundColor: Color(0xffFFFFFF),
+                              backgroundColor: const Color(0xffFFFFFF),
                               elevation: 0.0,
                               shape: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(
-                                  7,
+                                  7.r,
                                 ),
                                 borderSide: BorderSide(
-                                  color: Color(
+                                  color: const Color(
                                     0xff707070,
                                   ).withOpacity(0.1),
                                 ),
                               ),
+                              child: Icon(
+                                Icons.remove,
+                                color: Theme.of(context).primaryColor,
+                                size: 16.w.h,
+                              ),
                             ),
-                            width: 23,
-                            height: 23,
                           ),
                         ],
                       ),
@@ -392,8 +373,8 @@ class _Item extends StatelessWidget {
           ),
           SvgPicture.asset(
             "assets/images/delete.svg",
-            width: 27,
-            height: 27,
+            width: 27.w,
+            height: 27.h,
             fit: BoxFit.scaleDown,
           ),
         ],

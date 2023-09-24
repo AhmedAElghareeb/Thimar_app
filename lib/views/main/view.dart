@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:thimar_app/views/main/account/view/view.dart';
 import 'package:thimar_app/views/main/favourites/view.dart';
@@ -7,7 +8,7 @@ import 'package:thimar_app/views/main/notifications/view.dart';
 import 'package:thimar_app/views/main/order/view.dart';
 
 class HomeView extends StatefulWidget {
-  HomeView({super.key});
+  const HomeView({super.key});
 
   @override
   State<HomeView> createState() => _HomeViewState();
@@ -50,7 +51,7 @@ class _HomeViewState extends State<HomeView> {
           (index) => BottomNavigationBarItem(
             icon: SvgPicture.asset(
               "assets/images/icons/homeNavBarIcons/${icons[index]}.svg",
-              color: currentIndex == index ? Colors.white : Color(0xFFB9C9A8),
+              color: currentIndex == index ? Colors.white : const Color(0xFFB9C9A8),
             ),
             label: titles[index],
           ),
@@ -67,9 +68,9 @@ class _HomeViewState extends State<HomeView> {
         },
         selectedItemColor: Colors.white,
         unselectedItemColor: const Color(0xFFB9C9A8),
-        selectedLabelStyle: const TextStyle(
+        selectedLabelStyle: TextStyle(
           fontWeight: FontWeight.bold,
-          fontSize: 12,
+          fontSize: 12.sp,
         ),
       ),
     );

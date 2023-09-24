@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:thimar_app/core/design/app_button.dart';
 import 'package:thimar_app/core/design/app_input.dart';
@@ -9,7 +10,7 @@ import 'package:thimar_app/views/auth/login.dart';
 import 'package:thimar_app/views/auth/verify_code.dart';
 
 class ForgetPassword extends StatefulWidget {
-  ForgetPassword({super.key, required this.phone});
+  const ForgetPassword({super.key, required this.phone});
 
   final String phone;
 
@@ -64,17 +65,17 @@ class _ForgetPasswordState extends State<ForgetPassword> {
             backgroundColor: Colors.transparent,
             body: SafeArea(
               child: ListView(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 20,
+                padding: EdgeInsets.symmetric(
+                  horizontal: 16.w,
+                  vertical: 20.h,
                 ),
                 children: [
-                  AuthHeader(
+                  const AuthHeader(
                     text1: "نسيت كلمة المرور",
                     text2: "أدخل رقم الجوال المرتبط بحسابك",
                   ),
-                  const SizedBox(
-                    height: 28,
+                  SizedBox(
+                    height: 28.h,
                   ),
                   Form(
                     key: _formKey,
@@ -92,8 +93,8 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                       keyboardType: TextInputType.phone,
                     ),
                   ),
-                  const SizedBox(
-                    height: 24,
+                  SizedBox(
+                    height: 24.h,
                   ),
                   isLoading
                       ? Center(
@@ -108,12 +109,12 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                             }
                           },
                           text: "تأكيد رقم الجوال",
-                    radius: 15,
-                    width: 343,
-                    height: 60,
+                    radius: 15.r,
+                    width: 343.w,
+                    height: 60.h,
                         ),
-                  const SizedBox(
-                    height: 45,
+                  SizedBox(
+                    height: 45.h,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -122,21 +123,21 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                         "لديك حساب بالفعل ؟",
                         style: TextStyle(
                           color: Theme.of(context).primaryColor,
-                          fontSize: 15,
+                          fontSize: 15.sp,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       TextButton(
                         onPressed: () {
                           navigateTo(
-                            LoginScreen(),
+                            const LoginScreen(),
                           );
                         },
                         child: Text(
                           "تسجيل الدخول",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 18,
+                            fontSize: 18.sp,
                             color: Theme.of(context).primaryColor,
                           ),
                         ),

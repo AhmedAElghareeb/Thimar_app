@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:thimar_app/core/design/app_button.dart';
+import 'package:thimar_app/core/design/app_input.dart';
 
 class AddAddress extends StatefulWidget {
   const AddAddress({super.key});
@@ -16,120 +18,108 @@ class _AddAddressState extends State<AddAddress> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 28,
+      appBar: AppBar(
+        title: const Text(
+          "إضافة عنوان",
+        ),
+        leading: Padding(
+          padding: EdgeInsets.all(
+            10.w.h,
+          ),
+          child: GestureDetector(
+            child: Container(
+              width: 32.w,
+              height: 32.h,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(9.r),
+                color: const Color(
+                  0xff707070,
+                ).withOpacity(0.1),
+              ),
+              child: Padding(
+                padding: EdgeInsets.only(
+                  right: 7.w,
                 ),
-                child: Row(
-                  children: [
-                    GestureDetector(
-                      child: Container(
-                        width: 32,
-                        height: 32,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(9),
-                          color: Color(
-                            0xff707070,
-                          ).withOpacity(0.1),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            right: 7,
-                          ),
-                          child: Icon(
-                            Icons.arrow_back_ios,
-                            size: 16,
-                            color: Theme.of(context).primaryColor,
-                          ),
-                        ),
-                      ),
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                    SizedBox(
-                      width: 85,
-                    ),
-                    Text(
-                      "إضافة عنوان",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                    ),
-                  ],
+                child: Icon(
+                  Icons.arrow_back_ios,
+                  size: 16.w.h,
+                  color: Theme.of(context).primaryColor,
                 ),
               ),
-              Container(
-                child: Stack(
+            ),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+        ),
+      ),
+      body: SafeArea(
+        child: ListView(
+          children: [
+            Column(
+              children: [
+                Stack(
                   children: [
                     Image.network(
-                      "https://avatars.mds.yandex.net/get-images-cbir/58850/6uoKV1t_su-MpnNUMnTUmA6265/ocr",
-                      width: 375,
-                      height: 550,
+                      "https://avatars.mds.yandex.net/get-images-cbir/113991/6uoKV1t_su-MpnNUMnTUmA6813/ocr",
+                      width: 375.w,
+                      height: 550.h,
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(
-                        left: 110,
-                        top: 87,
-                        right: 215,
+                      padding: EdgeInsets.only(
+                        left: 110.w,
+                        top: 75.h,
+                        right: 215.w,
                       ),
                       child: Image.network(
                         "https://www.360-ticketing.com/img/pin1.png",
-                        width: 29,
-                        height: 46,
+                        width: 29.w,
+                        height: 46.h,
                         fit: BoxFit.scaleDown,
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(
-                        top: 285,
-                        right: 5,
+                      padding: EdgeInsets.only(
+                        top: 206.h,
                       ),
                       child: Container(
-                        width: 350,
-                        height: 350,
-                        margin: EdgeInsets.symmetric(horizontal: 16,),
-                        padding: EdgeInsets.symmetric(horizontal: 16,),
+                        width: 350.w,
+                        height: 505.h,
+                        margin: EdgeInsets.symmetric(horizontal: 16.w,),
+                        padding: EdgeInsets.symmetric(horizontal: 16.w,),
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(13),
-                          color: Color(
+                          borderRadius: BorderRadius.circular(13.r),
+                          color: const Color(
                             0xffFFFFFF,
                           ),
                         ),
                         child: Column(
                           children: [
                             Padding(
-                              padding: const EdgeInsets.only(
-                                top: 10,
+                              padding: EdgeInsets.only(
+                                top: 10.h,
                               ),
                               child: Container(
-                                width: 300,
-                                height: 55,
+                                width: 342.w,
+                                height: 52.h,
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(13),
-                                  color: Color(
+                                  borderRadius: BorderRadius.circular(13.r),
+                                  color: const Color(
                                     0xffFFFFFF,
                                   ),
                                   boxShadow: [
                                     BoxShadow(
-                                      blurRadius: 0.1,
-                                      color: Color(
+                                      blurRadius: 0.1.r,
+                                      color: const Color(
                                         0xffeeeeee,
                                       ),
                                     ),
                                   ],
                                 ),
                                 child: Padding(
-                                  padding: const EdgeInsets.only(
-                                    right: 12,
-                                    left: 10,
+                                  padding: EdgeInsets.only(
+                                    right: 12.w,
+                                    left: 10.w,
                                   ),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -137,21 +127,21 @@ class _AddAddressState extends State<AddAddress> {
                                       Text(
                                         "نوع العنوان",
                                         style: TextStyle(
-                                          fontSize: 15,
+                                          fontSize: 15.sp,
                                           fontWeight: FontWeight.w300,
-                                          color: Color(
+                                          color: const Color(
                                             0xff8B8B8B,
                                           ),
                                         ),
                                       ),
                                       SizedBox(
-                                        width: 50,
+                                        width: 50.w,
                                       ),
                                       Container(
-                                        width: 72,
-                                        height: 36,
+                                        width: 72.w,
+                                        height: 36.h,
                                         decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(11),
+                                          borderRadius: BorderRadius.circular(11.r),
                                           color: Theme.of(context).primaryColor,
                                         ),
                                         child: Center(
@@ -159,8 +149,8 @@ class _AddAddressState extends State<AddAddress> {
                                             "المنزل",
                                             style: TextStyle(
                                               fontWeight: FontWeight.w300,
-                                              fontSize: 15,
-                                              color: Color(
+                                              fontSize: 15.sp,
+                                              color: const Color(
                                                 0xffFFFFFF,
                                               ),
                                             ),
@@ -168,20 +158,20 @@ class _AddAddressState extends State<AddAddress> {
                                         ),
                                       ),
                                       SizedBox(
-                                        width: 3,
+                                        width: 3.w,
                                       ),
                                       Container(
-                                        width: 72,
-                                        height: 36,
+                                        width: 72.w,
+                                        height: 36.h,
                                         decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(11),
-                                          color: Color(
+                                          borderRadius: BorderRadius.circular(11.r),
+                                          color: const Color(
                                             0xffffffff,
                                           ),
                                           boxShadow: [
                                             BoxShadow(
-                                              blurRadius: 0.2,
-                                              color: Color(
+                                              blurRadius: 0.2.r,
+                                              color: const Color(
                                                 0xff9b9b9b,
                                               ),
                                             ),
@@ -192,8 +182,8 @@ class _AddAddressState extends State<AddAddress> {
                                             "العمل",
                                             style: TextStyle(
                                               fontWeight: FontWeight.w300,
-                                              fontSize: 15,
-                                              color: Color(
+                                              fontSize: 15.sp,
+                                              color: const Color(
                                                 0xff8B8B8B,
                                               ),
                                             ),
@@ -205,72 +195,26 @@ class _AddAddressState extends State<AddAddress> {
                                 ),
                               ),
                             ),
-                            SizedBox(height: 14,),
-                            TextFormField(
+                            SizedBox(height: 14.h,),
+                            AppInput(
                               controller: phoneNumber,
                               keyboardType: TextInputType.phone,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(13),
-                                  borderSide: const BorderSide(
-                                    color: Color(
-                                      0xff8B8B8B,
-                                    ),
-                                  ),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(13),
-                                  borderSide: const BorderSide(
-                                    color: Color(
-                                      0xffDCDCDC,
-                                    ),
-                                  ),
-                                ),
-                                hintText: "أدخل رقم الجوال",
-                                hintStyle: const TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w300,
-                                  color: Color(0xFF8B8B8B),
-                                ),
-                              ),
+                              labelText: "أدخل رقم الجوال",
                             ),
-                            SizedBox(height: 14,),
-                            TextFormField(
+                            SizedBox(height: 14.h,),
+                            AppInput(
                               controller: discribtion,
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(13),
-                                  borderSide: const BorderSide(
-                                    color: Color(
-                                      0xff8B8B8B,
-                                    ),
-                                  ),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(13),
-                                  borderSide: const BorderSide(
-                                    color: Color(
-                                      0xffDCDCDC,
-                                    ),
-                                  ),
-                                ),
-                                hintText: "الوصف",
-                                hintStyle: const TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w300,
-                                  color: Color(0xFF8B8B8B),
-                                ),
-                              ),
-                              minLines: 2,
-                              maxLines: 5,
+                              labelText: "الوصف",
                             ),
                             SizedBox(
-                              height: 49,
+                              height: 49.h,
                             ),
                             AppButton(
                               onTap: () {},
                               text: "إضافة العنوان",
+                              width: 342.w,
+                              height: 60.h,
+                              radius: 15.r,
                             ),
                           ],
                         ),
@@ -278,9 +222,9 @@ class _AddAddressState extends State<AddAddress> {
                     ),
                   ],
                 ),
-              ),
-            ],
-          ),
+              ],
+            ),
+          ],
         ),
       ),
     );

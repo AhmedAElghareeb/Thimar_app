@@ -1,8 +1,9 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:thimar_app/features/get_cities/cubit.dart';
+import 'package:thimar_app/features/get_cities/states.dart';
 import 'package:thimar_app/models/cities.dart';
-
-
 
 class CitiesSheets extends StatefulWidget {
   const CitiesSheets({super.key});
@@ -13,61 +14,63 @@ class CitiesSheets extends StatefulWidget {
 
 class _CitiesSheetsState extends State<CitiesSheets> {
   @override
-  void initState() {
-    super.initState();
-    getData();
-  }
-
-  bool isLoading = true;
-
-  late GetCitiesData model;
-
-  void getData() async {
-    final response = await Dio().get(
-      "https://thimar.amr.aait-d.com/public/api/cities/1",
-    );
-    model = GetCitiesData.fromJson(
-      response.data,
-    );
-    isLoading = false;
-    setState(() {});
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: Column(
-        children: [
-          SizedBox(
-            height: 16,
-          ),
-          Text(
-            "اختر مدينتك",
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w700,
-              color: Theme.of(context).primaryColor,
+    return BlocProvider(
+      create: (context) => GetCitiesCubit()..getData(),
+      child: Container(
+        color: Colors.white,
+        child: Column(
+          children: [
+            SizedBox(
+              height: 16.h,
             ),
-          ),
-          isLoading
-              ? Expanded(
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                )
-              : Expanded(
-                  child: ListView.builder(
-                    padding: EdgeInsets.all(
-                      16,
+            Text(
+              "اختر مدينتك",
+              style: TextStyle(
+                fontSize: 18.sp,
+                fontWeight: FontWeight.w700,
+                color: Theme.of(context).primaryColor,
+              ),
+            ),
+            BlocBuilder(
+              builder: (context, state) {
+                if (state is GetCitiesLoadingState) {
+                  return Expanded(
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: Theme.of(context).primaryColor,
+                      ),
                     ),
-                    itemBuilder: (context, index) => _ItemCity(
-                      model: model.list[index],
+                  );
+                } else if (state is GetCitiesSuccessState) {
+                  return Expanded(
+                    child: ListView.builder(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 16.w,
+                        vertical: 16.h,
+                      ),
+                      itemBuilder: (context, index) => _ItemCity(
+                        model: state.list[index],
+                      ),
+                      itemCount: state.list.length,
                     ),
-                    itemCount: model.list.length,
-                  ),
-                ),
-        ],
+                  );
+                } else {
+                  return Center(
+                    child: Text(
+                      "فشل فى ايجاد المدن",
+                      style: TextStyle(
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                  );
+                }
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -76,7 +79,7 @@ class _CitiesSheetsState extends State<CitiesSheets> {
 class _ItemCity extends StatelessWidget {
   final CityModel model;
 
-  _ItemCity({required this.model});
+  const _ItemCity({required this.model});
 
   @override
   Widget build(BuildContext context) {
@@ -85,12 +88,15 @@ class _ItemCity extends StatelessWidget {
         Navigator.pop(context, model);
       },
       child: Container(
-        padding: EdgeInsets.all(8),
+        padding: EdgeInsets.symmetric(
+          horizontal: 8.w,
+          vertical: 8.h,
+        ),
         margin: EdgeInsets.only(
-          bottom: 10,
+          bottom: 10.h,
         ),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(7),
+          borderRadius: BorderRadius.circular(7.r),
           color: Theme.of(context).primaryColor.withOpacity(
                 0.04,
               ),

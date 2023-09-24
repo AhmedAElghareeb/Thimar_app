@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:thimar_app/core/design/app_button.dart';
 import 'package:thimar_app/core/design/app_input.dart';
@@ -8,7 +9,7 @@ import 'package:thimar_app/core/logic/helper_methods.dart';
 import 'package:thimar_app/views/auth/login.dart';
 
 class CreateNewPassword extends StatefulWidget {
-  CreateNewPassword({super.key, required this.phone, required this.pinCode});
+  const CreateNewPassword({super.key, required this.phone, required this.pinCode});
 
   final String phone;
   final String pinCode;
@@ -45,7 +46,7 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
         typ: MessageType.success,
       );
       navigateTo(
-        LoginScreen(),
+        const LoginScreen(),
       );
     } else {
       showSnackBar(
@@ -76,17 +77,17 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
               child: Form(
                 key: _formKey,
                 child: ListView(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 20,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.w,
+                    vertical: 20.h,
                   ),
                   children: [
-                    AuthHeader(
+                    const AuthHeader(
                       text1: "نسيت كلمة المرور",
                       text2: "أدخل كلمة المرور الجديدة",
                     ),
-                    const SizedBox(
-                      height: 17,
+                    SizedBox(
+                      height: 17.h,
                     ),
                     AppInput(
                       obscureText: true,
@@ -103,8 +104,8 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
                       isPassword: true,
                       maxLines: 1,
                     ),
-                    const SizedBox(
-                      height: 16,
+                    SizedBox(
+                      height: 16.h,
                     ),
                     AppInput(
                       obscureText: true,
@@ -124,8 +125,8 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
                       isPassword: true,
                       maxLines: 1,
                     ),
-                    const SizedBox(
-                      height: 25,
+                    SizedBox(
+                      height: 25.h,
                     ),
                     AppButton(
                       onTap: () {
@@ -134,12 +135,12 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
                         }
                       },
                       text: "تأكيد كلمة المرور",
-                      radius: 15,
-                      width: 343,
-                      height: 60,
+                      radius: 15.r,
+                      width: 343.w,
+                      height: 60.h,
                     ),
-                    const SizedBox(
-                      height: 45,
+                    SizedBox(
+                      height: 45.h,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -148,21 +149,21 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
                           "لديك حساب بالفعل ؟",
                           style: TextStyle(
                             color: Theme.of(context).primaryColor,
-                            fontSize: 15,
+                            fontSize: 15.sp,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         TextButton(
                           onPressed: () {
                             navigateTo(
-                              LoginScreen(),
+                              const LoginScreen(),
                             );
                           },
                           child: Text(
                             "تسجيل الدخول",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 18,
+                              fontSize: 18.sp,
                               color: Theme.of(context).primaryColor,
                             ),
                           ),

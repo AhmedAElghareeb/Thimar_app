@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:thimar_app/features/products_details/cubit.dart';
 import 'package:thimar_app/features/products_details/states.dart';
@@ -8,7 +9,7 @@ import 'package:thimar_app/features/products_details/states.dart';
 class ProductDetails extends StatefulWidget {
   final int id;
 
-  ProductDetails({super.key, required this.id});
+  const ProductDetails({super.key, required this.id});
 
   @override
   State<ProductDetails> createState() => _ProductDetailsState();
@@ -24,12 +25,12 @@ class _ProductDetailsState extends State<ProductDetails> {
       id: widget.id,
     );
     return Scaffold(
-      appBar: MainAppBar(),
+      appBar: const MainAppBar(),
       body: BlocBuilder(
         bloc: cubit,
         builder: (context, state) {
           if (state is ShowProductsDetailsFailedState) {
-            return Center(
+            return const Center(
               child: Text("FAILED!!!!!"),
             );
           } else if (state is ShowProductsDetailsSuccessState) {
@@ -45,15 +46,15 @@ class _ProductDetailsState extends State<ProductDetails> {
                             clipBehavior: Clip.antiAliasWithSaveLayer,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(35),
-                                bottomRight: Radius.circular(35),
+                                bottomLeft: Radius.circular(40.r),
+                                bottomRight: Radius.circular(40.r),
                               ),
                             ),
                             child: Image.network(
                               state.model.images.isNotEmpty
                                   ? state.model.images[index].url
                                   : state.model.mainImage,
-                              height: 200,
+                              height: 200.h,
                               width: double.infinity,
                               fit: BoxFit.fill,
                             ),
@@ -69,7 +70,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                         ),
                       ),
                       SizedBox(
-                        height: 5,
+                        height: 5.h,
                       ),
                       if (state.model.images.length > 1)
                         Row(
@@ -77,14 +78,14 @@ class _ProductDetailsState extends State<ProductDetails> {
                           children: List.generate(
                             state.model.images.length,
                             (index) => Padding(
-                              padding: const EdgeInsetsDirectional.only(
-                                end: 3,
+                              padding: EdgeInsetsDirectional.only(
+                                end: 3.w,
                               ),
                               child: CircleAvatar(
                                 radius: currentIndex == index ? 4 : 2,
                                 backgroundColor: currentIndex == index
                                     ? Theme.of(context).primaryColor
-                                    : Color(0xff707070),
+                                    : const Color(0xff707070),
                               ),
                             ),
                           ),
@@ -93,8 +94,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.w
                   ),
                   child: Row(
                     children: [
@@ -105,20 +106,20 @@ class _ProductDetailsState extends State<ProductDetails> {
                             Text(
                               state.model.title,
                               style: TextStyle(
-                                fontSize: 22,
+                                fontSize: 22.sp,
                                 fontWeight: FontWeight.bold,
                                 color: Theme.of(context).primaryColor,
                               ),
                             ),
                             SizedBox(
-                              height: 4,
+                              height: 4.h,
                             ),
                             Text(
                               state.model.unit.name,
                               style: TextStyle(
-                                fontSize: 19,
+                                fontSize: 19.sp,
                                 fontWeight: FontWeight.w300,
-                                color: Color(
+                                color: const Color(
                                   0xff9C9C9C,
                                 ),
                               ),
@@ -134,32 +135,32 @@ class _ProductDetailsState extends State<ProductDetails> {
                               Text(
                                 "${state.model.discount * 100} %",
                                 style: TextStyle(
-                                  fontSize: 13,
+                                  fontSize: 13.sp,
                                   fontWeight: FontWeight.w300,
-                                  color: Color(
+                                  color: const Color(
                                     0xffFF0000,
                                   ),
                                 ),
                               ),
                               SizedBox(
-                                width: 8,
+                                width: 8.w,
                               ),
                               Text(
                                 "${state.model.price} ر.س",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 17,
+                                  fontSize: 17.sp,
                                   color: Theme.of(context).primaryColor,
                                 ),
                               ),
                               SizedBox(
-                                width: 3,
+                                width: 3.w,
                               ),
                               Text(
                                 "${state.model.priceBeforeDiscount} ر.س",
                                 style: TextStyle(
                                   fontWeight: FontWeight.w300,
-                                  fontSize: 14,
+                                  fontSize: 14.sp,
                                   color: Theme.of(context).primaryColor,
                                   decoration: TextDecoration.lineThrough,
                                 ),
@@ -167,17 +168,17 @@ class _ProductDetailsState extends State<ProductDetails> {
                             ],
                           ),
                           SizedBox(
-                            height: 9,
+                            height: 9.h,
                           ),
                           Container(
-                            width: 109,
-                            height: 35,
+                            width: 109.w,
+                            height: 35.h,
                             padding: EdgeInsets.symmetric(
-                              horizontal: 5
+                              horizontal: 5.w
                             ),
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Color(
+                              borderRadius: BorderRadius.circular(10.r),
+                              color: const Color(
                                 0xff707070,
                               ).withOpacity(
                                 0.2,
@@ -191,13 +192,13 @@ class _ProductDetailsState extends State<ProductDetails> {
                                   icon: Icon(
                                     Icons.add,
                                     color: Theme.of(context).primaryColor,
-                                    size: 16,
+                                    size: 16.w.h,
                                   ),
                                 ),
                                 Text(
                                   "5",
                                   style: TextStyle(
-                                    fontSize: 15,
+                                    fontSize: 15.sp,
                                     fontWeight: FontWeight.w400,
                                     color: Theme.of(context).primaryColor,
                                   ),
@@ -207,7 +208,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                   icon: Icon(
                                     Icons.remove,
                                     color: Theme.of(context).primaryColor,
-                                    size: 16,
+                                    size: 16.w.h,
                                   ),
                                 ),
                               ],
@@ -219,39 +220,39 @@ class _ProductDetailsState extends State<ProductDetails> {
                   ),
                 ),
                 SizedBox(
-                  height: 12.5,
+                  height: 12.5.h,
                 ),
-                Divider(
+                const Divider(
                   color: Color(
                     0xffF9F9F9,
                   ),
                 ),
                 SizedBox(
-                  height: 14.5,
+                  height: 14.5.h,
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.w
                   ),
                   child: Row(
                     children: [
                       Text(
                         "كود المنتج",
                         style: TextStyle(
-                          fontSize: 17,
+                          fontSize: 17.sp,
                           fontWeight: FontWeight.bold,
                           color: Theme.of(context).primaryColor,
                         ),
                       ),
                       SizedBox(
-                        width: 14,
+                        width: 14.w,
                       ),
                       Text(
                         state.model.code,
                         style: TextStyle(
-                          fontSize: 19,
+                          fontSize: 19.sp,
                           fontWeight: FontWeight.w300,
-                          color: Color(
+                          color: const Color(
                             0xff808080,
                           ),
                         ),
@@ -260,16 +261,16 @@ class _ProductDetailsState extends State<ProductDetails> {
                   ),
                 ),
                 SizedBox(
-                  height: 18.5,
+                  height: 18.5.h,
                 ),
-                Divider(
+                const Divider(
                   color: Color(
                     0xffF9F9F9,
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.w,
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -277,20 +278,20 @@ class _ProductDetailsState extends State<ProductDetails> {
                       Text(
                         "تفاصيل المنتج",
                         style: TextStyle(
-                          fontSize: 17,
+                          fontSize: 17.sp,
                           fontWeight: FontWeight.bold,
                           color: Theme.of(context).primaryColor,
                         ),
                       ),
                       SizedBox(
-                        height: 12,
+                        height: 12.h,
                       ),
                       Text(
                         state.model.description,
                         style: TextStyle(
-                          fontSize: 14,
+                          fontSize: 14.sp,
                           fontWeight: FontWeight.w300,
-                          color: Color(
+                          color: const Color(
                             0xff757575,
                           ).withOpacity(
                             0.7,
@@ -298,7 +299,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                         ),
                       ),
                       SizedBox(
-                        height: 16,
+                        height: 16.h,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -306,7 +307,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                           Text(
                             "التقييمات",
                             style: TextStyle(
-                              fontSize: 17,
+                              fontSize: 17.sp,
                               fontWeight: FontWeight.bold,
                               color: Theme.of(context).primaryColor,
                             ),
@@ -317,7 +318,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                               "عرض الكل",
                               style: TextStyle(
                                 fontWeight: FontWeight.w300,
-                                fontSize: 15,
+                                fontSize: 15.sp,
                                 color: Theme.of(context).primaryColor,
                               ),
                             ),
@@ -325,25 +326,25 @@ class _ProductDetailsState extends State<ProductDetails> {
                         ],
                       ),
                       SizedBox(
-                        height: 12,
+                        height: 12.h,
                       ),
                       SizedBox(
                         width: double.infinity,
-                        height: 87,
+                        height: 87.h,
                         child: ListView(
                           scrollDirection: Axis.horizontal,
                           children: List.generate(
                             3,
                             (index) => Container(
                               padding: EdgeInsets.only(
-                                right: 13,
-                                top: 6,
+                                right: 13.w,
+                                top: 6.h,
                               ),
-                              width: 267,
-                              height: 87,
+                              width: 267.w,
+                              height: 87.h,
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: Color(
+                                borderRadius: BorderRadius.circular(20.r),
+                                color: const Color(
                                   0xff707070,
                                 ).withOpacity(0.008),
                               ),
@@ -356,57 +357,57 @@ class _ProductDetailsState extends State<ProductDetails> {
                                           Text(
                                             "محمد علي",
                                             style: TextStyle(
-                                              fontSize: 16,
+                                              fontSize: 16.sp,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
                                           SizedBox(
-                                            width: 7,
+                                            width: 7.w,
                                           ),
                                           Icon(
                                             Icons.star,
-                                            color: Color(
+                                            color: const Color(
                                               0xffFF9529,
                                             ),
-                                            size: 18,
+                                            size: 18.w.h,
                                           ),
                                           Icon(
                                             Icons.star,
-                                            color: Color(
+                                            color: const Color(
                                               0xffFF9529,
                                             ),
-                                            size: 18,
+                                            size: 18.w.h,
                                           ),
                                           Icon(
                                             Icons.star,
-                                            color: Color(
+                                            color: const Color(
                                               0xffFF9529,
                                             ),
-                                            size: 18,
+                                            size: 18.w.h,
                                           ),
                                           Icon(
                                             Icons.star,
-                                            color: Color(
+                                            color: const Color(
                                               0xffFF9529,
                                             ),
-                                            size: 18,
+                                            size: 18.w.h,
                                           ),
                                           Icon(
                                             Icons.star_border,
-                                            color: Color(
+                                            color: const Color(
                                               0xffD5D5D5,
                                             ),
-                                            size: 18,
+                                            size: 18.w.h,
                                           ),
                                         ],
                                       ),
                                       SizedBox(
-                                        height: 6,
+                                        height: 6.h,
                                       ),
                                       Text(
                                         "هذا النص هو مثال لنص يمكن أن \n يستبدل في نفس المساحة ، لقد تم \n توليد هذا النص من مولد النص \n العربى، حيث يمكنك أن تولد مثل هذا \n النص أو العديد من النصوص الأخرى \n إضافة إلى زيادة عدد الحروف التى \n يولدها التطبيق",
                                         style: TextStyle(
-                                          fontSize: 12,
+                                          fontSize: 12.sp,
                                           fontWeight: FontWeight.w400,
                                         ),
                                         maxLines: 3,
@@ -415,12 +416,13 @@ class _ProductDetailsState extends State<ProductDetails> {
                                     ],
                                   ),
                                   SizedBox(
-                                    width: 3,
+                                    width: 3.w,
                                   ),
                                   Image.network(
                                     "https://thimar.amr.aait-d.com/public/dashboardAssets/images/backgrounds/avatar.jpg",
-                                    width: 55,
-                                    height: 55,
+                                    width: 55.w,
+                                    height: 55.h,
+                                    fit: BoxFit.fill,
                                   ),
                                 ],
                               ),
@@ -429,38 +431,38 @@ class _ProductDetailsState extends State<ProductDetails> {
                         ),
                       ),
                       SizedBox(
-                        height: 16,
+                        height: 16.h,
                       ),
                       Text(
                         "منتجات مشابهة",
                         style: TextStyle(
-                          fontSize: 17,
+                          fontSize: 17.sp,
                           fontWeight: FontWeight.bold,
                           color: Theme.of(context).primaryColor,
                         ),
                       ),
                       SizedBox(
-                        height: 13,
+                        height: 13.h,
                       ),
                       SizedBox(
                         width: double.infinity,
-                        height: 172,
+                        height: 172.h,
                         child: ListView(
                           scrollDirection: Axis.horizontal,
                           children: List.generate(
                             state.model.images.length,
                             (index) => Container(
-                              height: 172,
-                              width: 130,
+                              height: 172.h,
+                              width: 130.w,
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(17),
-                                color: Color(
+                                borderRadius: BorderRadius.circular(17.r),
+                                color: const Color(
                                   0xffffffff,
                                 ),
                                 boxShadow: [
                                   BoxShadow(
-                                    blurRadius: 5,
-                                    color: Color(
+                                    blurRadius: 5.r,
+                                    color: const Color(
                                       0xfff5f5f5,
                                     ),
                                   ),
@@ -469,44 +471,43 @@ class _ProductDetailsState extends State<ProductDetails> {
                               child: Column(
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.only(
-                                      top: 9,
-                                      left: 9,
-                                      right: 9,
+                                    padding: EdgeInsets.only(
+                                      top: 9.h,
+                                      left: 9.w,
+                                      right: 9.w,
                                     ),
                                     child: Stack(
                                       children: [
                                         Image.network(
                                           state.model.mainImage,
-                                          width: 116,
-                                          height: 94,
+                                          width: 116.w,
+                                          height: 94.h,
                                         ),
                                         Align(
                                           alignment: AlignmentDirectional.topEnd,
                                           child: GestureDetector(
                                             onTap: () {},
                                             child: Container(
-                                              width: 43,
-                                              height: 16,
+                                              width: 43.w,
+                                              height: 16.h,
                                               margin: EdgeInsets.only(
-                                                left: 9,
+                                                left: 9.w,
                                               ),
                                               decoration: BoxDecoration(
                                                 color: Theme.of(context)
                                                     .primaryColor,
-                                                borderRadius:
-                                                    const BorderRadius.only(
+                                                borderRadius: BorderRadius.only(
                                                   bottomRight:
-                                                      Radius.circular(25),
+                                                      Radius.circular(25.r),
                                                 ),
                                               ),
                                               child: Center(
                                                 child: Text(
                                                   "${state.model.discount * 100} %",
                                                   style: TextStyle(
-                                                    fontSize: 11,
+                                                    fontSize: 11.sp,
                                                     fontWeight: FontWeight.bold,
-                                                    color: Color(
+                                                    color: const Color(
                                                       0xffFFFFFF,
                                                     ),
                                                   ),
@@ -518,60 +519,60 @@ class _ProductDetailsState extends State<ProductDetails> {
                                       ],
                                     ),
                                   ),
-                                  const SizedBox(
-                                    height: 2,
+                                  SizedBox(
+                                    height: 2.h,
                                   ),
                                   Align(
                                     alignment: Alignment.topRight,
                                     child: Padding(
-                                      padding: const EdgeInsets.only(
-                                        right: 9,
+                                      padding: EdgeInsets.only(
+                                        right: 9.w,
                                       ),
                                       child: Text(
                                         state.model.title,
                                         style: TextStyle(
-                                          fontSize: 13,
+                                          fontSize: 13.sp,
                                           fontWeight: FontWeight.bold,
                                           color: Theme.of(context).primaryColor,
                                         ),
                                       ),
                                     ),
                                   ),
-                                  const SizedBox(
-                                    height: 4,
+                                  SizedBox(
+                                    height: 4.h,
                                   ),
                                   Align(
                                     alignment: Alignment.topRight,
                                     child: Padding(
                                       padding: EdgeInsets.only(
-                                        right: 10,
+                                        right: 10.w,
                                       ),
                                       child: Text(
                                         state.model.unit.name,
                                         style: TextStyle(
-                                          fontSize: 10,
-                                          color: Color(
+                                          fontSize: 10.sp,
+                                          color: const Color(
                                             0xFF808080,
                                           ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                  const SizedBox(
-                                    height: 3,
+                                  SizedBox(
+                                    height: 3.h,
                                   ),
                                   Row(
                                     children: [
                                       Align(
                                         alignment: Alignment.topRight,
                                         child: Padding(
-                                          padding: const EdgeInsets.only(
-                                            right: 9,
+                                          padding: EdgeInsets.only(
+                                            right: 9.w,
                                           ),
                                           child: Text(
                                             "${state.model.price} ر.س",
                                             style: TextStyle(
-                                              fontSize: 13,
+                                              fontSize: 13.sp,
                                               fontWeight: FontWeight.bold,
                                               color:
                                                   Theme.of(context).primaryColor,
@@ -587,7 +588,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                             "${state.model.priceBeforeDiscount} ر.س",
                                             textAlign: TextAlign.justify,
                                             style: TextStyle(
-                                              fontSize: 10,
+                                              fontSize: 10.sp,
                                               color:
                                                   Theme.of(context).primaryColor,
                                               decoration:
@@ -599,26 +600,26 @@ class _ProductDetailsState extends State<ProductDetails> {
                                       Align(
                                         alignment: Alignment.topLeft,
                                         child: Padding(
-                                          padding: const EdgeInsets.only(
-                                            left: 10,
-                                            right: 13,
+                                          padding: EdgeInsets.only(
+                                            left: 10.w,
+                                            right: 13.w,
                                           ),
                                           child: Container(
-                                            width: 24,
-                                            height: 24,
+                                            width: 24.w,
+                                            height: 24.h,
                                             decoration: BoxDecoration(
                                               borderRadius: BorderRadius.circular(
-                                                6,
+                                                6.r,
                                               ),
-                                              color: Color(0xff61B80C,),
+                                              color: const Color(0xff61B80C,),
                                             ),
                                             child: IconButton(
                                               padding: EdgeInsets.zero,
                                               onPressed: () {},
-                                              icon: const Icon(
+                                              icon: Icon(
                                                 Icons.add_rounded,
-                                                color: Color(0xFFFFFFFF),
-                                                size: 13,
+                                                color: const Color(0xFFFFFFFF),
+                                                size: 13.w.h,
                                               ),
                                             ),
                                           ),
@@ -638,10 +639,8 @@ class _ProductDetailsState extends State<ProductDetails> {
               ],
             );
           } else {
-            return Center(
-              child: CircularProgressIndicator(
-                color: Theme.of(context).primaryColor,
-              ),
+            return const Center(
+              child: CircularProgressIndicator(),
             );
           }
         },
@@ -656,13 +655,13 @@ class _ProductDetailsState extends State<ProductDetails> {
                 children: [
                   Container(
                     margin: EdgeInsets.all(
-                      16,
+                      16.w.h,
                     ),
-                    width: 35,
-                    height: 32,
+                    width: 35.w,
+                    height: 32.h,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(
-                        10,
+                        10.r,
                       ),
                       color: Colors.grey.withOpacity(
                         0.5,
@@ -670,22 +669,22 @@ class _ProductDetailsState extends State<ProductDetails> {
                     ),
                     child: SvgPicture.asset(
                       "assets/images/icons/cart2.svg",
-                      width: 19,
-                      height: 20,
+                      width: 19.w,
+                      height: 20.h,
                       fit: BoxFit.scaleDown,
                     ),
                   ),
                   SizedBox(
-                    width: 10,
+                    width: 10.w,
                   ),
                   TextButton(
                     onPressed: () {},
                     child: Text(
                       "إضافة إلي السلة",
                       style: TextStyle(
-                        fontSize: 15,
+                        fontSize: 15.sp,
                         fontWeight: FontWeight.bold,
-                        color: Color(
+                        color: const Color(
                           0xffFFFFFF,
                         ),
                       ),
@@ -695,15 +694,15 @@ class _ProductDetailsState extends State<ProductDetails> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(
-                left: 20,
+              padding: EdgeInsets.only(
+                left: 20.w,
               ),
               child: Text(
                 "225 ر.س",
                 style: TextStyle(
-                  fontSize: 15,
+                  fontSize: 15.sp,
                   fontWeight: FontWeight.bold,
-                  color: Color(
+                  color: const Color(
                     0xffFFFFFF,
                   ),
                 ),
@@ -723,26 +722,26 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
-        height: 60,
-        margin: EdgeInsets.symmetric(horizontal: 16),
+        height: 60.h,
+        margin: EdgeInsets.symmetric(horizontal: 16.w),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             GestureDetector(
               child: Container(
-                width: 32,
-                height: 32,
+                width: 32.w,
+                height: 32.h,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(9),
+                  borderRadius: BorderRadius.circular(9.r),
                   color: Theme.of(context).primaryColor.withOpacity(0.13),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.only(
-                    right: 7,
+                  padding: EdgeInsets.only(
+                    right: 7.w,
                   ),
                   child: Icon(
                     Icons.arrow_back_ios,
-                    size: 16,
+                    size: 16.w.h,
                     color: Theme.of(context).primaryColor,
                   ),
                 ),
@@ -754,18 +753,18 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
             Text(
               "تفاصيل المنتج",
               style: TextStyle(
-                fontSize: 20,
+                fontSize: 20.sp,
                 fontWeight: FontWeight.bold,
                 color: Theme.of(context).primaryColor,
               ),
             ),
             Container(
-              height: 33,
-              width: 33,
+              height: 33.h,
+              width: 33.w,
               decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor.withOpacity(.13),
                 borderRadius: BorderRadius.circular(
-                  9,
+                  9.r,
                 ),
               ),
               child: IconButton(
@@ -773,7 +772,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
                 icon: Center(
                   child: Icon(
                     Icons.favorite_border,
-                    size: 22,
+                    size: 22.w.h,
                     color: Theme.of(context).primaryColor,
                   ),
                 ),
@@ -786,7 +785,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(60);
+  Size get preferredSize => Size.fromHeight(60.h);
 }
 
 class _FloatingActionButton extends StatelessWidget {
@@ -800,26 +799,26 @@ class _FloatingActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 29,
-      height: 29,
+    return SizedBox(
+      width: 29.w,
+      height: 29.h,
       child: FloatingActionButton(
         onPressed: onPress,
-        child: icon,
         mini: true,
         heroTag: null,
-        backgroundColor: Color(0xffFFFFFF),
+        backgroundColor: const Color(0xffFFFFFF),
         elevation: 0.0,
         shape: OutlineInputBorder(
           borderRadius: BorderRadius.circular(
-            8,
+            8.r,
           ),
           borderSide: BorderSide(
-            color: Color(
+            color: const Color(
               0xff707070,
             ).withOpacity(0.1),
           ),
         ),
+        child: icon,
       ),
     );
   }
