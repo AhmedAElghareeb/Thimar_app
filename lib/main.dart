@@ -6,17 +6,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:thimar_app/core/logic/cache_helper.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
-import 'package:thimar_app/features/category_cubit/cubit.dart';
-import 'package:thimar_app/features/category_products_cubit/cubit.dart';
-import 'package:thimar_app/features/faqs_cubit/cubit.dart';
-import 'package:thimar_app/features/login_cubit/cubit.dart';
+import 'package:thimar_app/features/category/cubit.dart';
+import 'package:thimar_app/features/category_products/cubit.dart';
+import 'package:thimar_app/features/get_faqs/cubit.dart';
+import 'package:thimar_app/features/login/cubit.dart';
 import 'package:thimar_app/features/policy/cubit.dart';
-import 'package:thimar_app/features/products_cubit/cubit.dart';
+import 'package:thimar_app/features/products/cubit.dart';
 import 'package:thimar_app/features/products_details/cubit.dart';
-import 'package:thimar_app/features/register_cubit/cubit.dart';
+import 'package:thimar_app/features/register/cubit.dart';
 import 'package:thimar_app/features/slider_images/cubit.dart';
 import 'package:thimar_app/views/auth/splash.dart';
 
+import 'features/about_us/cubit.dart';
+import 'features/terms_conditions/cubit.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -74,6 +76,12 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => GetPolicyCubit(),
+          ),
+          BlocProvider(
+            create: (context) => GetAboutUsCubit(),
+          ),
+          BlocProvider(
+            create: (context) => GetTermsCubit(),
           ),
         ],
         child: MaterialApp(

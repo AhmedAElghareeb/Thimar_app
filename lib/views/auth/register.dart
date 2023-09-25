@@ -6,8 +6,8 @@ import 'package:thimar_app/core/design/app_button.dart';
 import 'package:thimar_app/core/design/app_input.dart';
 import 'package:thimar_app/core/design/auth_header.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
-import 'package:thimar_app/features/register_cubit/cubit.dart';
-import 'package:thimar_app/features/register_cubit/states.dart';
+import 'package:thimar_app/features/register/cubit.dart';
+import 'package:thimar_app/features/register/states.dart';
 import 'package:thimar_app/views/auth/login.dart';
 import 'package:thimar_app/views/sheets/cities.dart';
 

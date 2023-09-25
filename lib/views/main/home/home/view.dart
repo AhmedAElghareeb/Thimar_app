@@ -6,10 +6,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:thimar_app/core/design/app_button.dart';
 import 'package:thimar_app/core/design/app_input.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
-import 'package:thimar_app/features/category_cubit/cubit.dart';
-import 'package:thimar_app/features/category_cubit/states.dart';
-import 'package:thimar_app/features/category_products_cubit/cubit.dart';
-import 'package:thimar_app/features/category_products_cubit/states.dart';
+import 'package:thimar_app/features/category/cubit.dart';
+import 'package:thimar_app/features/category/states.dart';
+import 'package:thimar_app/features/category_products/cubit.dart';
+import 'package:thimar_app/features/category_products/states.dart';
 import 'package:thimar_app/features/slider_images/cubit.dart';
 import 'package:thimar_app/features/slider_images/states.dart';
 import 'package:thimar_app/views/main/home/cart/view.dart';
@@ -543,9 +543,6 @@ class SliderImages extends StatefulWidget {
 }
 
 class _SliderImagesState extends State<SliderImages> {
-
-  int currentIndex = 0;
-
   @override
   Widget build(BuildContext context) {
     GetSliderImagesCubit cubit = BlocProvider.of(context);
@@ -577,7 +574,7 @@ class _SliderImagesState extends State<SliderImages> {
                   autoPlay: true,
                   viewportFraction: 1,
                   onPageChanged: (index, reason) {
-                    currentIndex = index;
+                    cubit.currentIndex = index;
                   },
                 ),
               ),
@@ -593,8 +590,8 @@ class _SliderImagesState extends State<SliderImages> {
                       end: 3.w,
                     ),
                     child: CircleAvatar(
-                      radius: currentIndex == index ? 4 : 2,
-                      backgroundColor: currentIndex == index
+                      radius: cubit.currentIndex == index ? 4 : 2,
+                      backgroundColor: cubit.currentIndex == index
                           ? Theme.of(context).primaryColor
                           : const Color(0xff707070),
                     ),

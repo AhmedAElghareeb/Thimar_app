@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:thimar_app/core/logic/dio_helper.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
-import 'package:thimar_app/features/register_cubit/states.dart';
+import 'package:thimar_app/features/register/states.dart';
 import 'package:thimar_app/models/cities.dart';
 import 'package:thimar_app/views/auth/verify_code.dart';
 

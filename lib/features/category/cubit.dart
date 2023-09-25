@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:thimar_app/core/logic/dio_helper.dart';
 import 'package:thimar_app/models/category_model.dart';
-import 'package:thimar_app/features/category_cubit/states.dart';
+import 'package:thimar_app/features/category/states.dart';
 
 class CategoryCubit extends Cubit<CategoryStates> {
   CategoryCubit() : super(CategoryStates());

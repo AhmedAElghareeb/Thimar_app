@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:thimar_app/features/faqs_cubit/cubit.dart';
-import 'package:thimar_app/features/faqs_cubit/states.dart';
+import 'package:thimar_app/features/get_faqs/cubit.dart';
+import 'package:thimar_app/features/get_faqs/states.dart';
 
 class Faqs extends StatefulWidget {
   const Faqs({super.key});

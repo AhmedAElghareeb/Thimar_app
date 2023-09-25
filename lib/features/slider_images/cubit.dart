@@ -6,6 +6,9 @@ import 'package:thimar_app/models/slider_model.dart';
 class GetSliderImagesCubit extends Cubit<GetSliderImagesStates> {
   GetSliderImagesCubit() : super(GetSliderImagesStates());
 
+
+  int? currentIndex;
+
   void getSliderImages() async {
     emit(
       GetSliderImagesLoadingState(),

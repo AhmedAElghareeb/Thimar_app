@@ -4,6 +4,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:thimar_app/core/design/app_button.dart';
 import 'package:thimar_app/core/design/app_input.dart';
 
+import '../../../core/logic/dio_helper.dart';
+import '../../../core/logic/helper_methods.dart';
+
 class ContactUs extends StatefulWidget {
   const ContactUs({super.key});
 
@@ -15,6 +18,9 @@ class _ContactUsState extends State<ContactUs> {
   final nameController = TextEditingController();
   final phoneNumberController = TextEditingController();
   final subjectController = TextEditingController();
+
+  final _formKey = GlobalKey<FormState>();
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -207,53 +213,101 @@ class _ContactUsState extends State<ContactUs> {
                 ),
                 Container(
                   width: 342.w,
-                  height: 313.h,
+                  height: 350.h,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15.r),
                   ),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        width: 311.w,
-                        height: 225.h,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            AppInput(
-                              controller: nameController,
-                              keyboardType: TextInputType.name,
-                              labelText: "الإسم",
-                            ),
-                            SizedBox(
-                              height: 10.h,
-                            ),
-                            AppInput(
-                              controller: phoneNumberController,
-                              keyboardType: TextInputType.phone,
-                              labelText: "رقم الموبايل",
-                            ),
-                            SizedBox(
-                              height: 10.h,
-                            ),
-                            AppInput(
-                              controller: subjectController,
-                              labelText: "الموضوع",
-                              minLines: 2,
-                            ),
-                          ],
+                  child: Form(
+                    key: _formKey,
+                    child: ListView(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 16.w,
+                      ),
+                      children: [
+                        SizedBox(
+                          width: 311.w,
+                          height: 325.h,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              AppInput(
+                                controller: nameController,
+                                keyboardType: TextInputType.name,
+                                labelText: "الإسم",
+                                validator: (value) {
+                                  if(value!.isEmpty){
+                                    return "هذا الحقل مطلوب";
+                                  }
+                                },
+                              ),
+                              SizedBox(
+                                height: 10.h,
+                              ),
+                              AppInput(
+                                controller: phoneNumberController,
+                                keyboardType: TextInputType.phone,
+                                labelText: "رقم الموبايل",
+                                validator: (value) {
+                                  if(value!.isEmpty){
+                                    return "هذا الحقل مطلوب";
+                                  }
+                                },
+                              ),
+                              SizedBox(
+                                height: 10.h,
+                              ),
+                              AppInput(
+                                controller: subjectController,
+                                labelText: "الموضوع",
+                                minLines: 4,
+                                validator: (value) {
+                                  if(value!.isEmpty){
+                                    return "هذا الحقل مطلوب";
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 17.h,
-                      ),
-                      AppButton(
-                        onTap: () {},
-                        text: "إرسال",
-                        width: 311.w,
-                        height: 60.h,
-                        radius: 15.r,
-                      ),
-                    ],
+                        SizedBox(
+                          height: 17.h,
+                        ),
+                        isLoading
+                            ? Center(
+                                child: CircularProgressIndicator(),
+                              )
+                            : AppButton(
+                                onTap: () async {
+                                  if (_formKey.currentState!.validate()) {
+                                    isLoading = true;
+                                    setState(() {});
+                                    final response =
+                                        await DioHelper().sendToServer(
+                                      url: "contact",
+                                      body: {
+                                        "fullname": nameController.text,
+                                        "phone": phoneNumberController.text,
+                                        "content": subjectController.text,
+                                      },
+                                    );
+                                    showSnackBar(
+                                      response.msg,
+                                      typ: MessageType.success,
+                                    );
+                                  }
+                                  nameController.clear();
+                                  phoneNumberController.clear();
+                                  subjectController.clear();
+                                  isLoading = false;
+                                  setState(() {});
+                                },
+                                text: "إرسال",
+                                width: 343.w,
+                                height: 60.h,
+                                radius: 15.r,
+                              ),
+                      ],
+                    ),
                   ),
                 ),
               ],

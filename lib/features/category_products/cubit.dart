@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:thimar_app/core/logic/dio_helper.dart';
 import 'package:thimar_app/models/category_products_model.dart';
-import 'package:thimar_app/features/category_products_cubit/states.dart';
+import 'package:thimar_app/features/category_products/states.dart';
 
 class CategoryProductsCubit extends Cubit<CategoryProductsStates> {
   CategoryProductsCubit() : super(CategoryProductsStates());

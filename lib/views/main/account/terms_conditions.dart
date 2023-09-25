@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:thimar_app/core/logic/dio_helper.dart';
+import 'package:thimar_app/features/terms_conditions/cubit.dart';
+import 'package:thimar_app/features/terms_conditions/states.dart';
 
 class TermsAndConditions extends StatefulWidget {
   const TermsAndConditions({super.key});
@@ -11,29 +13,13 @@ class TermsAndConditions extends StatefulWidget {
 }
 
 class _TermsAndConditionsState extends State<TermsAndConditions> {
-  void initState() {
-    super.initState();
-    getTermsData();
-  }
-
-  bool isLoading = true;
-  var data;
-
-  Future<void> getTermsData() async {
-    final response = await DioHelper().getFromServer(
-      url: "terms",
-    );
-    print(response.response!.data);
-    data = response.response!.data["data"]["terms"];
-    isLoading = false;
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
+    GetTermsCubit cubit = BlocProvider.of(context);
+    cubit.getTermsData();
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "الشروط والأحكام",
         ),
         leading: Padding(
@@ -44,7 +30,7 @@ class _TermsAndConditionsState extends State<TermsAndConditions> {
               height: 32.h,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(9.r),
-                color: Color(
+                color: const Color(
                   0xff707070,
                 ).withOpacity(0.1),
               ),
@@ -66,19 +52,23 @@ class _TermsAndConditionsState extends State<TermsAndConditions> {
         ),
       ),
       body: SafeArea(
-        child: ListView(
-          padding: EdgeInsets.symmetric(
-            vertical: 14.h,
-          ),
-          children: [
-            isLoading
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : Html(
-                    data: data,
-                  ),
-          ],
+        child: BlocBuilder(
+          bloc: cubit,
+          builder: (context, state) {
+            if (state is GetTermsLoadingState) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (state is GetTermsSuccessState) {
+              return Html(
+                data: cubit.data,
+              );
+            } else {
+              return const Center(
+                child: Text("FAILED"),
+              );
+            }
+          },
         ),
       ),
     );

@@ -88,31 +88,130 @@ class _EditProfileState extends State<EditProfile> {
                           ),
                           child: selectedImage != null
                               ? Image.file(
-                            selectedImage!,
-                            width: 85.w,
-                            height: 85.h,
-                            fit: BoxFit.fill,
-                          )
+                                  selectedImage!,
+                                  width: 85.w,
+                                  height: 85.h,
+                                  fit: BoxFit.fill,
+                                )
                               : Image.network(
-                            CacheHelper.getImage(),
-                            width: 85.w,
-                            height: 85.h,
-                            fit: BoxFit.fill,
-                          ),
+                                  CacheHelper.getImage(),
+                                  width: 85.w,
+                                  height: 85.h,
+                                  fit: BoxFit.fill,
+                                ),
                         ),
                         Center(
                           child: GestureDetector(
-                            onTap: () async {
-                              final image = await ImagePicker.platform.pickImage(
-                                source: ImageSource.camera,
-                                imageQuality: 35,
+                            onTap: () {
+                              showModalBottomSheet(
+                                context: context,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                    topRight: Radius.circular(
+                                      15.r,
+                                    ),
+                                    topLeft: Radius.circular(
+                                      15.r,
+                                    ),
+                                  ),
+                                ),
+                                builder: (context) => SizedBox(
+                                  height: 150.h,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      SizedBox(
+                                        height: 20.h,
+                                      ),
+                                      const Center(
+                                        child: Text(
+                                          "اختار الصورة من",
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 25.h,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          GestureDetector(
+                                            child: Container(
+                                              width: 100.w,
+                                              height: 30.h,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                  15.r,
+                                                ),
+                                              ),
+                                              child: Row(
+                                                children: const [
+                                                  Icon(
+                                                    Icons.camera_alt,
+                                                  ),
+                                                  Text(
+                                                    "الكاميرا",
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            onTap: () async {
+                                              final image = await ImagePicker
+                                                  .platform
+                                                  .pickImage(
+                                                source: ImageSource.camera,
+                                                imageQuality: 30,
+                                              );
+                                              if (image != null) {
+                                                selectedImage =
+                                                    File(image.path);
+                                                setState(() {});
+                                              }
+                                            },
+                                          ),
+                                          GestureDetector(
+                                            child: Container(
+                                              width: 120.w,
+                                              height: 30.h,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                  15.r,
+                                                ),
+                                              ),
+                                              child: Row(
+                                                children: const [
+                                                  Icon(
+                                                    Icons
+                                                        .photo_library_outlined,
+                                                  ),
+                                                  Text(
+                                                    "معرض الصور",
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            onTap: () async {
+                                              final image = await ImagePicker
+                                                  .platform
+                                                  .pickImage(
+                                                source: ImageSource.gallery,
+                                                imageQuality: 35,
+                                              );
+                                              if (image != null) {
+                                                selectedImage =
+                                                    File(image.path);
+                                                setState(() {});
+                                              }
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               );
-                              if (image != null) {
-                                selectedImage = File(image.path);
-                                setState(() {
-
-                                });
-                              }
                             },
                             child: SvgPicture.asset(
                               "assets/images/icons/accountIcons/camera.svg",
@@ -160,8 +259,7 @@ class _EditProfileState extends State<EditProfile> {
                   obscureText: true,
                   controller: passwordController,
                   labelText: "كلمة المرور",
-                  prefixIcon:
-                  "assets/images/icons/appInputIcons/lock.svg",
+                  prefixIcon: "assets/images/icons/appInputIcons/lock.svg",
                   keyboardType: TextInputType.visiblePassword,
                   isPassword: true,
                   maxLines: 1,

@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:thimar_app/core/design/app_input.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
-import 'package:thimar_app/features/products_cubit/cubit.dart';
-import 'package:thimar_app/features/products_cubit/states.dart';
+import 'package:thimar_app/features/products/cubit.dart';
+import 'package:thimar_app/features/products/states.dart';
 import 'package:thimar_app/views/main/home/product_details/view.dart';
 
 class CategoryProducts extends StatefulWidget {

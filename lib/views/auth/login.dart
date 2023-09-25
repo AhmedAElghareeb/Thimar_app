@@ -6,8 +6,8 @@ import 'package:thimar_app/core/design/app_button.dart';
 import 'package:thimar_app/core/design/app_input.dart';
 import 'package:thimar_app/core/design/auth_header.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
-import 'package:thimar_app/features/login_cubit/cubit.dart';
-import 'package:thimar_app/features/login_cubit/states.dart';
+import 'package:thimar_app/features/login/cubit.dart';
+import 'package:thimar_app/features/login/states.dart';
 import 'package:thimar_app/views/auth/forget_password.dart';
 import 'package:thimar_app/views/auth/register.dart';
 

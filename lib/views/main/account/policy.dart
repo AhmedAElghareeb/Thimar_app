@@ -60,15 +60,8 @@ class _PolicyViewState extends State<PolicyView> {
                 child: CircularProgressIndicator(),
               );
             } else if (state is GetPolicySuccessState) {
-              return ListView(
-                padding: EdgeInsets.symmetric(
-                  vertical: 30.h,
-                ),
-                children: [
-                  Html(
-                    data: cubit.data,
-                  ),
-                ],
+              return Html(
+                data: cubit.data,
               );
             } else {
               return const Center(

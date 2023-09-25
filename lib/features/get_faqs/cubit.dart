@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:thimar_app/core/logic/dio_helper.dart';
-import 'package:thimar_app/features/faqs_cubit/states.dart';
+import 'package:thimar_app/features/get_faqs/states.dart';
 
 import '../../models/faqs_model.dart';
 

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:thimar_app/core/logic/dio_helper.dart';
+import 'package:thimar_app/features/about_us/cubit.dart';
+import 'package:thimar_app/features/about_us/states.dart';
 
 class AboutUs extends StatefulWidget {
   const AboutUs({super.key});
@@ -13,26 +15,9 @@ class AboutUs extends StatefulWidget {
 
 class _AboutUsState extends State<AboutUs> {
   @override
-  void initState() {
-    super.initState();
-    getAboutData();
-  }
-
-  bool isLoading = true;
-  var data;
-
-  Future<void> getAboutData() async {
-    final response = await DioHelper().getFromServer(
-      url: "about",
-    );
-    print(response.response!.data);
-    data = response.response!.data["data"]["about"];
-    isLoading = false;
-    setState(() {});
-  }
-
-  @override
   Widget build(BuildContext context) {
+    GetAboutUsCubit cubit = BlocProvider.of(context);
+    cubit.getAboutData();
     return Scaffold(
       appBar: AppBar(
         title: const Text("عن التطبيق"),
@@ -66,27 +51,38 @@ class _AboutUsState extends State<AboutUs> {
         ),
       ),
       body: SafeArea(
-        child: ListView(
-          padding: EdgeInsets.symmetric(
-            vertical: 26.h,
-          ),
-          children: [
-            SvgPicture.asset(
-              "assets/images/logo/logo1.svg",
-              width: 160.w,
-              height: 157.h,
-            ),
-            SizedBox(
-              height: 25.h,
-            ),
-            isLoading
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : Html(
-                    data: data,
+        child: BlocBuilder(
+          bloc: cubit,
+          builder: (context, state) {
+            if (state is GetAboutUsLoadingState) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (state is GetAboutUsSuccessState) {
+              return ListView(
+                padding: EdgeInsets.symmetric(
+                  vertical: 26.h,
+                ),
+                children: [
+                  SvgPicture.asset(
+                    "assets/images/logo/logo1.svg",
+                    width: 160.w,
+                    height: 157.h,
                   ),
-          ],
+                  SizedBox(
+                    height: 25.h,
+                  ),
+                  Html(
+                    data: cubit.data,
+                  ),
+                ],
+              );
+            } else {
+              return const Center(
+                child: Text("FAILED"),
+              );
+            }
+          },
         ),
       ),
     );
