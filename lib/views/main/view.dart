@@ -18,11 +18,11 @@ class _HomeViewState extends State<HomeView> {
   int currentIndex = 0;
 
   List<Widget> pages = [
-    HomeScreen(),
-    OrdersScreen(),
-    NotificationsScreen(),
-    FavouritesScreen(),
-    AccountScreen(),
+    const HomeScreen(),
+    const OrdersScreen(),
+    const NotificationsScreen(),
+    const FavouritesScreen(),
+    const AccountScreen(),
   ];
 
   List<String> titles = [
@@ -63,8 +63,6 @@ class _HomeViewState extends State<HomeView> {
         onTap: (index) {
           currentIndex = index;
           setState(() {});
-          print(index);
-          print(currentIndex);
         },
         selectedItemColor: Colors.white,
         unselectedItemColor: const Color(0xFFB9C9A8),

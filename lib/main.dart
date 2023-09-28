@@ -8,6 +8,8 @@ import 'package:thimar_app/core/logic/cache_helper.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
 import 'package:thimar_app/features/category/cubit.dart';
 import 'package:thimar_app/features/category_products/cubit.dart';
+import 'package:thimar_app/features/confirm_code/cubit.dart';
+import 'package:thimar_app/features/get_cities/cubit.dart';
 import 'package:thimar_app/features/get_faqs/cubit.dart';
 import 'package:thimar_app/features/login/cubit.dart';
 import 'package:thimar_app/features/policy/cubit.dart';
@@ -16,8 +18,8 @@ import 'package:thimar_app/features/products_details/cubit.dart';
 import 'package:thimar_app/features/register/cubit.dart';
 import 'package:thimar_app/features/slider_images/cubit.dart';
 import 'package:thimar_app/views/auth/splash.dart';
-
 import 'features/about_us/cubit.dart';
+import 'features/suggestions_and_complaints/cubit.dart';
 import 'features/terms_conditions/cubit.dart';
 import 'firebase_options.dart';
 
@@ -57,6 +59,9 @@ class MyApp extends StatelessWidget {
             create: (context) => RegisterCubit(),
           ),
           BlocProvider(
+            create: (context) => GetCitiesCubit(),
+          ),
+          BlocProvider(
             create: (context) => CategoryCubit(),
           ),
           BlocProvider(
@@ -83,6 +88,12 @@ class MyApp extends StatelessWidget {
           BlocProvider(
             create: (context) => GetTermsCubit(),
           ),
+          BlocProvider(
+            create: (context) => GetSuggestionsCubit(),
+          ),
+          BlocProvider(
+            create: (context) => VerifyCodeCubit(),
+          ),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
@@ -92,6 +103,7 @@ class MyApp extends StatelessWidget {
               backgroundColor: const Color(
                 0xffFFFFFF,
               ),
+              centerTitle: true,
               elevation: 0.0,
               titleTextStyle: TextStyle(
                 fontSize: 20.sp,

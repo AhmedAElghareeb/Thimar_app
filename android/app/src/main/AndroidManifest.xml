@@ -1,9 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.thimar_app">
-    <uses-permission
-        android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission
-        android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="Thimar"
         android:name="${applicationName}"
@@ -37,6 +36,6 @@
             android:value="2" />
        <meta-data
            android:name="com.google.android.geo.API_KEY"
-           android:value="AIzaSyCc-oBxZ6p7IsdS_qdKfMXbjF5dClj3WL0" />
+           android:value="AIzaSyBx10ci4eMaIGUs9BEe4wPzs2dZuclIeD0" />
     </application>
 </manifest>

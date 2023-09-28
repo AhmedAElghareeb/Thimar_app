@@ -1,16 +1,4 @@
-class LoginModel {
-  late final Data data;
-  late final String status;
-  late final String message;
-
-  LoginModel.fromJson(Map<String, dynamic> json){
-    data = Data.fromJson(json['data']);
-    status = json['status'];
-    message = json['message'];
-  }
-}
-
-class Data {
+class UserModel {
   late final int id;
   late final String fullname;
   late final String phone;
@@ -24,7 +12,7 @@ class Data {
   late final int userCartCount;
   late final City city;
 
-  Data.fromJson(Map<String, dynamic> json){
+  UserModel.fromJson(Map<String, dynamic> json){
     id = json['id'];
     fullname = json['fullname'];
     phone = json['phone'];

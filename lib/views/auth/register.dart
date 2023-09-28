@@ -88,7 +88,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         height: 16.h,
                       ),
                       StatefulBuilder(
-                        builder: (context, setState) => GestureDetector(
+                        builder: (context, setState1) => GestureDetector(
                           onTap: () async {
                             var result = await showModalBottomSheet(
                               context: context,
@@ -96,7 +96,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             );
                             if (result != null) {
                               cubit.selectedCity = result;
-                              setState(() {});
+                              setState1(() {});
                             }
                           },
                           child: Row(
@@ -139,7 +139,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         height: 16.h,
                       ),
                       AppInput(
-                        obscureText: true,
                         controller: cubit.passwordController,
                         labelText: "كلمة المرور",
                         validator: (value) {
@@ -158,7 +157,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         height: 16.h,
                       ),
                       AppInput(
-                        obscureText: true,
                         controller: cubit.confirmPasswordController,
                         labelText: "تأكيد كلمة المرور",
                         validator: (value) {

@@ -38,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: ListView(
           children: [
             Padding(
-              padding:  EdgeInsets.symmetric(
+              padding: EdgeInsets.symmetric(
                 horizontal: 16.w,
                 vertical: 15.h,
               ),
@@ -51,32 +51,23 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             SizedBox(
-              height: 29.h,
+              height: 24.h,
             ),
             const SliderImages(),
+            SizedBox(
+              height: 29.h,
+            ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "الأقسام",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w900,
-                      fontSize: 15.sp
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {},
-                    child: Text(
-                      "عرض الكل",
-                      style: TextStyle(
-                        fontSize: 15.sp,
-                        fontWeight: FontWeight.w300
-                      ),
-                    ),
-                  ),
-                ],
+              padding: EdgeInsets.symmetric(
+                horizontal: 16.w,
+              ),
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Text(
+                  "الأقسام",
+                  style:
+                      TextStyle(fontWeight: FontWeight.w900, fontSize: 15.sp),
+                ),
               ),
             ),
             SizedBox(
@@ -92,10 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               child: Text(
                 "الأصناف",
-                style: TextStyle(
-                  fontWeight: FontWeight.w900,
-                  fontSize: 15.sp
-                ),
+                style: TextStyle(fontWeight: FontWeight.w900, fontSize: 15.sp),
               ),
             ),
             SizedBox(
@@ -106,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
               builder: (context, state) {
                 if (state is CategoryProductsFailedState) {
                   return const Center(
-                    child: Text("FAILED.."),
+                    child: Text("فشل فى الاتصال"),
                   );
                 } else if (state is CategoryProductsSuccessState) {
                   return GridView.builder(
@@ -139,14 +127,11 @@ class _HomeScreenState extends State<HomeScreen> {
                               GestureDetector(
                                 child: Container(
                                   margin: EdgeInsets.only(
-                                    top: 9.h,
-                                    right: 9.w,
-                                    left: 9.w
-                                  ),
+                                      top: 9.h, right: 9.w, left: 9.w),
                                   clipBehavior: Clip.antiAliasWithSaveLayer,
                                   decoration: BoxDecoration(
-                                      borderRadius:
-                                          BorderRadius.circular(11.r),),
+                                    borderRadius: BorderRadius.circular(11.r),
+                                  ),
                                   child: Image.network(
                                     state.list[index].mainImage,
                                     fit: BoxFit.cover,
@@ -165,10 +150,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               Align(
                                 alignment: AlignmentDirectional.topEnd,
                                 child: Container(
-                                  margin: EdgeInsets.only(
-                                    top: 9.h,
-                                    left: 12.w
-                                  ),
+                                  margin: EdgeInsets.only(top: 9.h, left: 12.5.w),
                                   width: 54.w,
                                   height: 20.h,
                                   decoration: BoxDecoration(
@@ -220,7 +202,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Align(
                               alignment: Alignment.topRight,
                               child: Text(
-                                state.list[index].unit.name,
+                                "السعر / ${state.list[index].unit.name}",
                                 style: TextStyle(
                                   fontSize: 12.sp,
                                   color: const Color(0xFF808080),
@@ -232,9 +214,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             height: 3.h,
                           ),
                           Padding(
-                            padding: EdgeInsets.only(
-                              right: 9.w
-                            ),
+                            padding: EdgeInsets.only(right: 9.w),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -269,35 +249,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ],
                                 ),
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Container(
-                                    margin: EdgeInsets.only(left: 10.w),
-                                    width: 30.w,
-                                    height: 30.h,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(6.r),
-                                      color: const Color(
-                                        0xff61B80C,
-                                      ),
-                                    ),
-                                    child: IconButton(
-                                      padding: EdgeInsets.zero,
-                                      onPressed: () {
-                                        navigateTo(
-                                          ProductDetails(
-                                            id: state.list[index].id,
-                                          ),
-                                        );
-                                      },
-                                      icon: Icon(
-                                        Icons.add_rounded,
-                                        color: const Color(0xFFFFFFFF),
-                                        size: 16.w.h,
-                                      ),
-                                    ),
-                                  ),
-                                ),
                               ],
                             ),
                           ),
@@ -314,11 +265,11 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               child: AppButton(
                                 onTap: () {},
-                                text: "أضف للسلة",
-                                width: 115.w,
+                                text: state.list[index].amount == 0 ? "تم نفاذ الكمية" : "أضف للسلة",
+                                width: 120.w,
                                 height: 30.h,
                                 radius: 9.r,
-                                backColor: const Color(
+                                backColor: state.list[index].amount == 0 ? Colors.grey : const Color(
                                   0xff61B80C,
                                 ),
                               ),
@@ -327,12 +278,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                     ),
-                    gridDelegate:
-                    SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
-                      crossAxisSpacing: 11.w,
-                      mainAxisSpacing: 11.h,
-                      childAspectRatio: 0.62,
+                      crossAxisSpacing: 10.w,
+                      mainAxisSpacing: 10.h,
+                      childAspectRatio: 0.652,
                     ),
                     shrinkWrap: true,
                   );
@@ -404,11 +354,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
             ),
             Badge(
-              alignment: AlignmentDirectional.topStart,
-              padding: EdgeInsets.symmetric(
-                horizontal: 4.w,
-                vertical: 2.h,
-              ),
+              alignment: AlignmentDirectional.topEnd,
               label: Text(
                 "3",
                 style: TextStyle(
@@ -429,7 +375,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
                 child: Container(
                   height: 33.h,
                   width: 33.w,
-                  padding: EdgeInsets.all(7.w.h),
+                  padding: EdgeInsets.all(7.r),
                   decoration: BoxDecoration(
                     color: Theme.of(context).primaryColor.withOpacity(.13),
                     borderRadius: BorderRadius.circular(
@@ -470,12 +416,14 @@ class _SectionsSliderState extends State<SectionsSlider> {
         builder: (context, state) {
           if (state is CategoryFailedState) {
             return const Center(
-              child: Text("Failed"),
+              child: Text("فشل فى الاتصال"),
             );
           } else if (state is CategorySuccessState) {
             var model = state.list;
             return ListView.builder(
-              padding: EdgeInsetsDirectional.symmetric(horizontal: 16.w),
+              padding: EdgeInsets.symmetric(
+                horizontal: 16.w,
+              ),
               scrollDirection: Axis.horizontal,
               itemCount: model.length,
               itemBuilder: (context, index) => GestureDetector(
@@ -499,9 +447,7 @@ class _SectionsSliderState extends State<SectionsSlider> {
                       child: Container(
                         clipBehavior: Clip.antiAlias,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(
-                            12.r
-                          ),
+                          borderRadius: BorderRadius.circular(15.r),
                         ),
                         child: Image.network(
                           model[index].media,
@@ -557,52 +503,70 @@ class _SliderImagesState extends State<SliderImages> {
             ),
           );
         } else if (state is GetSliderImagesSuccessState) {
-          return Column(
-            children: [
-              CarouselSlider(
-                items: List.generate(
-                  state.list.length,
-                  (index) => Image.network(
-                    state.list[index].media,
+          return StatefulBuilder(
+            builder: (context, setState2) => Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                CarouselSlider(
+                  items: List.generate(
+                    state.list.length,
+                    (index) => Image.network(
+                      state.list[index].media,
+                      height: 164.h,
+                      width: double.infinity,
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                  options: CarouselOptions(
                     height: 164.h,
-                    width: double.infinity,
-                    fit: BoxFit.fill,
+                    autoPlay: true,
+                    viewportFraction: 1,
+                    onPageChanged: (index, reason) {
+                      cubit.currentIndex = index;
+                      setState2(() {});
+                    },
                   ),
                 ),
-                options: CarouselOptions(
-                  height: 164.h,
-                  autoPlay: true,
-                  viewportFraction: 1,
-                  onPageChanged: (index, reason) {
-                    cubit.currentIndex = index;
-                  },
-                ),
-              ),
-              SizedBox(
-                height: 10.h,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(
-                  state.list.length,
-                  (index) => Padding(
-                    padding: EdgeInsetsDirectional.only(
-                      end: 3.w,
+                Container(
+                  width: 60.w,
+                  height: 20.h,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(
+                      7.r,
                     ),
-                    child: CircleAvatar(
-                      radius: cubit.currentIndex == index ? 4 : 2,
-                      backgroundColor: cubit.currentIndex == index
-                          ? Theme.of(context).primaryColor
-                          : const Color(0xff707070),
+                    color: Theme.of(context).primaryColor.withOpacity(
+                          0.8,
+                        ),
+                  ),
+                  margin: EdgeInsets.only(
+                    bottom: 5.h,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(
+                      state.list.length,
+                      (index) => Padding(
+                        padding: EdgeInsets.only(
+                          left: 6.w,
+                        ),
+                        child: CircleAvatar(
+                          radius: cubit.currentIndex == index ? 4 : 2,
+                          backgroundColor: cubit.currentIndex == index
+                              ? Theme.of(context).primaryColor
+                              : const Color(0xffFFFFFF).withOpacity(
+                                  0.8,
+                                ),
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           );
         } else {
           return const Center(
-            child: Text("فشل فى ايجاد الصور"),
+            child: Text("فشل فى الاتصال"),
           );
         }
       },

@@ -253,9 +253,8 @@ class _Item extends StatelessWidget {
                   Align(
                     alignment: AlignmentDirectional.topEnd,
                     child: Padding(
-                      padding: EdgeInsetsDirectional.only(
-                        end: 2.h,
-                        top: 1.h,
+                      padding: EdgeInsets.only(
+                        left: 12.w
                       ),
                       child: Container(
                         width: 54.w,
@@ -354,32 +353,6 @@ class _Item extends StatelessWidget {
                         fontSize: 13.sp,
                         color: Theme.of(context).primaryColor,
                         decoration: TextDecoration.lineThrough,
-                      ),
-                    ),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      left: 10.w,
-                      right: 27.w,
-                    ),
-                    child: Container(
-                      width: 30.w,
-                      height: 30.h,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4.r),
-                        color: Theme.of(context).primaryColor.withOpacity(0.8),
-                      ),
-                      child: IconButton(
-                        padding: EdgeInsets.zero,
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.add_rounded,
-                          color: const Color(0xFFFFFFFF),
-                          size: 16.w.h,
-                        ),
                       ),
                     ),
                   ),

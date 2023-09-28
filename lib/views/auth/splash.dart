@@ -25,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
         ), () async {
       if (CacheHelper.getToken()!=null) {
         navigateTo(
-          HomeView(),
+          const HomeView(),
         );
       } else {
         navigateTo(

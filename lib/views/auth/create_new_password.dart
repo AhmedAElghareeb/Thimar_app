@@ -90,7 +90,6 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
                       height: 17.h,
                     ),
                     AppInput(
-                      obscureText: true,
                       controller: passwordController,
                       labelText: "كلمة المرور",
                       validator: (value) {
@@ -108,7 +107,6 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
                       height: 16.h,
                     ),
                     AppInput(
-                      obscureText: true,
                       controller: confirmPasswordController,
                       labelText: "تأكيد كلمة المرور",
                       validator: (value) {

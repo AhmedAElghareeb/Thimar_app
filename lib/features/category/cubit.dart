@@ -14,12 +14,10 @@ void getCategories() async {
     url: "categories",
   );
   if (response.success) {
-    print("success",);
-    final list = CategoriesModel.fromJson(response.response!.data).data;
-    print("success1235",);
+    final list = CategoriesModel.fromJson(response.response!.data);
     emit(
       CategorySuccessState(
-        list: list,
+        list: list.data,
       ),
     );
   } else {

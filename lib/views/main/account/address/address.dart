@@ -72,7 +72,7 @@ class Address extends StatelessWidget {
                   text: "إضافة عنوان",
                   onTap: () {
                     navigateTo(
-                      const AddAddress(),
+                      AddAddress(),
                     );
                   },
                 ),

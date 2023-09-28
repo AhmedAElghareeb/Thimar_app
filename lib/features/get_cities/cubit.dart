@@ -14,9 +14,9 @@ class GetCitiesCubit extends Cubit<GetCitiesStates> {
       url: "cities/1",
     );
     if (response.success) {
-      final model = GetCitiesData.fromJson(response.response!.data);
+      final list = List.from(response.response!.data['data']??[]).map((e)=>CityModel.fromJson(e)).toList();
       emit(
-        GetCitiesSuccessState(list: model.list),
+        GetCitiesSuccessState(list: list),
       );
     } else {
       emit(

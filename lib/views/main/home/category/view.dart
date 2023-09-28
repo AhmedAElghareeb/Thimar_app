@@ -7,6 +7,8 @@ import 'package:thimar_app/features/products/cubit.dart';
 import 'package:thimar_app/features/products/states.dart';
 import 'package:thimar_app/views/main/home/product_details/view.dart';
 
+import '../../../../core/design/app_button.dart';
+
 class CategoryProducts extends StatefulWidget {
   final String nameCategory;
   final int id;
@@ -146,7 +148,7 @@ class _CategoryProductsState extends State<CategoryProducts> {
                                 child: Container(
                                   margin: EdgeInsets.only(
                                     top: 9.h,
-                                    left: 12.w
+                                    left: 12.5.w
                                   ),
                                   width: 54.w,
                                   height: 20.h,
@@ -199,7 +201,7 @@ class _CategoryProductsState extends State<CategoryProducts> {
                             child: Align(
                               alignment: Alignment.topRight,
                               child: Text(
-                                state.list[index].unit.name,
+                                "السعر / ${state.list[index].unit.name}",
                                 style: TextStyle(
                                   fontSize: 12.sp,
                                   color: const Color(0xFF808080),
@@ -246,32 +248,6 @@ class _CategoryProductsState extends State<CategoryProducts> {
                                   ],
                                 ),
                               ),
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Container(
-                                  margin: EdgeInsets.only(left: 10.w),
-                                  width: 30.w,
-                                  height: 30.h,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(6.r),
-                                    color: const Color(0xff61B80C,),
-                                  ),
-                                  child: IconButton(
-                                    onPressed: () {
-                                      navigateTo(
-                                        ProductDetails(
-                                          id: state.list[index].id,
-                                        ),
-                                      );
-                                    },
-                                    icon: Icon(
-                                      Icons.add_rounded,
-                                      color: const Color(0xFFFFFFFF),
-                                      size: 16.w.h,
-                                    ),
-                                  ),
-                                ),
-                              ),
                             ],
                           ),
                           SizedBox(
@@ -285,24 +261,14 @@ class _CategoryProductsState extends State<CategoryProducts> {
                                 right: 24.w,
                                 bottom: 10.h,
                               ),
-                              child: Container(
-                                width: 115.w,
+                              child: AppButton(
+                                onTap: () {},
+                                text: state.list[index].amount == 0 ? "تم نفاذ الكمية" : "أضف للسلة",
+                                width: 120.w,
                                 height: 30.h,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(7.r),
-                                  color: const Color(0xff61B80C,),
-                                ),
-                                child: MaterialButton(
-                                  onPressed: () {},
-                                  child: Text(
-                                    "أضف للسلة",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 12.sp,
-                                      color: const Color(0xFFFFFFFF),
-                                    ),
-                                  ),
+                                radius: 9.r,
+                                backColor: state.list[index].amount == 0 ? Colors.grey : const Color(
+                                  0xff61B80C,
                                 ),
                               ),
                             ),
@@ -315,7 +281,7 @@ class _CategoryProductsState extends State<CategoryProducts> {
                       crossAxisCount: 2,
                       crossAxisSpacing: 11.w,
                       mainAxisSpacing: 11.h,
-                      childAspectRatio: 0.62,
+                      childAspectRatio: 0.652,
                     ),
                     shrinkWrap: true,
                   );

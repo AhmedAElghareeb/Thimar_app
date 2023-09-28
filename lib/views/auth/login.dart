@@ -25,7 +25,8 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => LoginCubit(),
-      child: Builder(builder: (context) {
+      child: Builder(
+          builder: (context) {
         LoginCubit cubit = BlocProvider.of(context);
         return Container(
           color: Colors.white,
@@ -75,7 +76,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               height: 16.h,
                             ),
                             AppInput(
-                              obscureText: true,
                               controller: cubit.passwordController,
                               labelText: "كلمة المرور",
                               validator: (value) {

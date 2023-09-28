@@ -491,7 +491,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                               width: 43.w,
                                               height: 16.h,
                                               margin: EdgeInsets.only(
-                                                left: 9.w,
+                                                left: 11.w,
                                               ),
                                               decoration: BoxDecoration(
                                                 color: Theme.of(context)
@@ -593,34 +593,6 @@ class _ProductDetailsState extends State<ProductDetails> {
                                                   Theme.of(context).primaryColor,
                                               decoration:
                                                   TextDecoration.lineThrough,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Align(
-                                        alignment: Alignment.topLeft,
-                                        child: Padding(
-                                          padding: EdgeInsets.only(
-                                            left: 10.w,
-                                            right: 13.w,
-                                          ),
-                                          child: Container(
-                                            width: 24.w,
-                                            height: 24.h,
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(
-                                                6.r,
-                                              ),
-                                              color: const Color(0xff61B80C,),
-                                            ),
-                                            child: IconButton(
-                                              padding: EdgeInsets.zero,
-                                              onPressed: () {},
-                                              icon: Icon(
-                                                Icons.add_rounded,
-                                                color: const Color(0xFFFFFFFF),
-                                                size: 13.w.h,
-                                              ),
                                             ),
                                           ),
                                         ),

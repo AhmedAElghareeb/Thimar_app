@@ -17,60 +17,62 @@ class _CitiesSheetsState extends State<CitiesSheets> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => GetCitiesCubit()..getData(),
-      child: Container(
-        color: Colors.white,
-        child: Column(
-          children: [
-            SizedBox(
-              height: 16.h,
+      child: Builder(
+        builder: (context) {
+          return Container(
+            color: Colors.white,
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 16.h,
+                ),
+                Text(
+                  "اختر مدينتك",
+                  style: TextStyle(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.w700,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                ),
+                BlocBuilder<GetCitiesCubit, GetCitiesStates>(
+                  builder: (context, state) {
+                    if (state is GetCitiesLoadingState) {
+                      return const Expanded(
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
+                    } else if (state is GetCitiesSuccessState) {
+                      return Expanded(
+                        child: ListView.builder(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 16.w,
+                            vertical: 16.h,
+                          ),
+                          itemBuilder: (context, index) => _ItemCity(
+                            model: state.list[index],
+                          ),
+                          itemCount: state.list.length,
+                        ),
+                      );
+                    } else {
+                      return Center(
+                        child: Text(
+                          "فشل فى ايجاد المدن",
+                          style: TextStyle(
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                        ),
+                      );
+                    }
+                  },
+                ),
+              ],
             ),
-            Text(
-              "اختر مدينتك",
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.w700,
-                color: Theme.of(context).primaryColor,
-              ),
-            ),
-            BlocBuilder(
-              builder: (context, state) {
-                if (state is GetCitiesLoadingState) {
-                  return Expanded(
-                    child: Center(
-                      child: CircularProgressIndicator(
-                        color: Theme.of(context).primaryColor,
-                      ),
-                    ),
-                  );
-                } else if (state is GetCitiesSuccessState) {
-                  return Expanded(
-                    child: ListView.builder(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 16.w,
-                        vertical: 16.h,
-                      ),
-                      itemBuilder: (context, index) => _ItemCity(
-                        model: state.list[index],
-                      ),
-                      itemCount: state.list.length,
-                    ),
-                  );
-                } else {
-                  return Center(
-                    child: Text(
-                      "فشل فى ايجاد المدن",
-                      style: TextStyle(
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                    ),
-                  );
-                }
-              },
-            ),
-          ],
-        ),
+          );
+        }
       ),
     );
   }

@@ -14,10 +14,10 @@ class CategoryProductsCubit extends Cubit<CategoryProductsStates> {
       url: "products",
     );
     if (response.success) {
-      final list = CategoryProductsModel.fromJson(response.response!.data).data;
+      final list = CategoryProductsModel.fromJson(response.response!.data);
       emit(
         CategoryProductsSuccessState(
-          list: list,
+          list: list.data,
         ),
       );
     } else {

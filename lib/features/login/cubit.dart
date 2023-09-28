@@ -5,7 +5,9 @@ import 'package:thimar_app/core/logic/cache_helper.dart';
 import 'package:thimar_app/core/logic/dio_helper.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
 import 'package:thimar_app/features/login/states.dart';
-import 'package:thimar_app/views/main/home/home/view.dart';
+import 'package:thimar_app/views/main/view.dart';
+
+import '../../models/login.dart';
 
 class LoginCubit extends Cubit<LoginStates> {
   LoginCubit() : super(LoginStates());
@@ -29,13 +31,13 @@ class LoginCubit extends Cubit<LoginStates> {
       },
     );
     if (response.success) {
-      CacheHelper.saveLoginData(response.response!.data);
+      CacheHelper.saveLoginData(UserModel.fromJson(response.response!.data['data']));
       showSnackBar(
         response.msg,
         typ: MessageType.success,
       );
       navigateTo(
-        HomeScreen(),
+        const HomeView(),
       );
       emit(
         LoginSuccessState(),

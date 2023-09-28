@@ -96,8 +96,8 @@ class _FaqsState extends State<Faqs> {
                       ),
                       GestureDetector(
                         child: Container(
-                          width: 20.w,
-                          height: 20.h,
+                          width: 25.w,
+                          height: 25.h,
                           margin: EdgeInsets.only(left: 10.w),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5.r),
@@ -107,7 +107,7 @@ class _FaqsState extends State<Faqs> {
                           ),
                           child: Icon(
                             Icons.keyboard_arrow_down,
-                            size: 16.w.h,
+                            size: 18.r,
                             color: Theme.of(context).primaryColor,
                           ),
                         ),

@@ -1,11 +1,16 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:thimar_app/core/design/app_button.dart';
 import 'package:thimar_app/core/design/app_input.dart';
 import 'package:thimar_app/core/logic/cache_helper.dart';
+import 'package:thimar_app/features/get_cities/cubit.dart';
+import 'package:thimar_app/features/get_cities/states.dart';
+
+import '../../sheets/cities.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({super.key});
@@ -15,11 +20,17 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
-  final nameController = TextEditingController();
+  final nameController = TextEditingController(
+    text: CacheHelper.getFullName(),
+  );
 
-  final phoneNumberController = TextEditingController();
+  final phoneNumberController = TextEditingController(
+    text: CacheHelper.getPhone(),
+  );
 
-  final cityNameController = TextEditingController();
+  final cityNameController = TextEditingController(
+    text: CacheHelper.getCity(),
+  );
 
   final passwordController = TextEditingController();
 
@@ -77,150 +88,182 @@ class _EditProfileState extends State<EditProfile> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15.r),
                     ),
-                    child: Stack(
-                      children: [
-                        ColorFiltered(
-                          colorFilter: ColorFilter.mode(
-                            Colors.black.withOpacity(
-                              0.32,
+                    child: StatefulBuilder(
+                      builder: (context, setState) => Stack(
+                        children: [
+                          ColorFiltered(
+                            colorFilter: ColorFilter.mode(
+                              Colors.black.withOpacity(
+                                0.32,
+                              ),
+                              BlendMode.darken,
                             ),
-                            BlendMode.darken,
+                            child: selectedImage != null
+                                ? Image.file(
+                                    selectedImage!,
+                                    width: 85.w,
+                                    height: 85.h,
+                                    fit: BoxFit.fill,
+                                  )
+                                : Image.network(
+                                    CacheHelper.getImage(),
+                                    width: 85.w,
+                                    height: 85.h,
+                                    fit: BoxFit.fill,
+                                  ),
                           ),
-                          child: selectedImage != null
-                              ? Image.file(
-                                  selectedImage!,
-                                  width: 85.w,
-                                  height: 85.h,
-                                  fit: BoxFit.fill,
-                                )
-                              : Image.network(
-                                  CacheHelper.getImage(),
-                                  width: 85.w,
-                                  height: 85.h,
-                                  fit: BoxFit.fill,
-                                ),
-                        ),
-                        Center(
-                          child: GestureDetector(
-                            onTap: () {
-                              showModalBottomSheet(
-                                context: context,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.only(
-                                    topRight: Radius.circular(
-                                      15.r,
-                                    ),
-                                    topLeft: Radius.circular(
-                                      15.r,
+                          Center(
+                            child: GestureDetector(
+                              onTap: () {
+                                showModalBottomSheet(
+                                  context: context,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.only(
+                                      topRight: Radius.circular(
+                                        15.r,
+                                      ),
+                                      topLeft: Radius.circular(
+                                        15.r,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                builder: (context) => SizedBox(
-                                  height: 150.h,
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      SizedBox(
-                                        height: 20.h,
-                                      ),
-                                      const Center(
-                                        child: Text(
-                                          "اختار الصورة من",
+                                  builder: (context) => SizedBox(
+                                    height: 150.h,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        SizedBox(
+                                          height: 20.h,
                                         ),
-                                      ),
-                                      SizedBox(
-                                        height: 25.h,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          GestureDetector(
-                                            child: Container(
-                                              width: 100.w,
-                                              height: 30.h,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                  15.r,
+                                        const Center(
+                                          child: Text(
+                                            "اختار الصورة من",
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 25.h,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            GestureDetector(
+                                              child: Container(
+                                                width: 100.w,
+                                                height: 30.h,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                    15.r,
+                                                  ),
+                                                ),
+                                                child: Row(
+                                                  children: const [
+                                                    Icon(
+                                                      Icons.camera_alt,
+                                                    ),
+                                                    Text(
+                                                      "الكاميرا",
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
-                                              child: Row(
-                                                children: const [
-                                                  Icon(
-                                                    Icons.camera_alt,
-                                                  ),
-                                                  Text(
-                                                    "الكاميرا",
-                                                  ),
-                                                ],
-                                              ),
+                                              onTap: () async {
+                                                final image = await ImagePicker
+                                                    .platform
+                                                    .pickImage(
+                                                  source: ImageSource.camera,
+                                                  imageQuality: 30,
+                                                );
+                                                if (image != null) {
+                                                  selectedImage =
+                                                      File(image.path);
+                                                  setState(() {});
+                                                }
+                                              },
                                             ),
-                                            onTap: () async {
-                                              final image = await ImagePicker
-                                                  .platform
-                                                  .pickImage(
-                                                source: ImageSource.camera,
-                                                imageQuality: 30,
-                                              );
-                                              if (image != null) {
-                                                selectedImage =
-                                                    File(image.path);
-                                                setState(() {});
-                                              }
-                                            },
-                                          ),
-                                          GestureDetector(
-                                            child: Container(
-                                              width: 120.w,
-                                              height: 30.h,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                  15.r,
+                                            GestureDetector(
+                                              child: Container(
+                                                width: 120.w,
+                                                height: 30.h,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                    15.r,
+                                                  ),
+                                                ),
+                                                child: Row(
+                                                  children: const [
+                                                    Icon(
+                                                      Icons
+                                                          .photo_library_outlined,
+                                                    ),
+                                                    Text(
+                                                      "معرض الصور",
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
-                                              child: Row(
-                                                children: const [
-                                                  Icon(
-                                                    Icons
-                                                        .photo_library_outlined,
-                                                  ),
-                                                  Text(
-                                                    "معرض الصور",
-                                                  ),
-                                                ],
-                                              ),
+                                              onTap: () async {
+                                                final image = await ImagePicker
+                                                    .platform
+                                                    .pickImage(
+                                                  source: ImageSource.gallery,
+                                                  imageQuality: 35,
+                                                );
+                                                if (image != null) {
+                                                  selectedImage =
+                                                      File(image.path);
+                                                  setState(() {});
+                                                }
+                                              },
                                             ),
-                                            onTap: () async {
-                                              final image = await ImagePicker
-                                                  .platform
-                                                  .pickImage(
-                                                source: ImageSource.gallery,
-                                                imageQuality: 35,
-                                              );
-                                              if (image != null) {
-                                                selectedImage =
-                                                    File(image.path);
-                                                setState(() {});
-                                              }
-                                            },
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              );
-                            },
-                            child: SvgPicture.asset(
-                              "assets/images/icons/accountIcons/camera.svg",
-                              width: 25.w,
-                              height: 25.h,
+                                );
+                              },
+                              child: SvgPicture.asset(
+                                "assets/images/icons/accountIcons/camera.svg",
+                                width: 25.w,
+                                height: 25.h,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 3.h,
+                ),
+                Center(
+                  child: Text(
+                    CacheHelper.getFullName(),
+                    style: TextStyle(
+                      fontSize: 17.sp,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 3.h,
+                ),
+                Center(
+                  child: Text(
+                    CacheHelper.getPhone(),
+                    textDirection: TextDirection.ltr,
+                    style: TextStyle(
+                      fontSize: 17.sp,
+                      fontWeight: FontWeight.w400,
+                      color: const Color(
+                        0xffA7A7A7,
+                      ),
                     ),
                   ),
                 ),
@@ -246,22 +289,147 @@ class _EditProfileState extends State<EditProfile> {
                 SizedBox(
                   height: 16.h,
                 ),
+                // StatefulBuilder(
+                //   builder: (context, setState1) => GestureDetector(
+                //     onTap: () async {
+                //       var result = await showModalBottomSheet(
+                //         context: context,
+                //         builder: (context) => const CitiesSheets(),
+                //       );
+                //       if (result != null) {
+                //         cubit.selectedCity = result;
+                //         setState1(() {});
+                //       }
+                //     },
+                //     child: Row(
+                //       crossAxisAlignment: CrossAxisAlignment.center,
+                //       children: [
+                //         Expanded(
+                //           child: AbsorbPointer(
+                //             absorbing: true,
+                //             child: AppInput(
+                //               labelText:
+                //               cubit.selectedCity?.name ?? "المدينة",
+                //               validator: (value) {
+                //                 if (cubit.selectedCity == null) {
+                //                   return "حقل المدينة مطلوب";
+                //                 }
+                //                 return null;
+                //               },
+                //               prefixIcon:
+                //               "assets/images/icons/appInputIcons/flag.svg",
+                //             ),
+                //           ),
+                //         ),
+                //         if (cubit.selectedCity != null)
+                //           IconButton(
+                //             onPressed: () {
+                //               cubit.selectedCity = null;
+                //               setState(() {});
+                //             },
+                //             icon: Icon(
+                //               Icons.clear,
+                //               size: 24.w.h,
+                //               color: Colors.red,
+                //             ),
+                //           ),
+                //       ],
+                //     ),
+                //   ),
+                // ),
                 AppInput(
                   controller: cityNameController,
                   keyboardType: TextInputType.name,
                   prefixIcon: "assets/images/icons/appInputIcons/flag.svg",
                   labelText: "المدينة",
+                  isEnabled: false,
+                  onPress: () {
+                    showModalBottomSheet(
+                      context: context,
+                      useSafeArea: true,
+                      builder: (context) => BlocProvider(
+                        create: (context) => GetCitiesCubit()..getData(),
+                        child: BlocBuilder<GetCitiesCubit, GetCitiesStates>(
+                          builder: (context, state) {
+                            if (state is GetCitiesLoadingState) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            } else if (state is GetCitiesSuccessState) {
+                              return Container(
+                                padding: EdgeInsets.all(
+                                  16.r,
+                                ),
+                                decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                ),
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    children: [
+                                      const Center(
+                                        child: Text(
+                                          "اختار مدينتك",
+                                        ),
+                                      ),
+                                      ...List.generate(
+                                        state.list.length,
+                                        (index) => GestureDetector(
+                                          onTap: () {
+                                            Navigator.pop(context,
+                                                state.list[index],
+                                            );
+                                          },
+                                          child: Container(
+                                            margin: EdgeInsets.only(
+                                              bottom: 16.h,
+                                            ),
+                                            width: double.infinity,
+                                            padding: EdgeInsets.all(
+                                              16.r,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color: Theme.of(context)
+                                                  .primaryColor
+                                                  .withOpacity(
+                                                    0.2,
+                                                  ),
+                                            ),
+                                            child: Center(
+                                              child: Text(
+                                                state.list[index].name,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            } else {
+                              return const Center(
+                                child: Text("فشل فى الاتصال"),
+                              );
+                            }
+                          },
+                        ),
+                      ),
+                    );
+                  },
                 ),
                 SizedBox(
                   height: 16.h,
                 ),
                 AppInput(
-                  obscureText: true,
                   controller: passwordController,
                   labelText: "كلمة المرور",
                   prefixIcon: "assets/images/icons/appInputIcons/lock.svg",
                   keyboardType: TextInputType.visiblePassword,
-                  isPassword: true,
+                  suffixIcon: SvgPicture.asset(
+                    "assets/images/icons/arrow_left.svg",
+                    fit: BoxFit.scaleDown,
+                  ),
+                  isEnabled: false,
                   maxLines: 1,
                 ),
                 SizedBox(

@@ -9,7 +9,7 @@ import 'package:thimar_app/views/main/account/address/address.dart';
 import 'package:thimar_app/views/main/account/contact_us.dart';
 import 'package:thimar_app/views/main/account/edit_profile.dart';
 import 'package:thimar_app/views/main/account/faqs.dart';
-import 'package:thimar_app/views/main/account/sugestions and complaints.dart';
+import 'package:thimar_app/views/main/account/suggestions_and_complaints.dart';
 import 'package:thimar_app/views/main/account/policy.dart';
 import 'package:thimar_app/views/main/account/terms_conditions.dart';
 import 'package:thimar_app/views/main/account/wallet/view.dart';
@@ -59,7 +59,7 @@ class AccountScreen extends StatelessWidget {
                       ),
                     ),
                     child: Image.network(
-                      "https://thimar.amr.aait-d.com/public/dashboardAssets/images/backgrounds/avatar.jpg",
+                      CacheHelper.getImage(),
                       width: 76.w,
                       height: 71.h,
                       fit: BoxFit.fill,
@@ -69,7 +69,7 @@ class AccountScreen extends StatelessWidget {
                     height: 2.h,
                   ),
                   Text(
-                    "محمد علي",
+                    CacheHelper.getFullName(),
                     style: TextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.bold,
@@ -82,7 +82,7 @@ class AccountScreen extends StatelessWidget {
                     height: 4.h,
                   ),
                   Text(
-                    "96654787856+",
+                    CacheHelper.getPhone(),
                     style: TextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w400,
@@ -525,48 +525,54 @@ class AccountScreen extends StatelessWidget {
                       horizontal: 14.w,
                       vertical: 15.h,
                     ),
-                    child: Row(
-                      children: [
-                        SvgPicture.asset(
-                          "assets/images/icons/accountIcons/sharing.svg",
-                          width: 18.w,
-                          height: 18.h,
-                          fit: BoxFit.scaleDown,
-                        ),
-                        SizedBox(
-                          width: 7.w,
-                        ),
-                        Text(
-                          "مشاركة التطبيق",
-                          style: TextStyle(
-                            fontSize: 13.sp,
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).primaryColor,
+                    child: GestureDetector(
+                      onTap: ()
+                      {
+
+                      },
+                      child: Row(
+                        children: [
+                          SvgPicture.asset(
+                            "assets/images/icons/accountIcons/sharing.svg",
+                            width: 18.w,
+                            height: 18.h,
+                            fit: BoxFit.scaleDown,
                           ),
-                        ),
-                        SizedBox(
-                          width: 183.w,
-                        ),
-                        Container(
-                          width: 18.w,
-                          height: 18.h,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5.r),
-                            border: Border.all(
+                          SizedBox(
+                            width: 7.w,
+                          ),
+                          Text(
+                            "مشاركة التطبيق",
+                            style: TextStyle(
+                              fontSize: 13.sp,
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 183.w,
+                          ),
+                          Container(
+                            width: 18.w,
+                            height: 18.h,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5.r),
+                              border: Border.all(
+                                color: const Color(
+                                  0xffB2BCA8,
+                                ),
+                              ),
+                            ),
+                            child: Icon(
+                              Icons.arrow_forward,
+                              size: 12.w.h,
                               color: const Color(
                                 0xffB2BCA8,
                               ),
                             ),
                           ),
-                          child: Icon(
-                            Icons.arrow_forward,
-                            size: 12.w.h,
-                            color: const Color(
-                              0xffB2BCA8,
-                            ),
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ],
