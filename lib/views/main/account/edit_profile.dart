@@ -10,8 +10,6 @@ import 'package:thimar_app/core/logic/cache_helper.dart';
 import 'package:thimar_app/features/get_cities/cubit.dart';
 import 'package:thimar_app/features/get_cities/states.dart';
 
-import '../../sheets/cities.dart';
-
 class EditProfile extends StatefulWidget {
   const EditProfile({super.key});
 
@@ -289,133 +287,109 @@ class _EditProfileState extends State<EditProfile> {
                 SizedBox(
                   height: 16.h,
                 ),
-                // StatefulBuilder(
-                //   builder: (context, setState1) => GestureDetector(
-                //     onTap: () async {
-                //       var result = await showModalBottomSheet(
-                //         context: context,
-                //         builder: (context) => const CitiesSheets(),
-                //       );
-                //       if (result != null) {
-                //         cubit.selectedCity = result;
-                //         setState1(() {});
-                //       }
-                //     },
-                //     child: Row(
-                //       crossAxisAlignment: CrossAxisAlignment.center,
-                //       children: [
-                //         Expanded(
-                //           child: AbsorbPointer(
-                //             absorbing: true,
-                //             child: AppInput(
-                //               labelText:
-                //               cubit.selectedCity?.name ?? "المدينة",
-                //               validator: (value) {
-                //                 if (cubit.selectedCity == null) {
-                //                   return "حقل المدينة مطلوب";
-                //                 }
-                //                 return null;
-                //               },
-                //               prefixIcon:
-                //               "assets/images/icons/appInputIcons/flag.svg",
-                //             ),
-                //           ),
-                //         ),
-                //         if (cubit.selectedCity != null)
-                //           IconButton(
-                //             onPressed: () {
-                //               cubit.selectedCity = null;
-                //               setState(() {});
-                //             },
-                //             icon: Icon(
-                //               Icons.clear,
-                //               size: 24.w.h,
-                //               color: Colors.red,
-                //             ),
-                //           ),
-                //       ],
-                //     ),
-                //   ),
-                // ),
-                AppInput(
-                  controller: cityNameController,
-                  keyboardType: TextInputType.name,
-                  prefixIcon: "assets/images/icons/appInputIcons/flag.svg",
-                  labelText: "المدينة",
-                  isEnabled: false,
-                  onPress: () {
-                    showModalBottomSheet(
-                      context: context,
-                      useSafeArea: true,
-                      builder: (context) => BlocProvider(
-                        create: (context) => GetCitiesCubit()..getData(),
-                        child: BlocBuilder<GetCitiesCubit, GetCitiesStates>(
-                          builder: (context, state) {
-                            if (state is GetCitiesLoadingState) {
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            } else if (state is GetCitiesSuccessState) {
-                              return Container(
-                                padding: EdgeInsets.all(
-                                  16.r,
-                                ),
-                                decoration: const BoxDecoration(
-                                  color: Colors.white,
-                                ),
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    children: [
-                                      const Center(
-                                        child: Text(
-                                          "اختار مدينتك",
-                                        ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: AppInput(
+                        controller: cityNameController,
+                        prefixIcon:
+                            "assets/images/icons/appInputIcons/flag.svg",
+                        labelText: "المدينة",
+                        isEnabled: false,
+                        onPress: () async {
+                          var result = await showModalBottomSheet(
+                            context: context,
+                            useSafeArea: true,
+                            builder: (context) => BlocProvider(
+                              create: (context) => GetCitiesCubit()..getData(),
+                              child:
+                                  BlocBuilder<GetCitiesCubit, GetCitiesStates>(
+                                builder: (context, state) {
+                                  if (state is GetCitiesLoadingState) {
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  } else if (state is GetCitiesSuccessState) {
+                                    return Container(
+                                      padding: EdgeInsets.all(
+                                        16.r,
                                       ),
-                                      ...List.generate(
-                                        state.list.length,
-                                        (index) => GestureDetector(
-                                          onTap: () {
-                                            Navigator.pop(context,
-                                                state.list[index],
-                                            );
-                                          },
-                                          child: Container(
-                                            margin: EdgeInsets.only(
-                                              bottom: 16.h,
-                                            ),
-                                            width: double.infinity,
-                                            padding: EdgeInsets.all(
-                                              16.r,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              color: Theme.of(context)
-                                                  .primaryColor
-                                                  .withOpacity(
-                                                    0.2,
-                                                  ),
-                                            ),
-                                            child: Center(
+                                      decoration: const BoxDecoration(
+                                        color: Colors.white,
+                                      ),
+                                      child: SingleChildScrollView(
+                                        child: Column(
+                                          children: [
+                                            const Center(
                                               child: Text(
-                                                state.list[index].name,
+                                                "اختار مدينتك",
                                               ),
                                             ),
-                                          ),
+                                            ...List.generate(
+                                              state.list.length,
+                                              (index) => GestureDetector(
+                                                onTap: () {
+                                                  Navigator.pop(
+                                                    context,
+                                                    state.list[index].name,
+                                                  );
+                                                },
+                                                child: Container(
+                                                  margin: EdgeInsets.only(
+                                                    bottom: 16.h,
+                                                  ),
+                                                  width: double.infinity,
+                                                  padding: EdgeInsets.all(
+                                                    16.r,
+                                                  ),
+                                                  decoration: BoxDecoration(
+                                                    color: Theme.of(context)
+                                                        .primaryColor
+                                                        .withOpacity(
+                                                          0.2,
+                                                        ),
+                                                  ),
+                                                  child: Center(
+                                                    child: Text(
+                                                      state.list[index].name,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            } else {
-                              return const Center(
-                                child: Text("فشل فى الاتصال"),
-                              );
-                            }
-                          },
+                                    );
+                                  } else {
+                                    return const Center(
+                                      child: Text("فشل فى الاتصال"),
+                                    );
+                                  }
+                                },
+                              ),
+                            ),
+                          );
+                          if (result != null) {
+                            cityNameController.text = result;
+                            setState(() {});
+                          }
+                        },
+                      ),
+                    ),
+                    if (cityNameController.text.isNotEmpty)
+                      IconButton(
+                        onPressed: () {
+                          cityNameController.clear();
+                          setState(() {});
+                        },
+                        icon: Icon(
+                          Icons.clear,
+                          size: 24.w.h,
+                          color: Colors.red,
                         ),
                       ),
-                    );
-                  },
+                  ],
                 ),
                 SizedBox(
                   height: 16.h,

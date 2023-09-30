@@ -55,10 +55,10 @@ class _SugestionsAndComplaintsState extends State<SugestionsAndComplaints> {
       ),
       body: SafeArea(
         child: BlocProvider(
-          create: (context) => GetSuggestionsCubit(),
+          create: (context) => SuggestionsCubit(),
           child: Builder(
             builder: (context) {
-              GetSuggestionsCubit cubit = BlocProvider.of(context);
+              SuggestionsCubit cubit = BlocProvider.of(context);
               return Form(
                 key: _formKey,
                 child: ListView(
@@ -129,7 +129,7 @@ class _SugestionsAndComplaintsState extends State<SugestionsAndComplaints> {
                         return AppButton(
                           onTap: () async {
                             if(_formKey.currentState!.validate()) {
-                              cubit.getSuggestions();
+                              cubit.sendSuggestions();
                             }
                           },
                           text: "إرسال",

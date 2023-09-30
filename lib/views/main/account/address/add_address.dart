@@ -289,6 +289,7 @@ class _MyMapState extends State<MyMap> {
               widget.lat,
               widget.lng,
             ),
+            zoom: 15,
           ),
           onMapCreated: (GoogleMapController controller) {
             _controller.complete(controller);

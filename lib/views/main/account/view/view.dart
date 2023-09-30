@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:share/share.dart';
 import 'package:thimar_app/core/logic/cache_helper.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
 import 'package:thimar_app/views/auth/login.dart';
@@ -528,7 +529,9 @@ class AccountScreen extends StatelessWidget {
                     child: GestureDetector(
                       onTap: ()
                       {
-
+                        Share.share(
+                          "https://com.example.thimar_app",
+                        );
                       },
                       child: Row(
                         children: [

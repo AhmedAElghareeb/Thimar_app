@@ -1,7 +1,7 @@
-class GetSuggestionsStates {}
+class SuggestionsStates {}
 
-class GetSuggestionsLoadingState extends GetSuggestionsStates {}
+class SuggestionsLoadingState extends SuggestionsStates {}
 
-class GetSuggestionsSuccessState extends GetSuggestionsStates {}
+class SuggestionsSuccessState extends SuggestionsStates {}
 
-class GetSuggestionsFailedState extends GetSuggestionsStates {}
+class SuggestionsFailedState extends SuggestionsStates {}

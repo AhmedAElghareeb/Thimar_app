@@ -88,7 +88,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         height: 16.h,
                       ),
                       StatefulBuilder(
-                        builder: (context, setState1) => GestureDetector(
+                        builder: (context, setState) => GestureDetector(
                           onTap: () async {
                             var result = await showModalBottomSheet(
                               context: context,
@@ -96,7 +96,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             );
                             if (result != null) {
                               cubit.selectedCity = result;
-                              setState1(() {});
+                              setState(() {});
                             }
                           },
                           child: Row(

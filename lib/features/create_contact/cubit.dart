@@ -1,51 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:thimar_app/core/logic/helper_methods.dart';
-import 'package:thimar_app/features/suggestions_and_complaints/states.dart';
+import 'package:thimar_app/features/create_contact/states.dart';
 
 import '../../core/logic/dio_helper.dart';
+import '../../core/logic/helper_methods.dart';
 
-class SuggestionsCubit extends Cubit<SuggestionsStates> {
-  SuggestionsCubit()
-      : super(
-          SuggestionsStates(),
-        );
+class CreateContactCubit extends Cubit<CreateContactStates> {
+  CreateContactCubit() : super(CreateContactStates(),);
 
   final nameController = TextEditingController();
   final phoneNumberController = TextEditingController();
   final subjectController = TextEditingController();
-  final titleController = TextEditingController();
 
-  Future<void> sendSuggestions() async {
+  void sendContact() async {
     emit(
-      SuggestionsLoadingState(),
+      SendContactLoadingState(),
     );
-
-    final response = await DioHelper().sendToServer(
+    final result = await DioHelper().sendToServer(
       url: "contact",
       body: {
         "fullname": nameController.text,
         "phone": phoneNumberController.text,
-        "title": titleController.text,
         "content": subjectController.text,
       },
     );
-    if (response.success) {
+    if (result.success) {
       showSnackBar(
-        response.msg,
+        result.msg,
         typ: MessageType.success,
       );
       nameController.clear();
       phoneNumberController.clear();
-      titleController.clear();
       subjectController.clear();
       emit(
-        SuggestionsSuccessState(),
+        SendContactSuccessState(),
       );
     } else {
       emit(
-        SuggestionsFailedState(),
+        SendContactFailedState(),
       );
     }
   }
+
 }

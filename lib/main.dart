@@ -9,6 +9,8 @@ import 'package:thimar_app/core/logic/helper_methods.dart';
 import 'package:thimar_app/features/category/cubit.dart';
 import 'package:thimar_app/features/category_products/cubit.dart';
 import 'package:thimar_app/features/confirm_code/cubit.dart';
+import 'package:thimar_app/features/contact_us/cubit.dart';
+import 'package:thimar_app/features/create_contact/cubit.dart';
 import 'package:thimar_app/features/get_cities/cubit.dart';
 import 'package:thimar_app/features/get_faqs/cubit.dart';
 import 'package:thimar_app/features/login/cubit.dart';
@@ -59,9 +61,6 @@ class MyApp extends StatelessWidget {
             create: (context) => RegisterCubit(),
           ),
           BlocProvider(
-            create: (context) => GetCitiesCubit(),
-          ),
-          BlocProvider(
             create: (context) => CategoryCubit(),
           ),
           BlocProvider(
@@ -89,7 +88,7 @@ class MyApp extends StatelessWidget {
             create: (context) => GetTermsCubit(),
           ),
           BlocProvider(
-            create: (context) => GetSuggestionsCubit(),
+            create: (context) => SuggestionsCubit(),
           ),
           BlocProvider(
             create: (context) => VerifyCodeCubit(),
