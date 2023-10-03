@@ -62,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 horizontal: 16.w,
               ),
               child: Align(
-                alignment: Alignment.centerRight,
+                alignment: AlignmentDirectional.centerStart,
                 child: Text(
                   "الأقسام",
                   style:
@@ -81,9 +81,12 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: EdgeInsets.symmetric(
                 horizontal: 16.w,
               ),
-              child: Text(
-                "الأصناف",
-                style: TextStyle(fontWeight: FontWeight.w900, fontSize: 15.sp),
+              child: Align(
+                alignment: AlignmentDirectional.centerStart,
+                child: Text(
+                  "الأصناف",
+                  style: TextStyle(fontWeight: FontWeight.w900, fontSize: 15.sp),
+                ),
               ),
             ),
             SizedBox(
@@ -181,7 +184,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               right: 10.w,
                             ),
                             child: Align(
-                              alignment: Alignment.topRight,
+                              alignment: AlignmentDirectional.topStart,
                               child: Text(
                                 state.list[index].title,
                                 style: TextStyle(
@@ -200,7 +203,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               right: 11.w,
                             ),
                             child: Align(
-                              alignment: Alignment.topRight,
+                              alignment: AlignmentDirectional.topStart,
                               child: Text(
                                 "السعر / ${state.list[index].unit.name}",
                                 style: TextStyle(
@@ -221,7 +224,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Row(
                                   children: [
                                     Align(
-                                      alignment: Alignment.topRight,
+                                      alignment: AlignmentDirectional.topStart,
                                       child: Text(
                                         "${state.list[index].price} ر.س",
                                         style: TextStyle(
@@ -235,7 +238,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       width: 3.w,
                                     ),
                                     Align(
-                                      alignment: Alignment.bottomRight,
+                                      alignment: AlignmentDirectional.bottomStart,
                                       child: Text(
                                         "${state.list[index].priceBeforeDiscount} ر.س",
                                         textAlign: TextAlign.justify,
@@ -256,7 +259,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             height: 19.h,
                           ),
                           Align(
-                            alignment: Alignment.center,
+                            alignment: AlignmentDirectional.center,
                             child: Padding(
                               padding: EdgeInsets.only(
                                 left: 24.w,
@@ -505,7 +508,7 @@ class _SliderImagesState extends State<SliderImages> {
         } else if (state is GetSliderImagesSuccessState) {
           return StatefulBuilder(
             builder: (context, setState2) => Stack(
-              alignment: Alignment.bottomCenter,
+              alignment: AlignmentDirectional.bottomCenter,
               children: [
                 CarouselSlider(
                   items: List.generate(

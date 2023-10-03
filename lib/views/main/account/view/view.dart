@@ -1,9 +1,14 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:kiwi/kiwi.dart';
 import 'package:share/share.dart';
+import 'package:thimar_app/core/design/account_widgets.dart';
 import 'package:thimar_app/core/logic/cache_helper.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
+import 'package:thimar_app/features/logout/bloc.dart';
+import 'package:thimar_app/features/logout/states.dart';
 import 'package:thimar_app/views/auth/login.dart';
 import 'package:thimar_app/views/main/account/about_us.dart';
 import 'package:thimar_app/views/main/account/address/address.dart';
@@ -15,8 +20,23 @@ import 'package:thimar_app/views/main/account/policy.dart';
 import 'package:thimar_app/views/main/account/terms_conditions.dart';
 import 'package:thimar_app/views/main/account/wallet/view.dart';
 
-class AccountScreen extends StatelessWidget {
+import '../../../../features/logout/events.dart';
+
+class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});
+
+  @override
+  State<AccountScreen> createState() => _AccountScreenState();
+}
+
+class _AccountScreenState extends State<AccountScreen> {
+  final bloc = KiwiContainer().resolve<LogoutBloc>();
+
+  @override
+  void dispose() {
+    super.dispose();
+    bloc.close();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -111,173 +131,35 @@ class AccountScreen extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 14.w,
-                      vertical: 15.h,
-                    ),
-                    child: GestureDetector(
-                      onTap: () {
-                        navigateTo(
-                          const EditProfile(),
-                        );
-                      },
-                      child: Row(
-                        children: [
-                          SvgPicture.asset(
-                            "assets/images/icons/accountIcons/person.svg",
-                            width: 14.w,
-                            height: 18.h,
-                            fit: BoxFit.scaleDown,
-                          ),
-                          SizedBox(
-                            width: 7.w,
-                          ),
-                          Text(
-                            "البيانات الشخصية",
-                            style: TextStyle(
-                              fontSize: 13.sp,
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 179.w,
-                          ),
-                          Container(
-                            width: 18.w,
-                            height: 18.h,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5.r),
-                              border: Border.all(
-                                color: const Color(
-                                  0xffB2BCA8,
-                                ),
-                              ),
-                            ),
-                            child: Icon(
-                              Icons.arrow_forward,
-                              size: 12.w.h,
-                              color: const Color(
-                                0xffB2BCA8,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                  AccountWidgets(
+                    onPress: () {
+                      navigateTo(
+                        const EditProfile(),
+                      );
+                    },
+                    title: "البيانات الشخصية",
+                    imageName: "person.svg",
+                    isLogout: true,
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 14.w,
-                      vertical: 15.h,
-                    ),
-                    child: GestureDetector(
-                      onTap: () {
-                        navigateTo(
-                          const WalletView(),
-                        );
-                      },
-                      child: Row(
-                        children: [
-                          SvgPicture.asset(
-                            "assets/images/icons/accountIcons/wallet.svg",
-                            width: 18.w,
-                            height: 18.h,
-                            fit: BoxFit.scaleDown,
-                          ),
-                          SizedBox(
-                            width: 7.w,
-                          ),
-                          Text(
-                            "المحفظة",
-                            style: TextStyle(
-                              fontSize: 13.sp,
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 220.w,
-                          ),
-                          Container(
-                            width: 18.w,
-                            height: 18.h,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5.r),
-                              border: Border.all(
-                                color: const Color(
-                                  0xffB2BCA8,
-                                ),
-                              ),
-                            ),
-                            child: Icon(
-                              Icons.arrow_forward,
-                              size: 12.w.h,
-                              color: const Color(
-                                0xffB2BCA8,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                  AccountWidgets(
+                    onPress: () {
+                      navigateTo(
+                        const WalletView(),
+                      );
+                    },
+                    title: "المحفظة",
+                    imageName: "wallet.svg",
+                    isLogout: true,
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 14.w,
-                      vertical: 15.h,
-                    ),
-                    child: GestureDetector(
-                      onTap: () {
-                        navigateTo(
-                          const Address(),
-                        );
-                      },
-                      child: Row(
-                        children: [
-                          SvgPicture.asset(
-                            "assets/images/icons/accountIcons/address.svg",
-                            width: 16.w,
-                            height: 18.h,
-                            fit: BoxFit.scaleDown,
-                          ),
-                          SizedBox(
-                            width: 7.w,
-                          ),
-                          Text(
-                            "العناوين",
-                            style: TextStyle(
-                              fontSize: 13.sp,
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 228.w,
-                          ),
-                          Container(
-                            width: 18.w,
-                            height: 18.h,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5.r),
-                              border: Border.all(
-                                color: const Color(
-                                  0xffB2BCA8,
-                                ),
-                              ),
-                            ),
-                            child: Icon(
-                              Icons.arrow_forward,
-                              size: 12.w.h,
-                              color: const Color(
-                                0xffB2BCA8,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                  AccountWidgets(
+                    onPress: () {
+                      navigateTo(
+                        const Address(),
+                      );
+                    },
+                    title: "العناوين",
+                    imageName: "address.svg",
+                    isLogout: true,
                   ),
                 ],
               ),
@@ -298,285 +180,55 @@ class AccountScreen extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 14.w,
-                      vertical: 15.h,
-                    ),
-                    child: GestureDetector(
-                      onTap: ()
-                      {
-                        navigateTo(const Faqs(),);
-                      },
-                      child: Row(
-                        children: [
-                          SvgPicture.asset(
-                            "assets/images/icons/accountIcons/question.svg",
-                            width: 18.w,
-                            height: 18.h,
-                            fit: BoxFit.scaleDown,
-                          ),
-                          SizedBox(
-                            width: 7.w,
-                          ),
-                          Text(
-                            "أسئلة متكررة",
-                            style: TextStyle(
-                              fontSize: 13.sp,
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 200.w,
-                          ),
-                          Container(
-                            width: 18.w,
-                            height: 18.h,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5.r),
-                              border: Border.all(
-                                color: const Color(
-                                  0xffB2BCA8,
-                                ),
-                              ),
-                            ),
-                            child: Icon(
-                              Icons.arrow_forward,
-                              size: 12.w.h,
-                              color: const Color(
-                                0xffB2BCA8,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                  AccountWidgets(
+                    onPress: () {
+                      navigateTo(
+                        const Faqs(),
+                      );
+                    },
+                    title: "أسئلة متكررة",
+                    imageName: "question.svg",
+                    isLogout: true,
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 14.w,
-                      vertical: 15.h,
-                    ),
-                    child: GestureDetector(
-                      onTap: () {
-                        navigateTo(
-                          const PolicyView(),
-                        );
-                      },
-                      child: Row(
-                        children: [
-                          SvgPicture.asset(
-                            "assets/images/icons/accountIcons/policy.svg",
-                            width: 16.w,
-                            height: 18.h,
-                            fit: BoxFit.scaleDown,
-                          ),
-                          SizedBox(
-                            width: 7.w,
-                          ),
-                          Text(
-                            "سياسة الخصوصية",
-                            style: TextStyle(
-                              fontSize: 13.sp,
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 169.w,
-                          ),
-                          Container(
-                            width: 18.w,
-                            height: 18.h,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5.r),
-                              border: Border.all(
-                                color: const Color(
-                                  0xffB2BCA8,
-                                ),
-                              ),
-                            ),
-                            child: Icon(
-                              Icons.arrow_forward,
-                              size: 12.w.h,
-                              color: const Color(
-                                0xffB2BCA8,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                  AccountWidgets(
+                    onPress: () {
+                      navigateTo(
+                        const PolicyView(),
+                      );
+                    },
+                    title: "سياسة الخصوصية",
+                    imageName: "policy.svg",
+                    isLogout: true,
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 14.w,
-                      vertical: 15.h,
-                    ),
-                    child: GestureDetector(
-                      onTap: () {
-                        navigateTo(
-                          const ContactUs(),
-                        );
-                      },
-                      child: Row(
-                        children: [
-                          SvgPicture.asset(
-                            "assets/images/icons/accountIcons/contact_us.svg",
-                            width: 18.w,
-                            height: 18.h,
-                            fit: BoxFit.scaleDown,
-                          ),
-                          SizedBox(
-                            width: 7.w,
-                          ),
-                          Text(
-                            "تواصل معنا",
-                            style: TextStyle(
-                              fontSize: 13.sp,
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 206.w,
-                          ),
-                          Container(
-                            width: 18.w,
-                            height: 18.h,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5.r),
-                              border: Border.all(
-                                color: const Color(
-                                  0xffB2BCA8,
-                                ),
-                              ),
-                            ),
-                            child: Icon(
-                              Icons.arrow_forward,
-                              size: 12.w.h,
-                              color: const Color(
-                                0xffB2BCA8,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                  AccountWidgets(
+                    onPress: () {
+                      navigateTo(
+                        const ContactUs(),
+                      );
+                    },
+                    title: "تواصل معنا",
+                    imageName: "contact_us.svg",
+                    isLogout: true,
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 14.w,
-                      vertical: 15.h,
-                    ),
-                    child: GestureDetector(
-                      onTap: () {
-                        navigateTo(
-                          const SugestionsAndComplaints(),
-                        );
-                      },
-                      child: Row(
-                        children: [
-                          SvgPicture.asset(
-                            "assets/images/icons/accountIcons/proposal.svg",
-                            width: 18.w,
-                            height: 18.h,
-                            fit: BoxFit.scaleDown,
-                          ),
-                          SizedBox(
-                            width: 7.w,
-                          ),
-                          Text(
-                            "الشكاوي والأقتراحات",
-                            style: TextStyle(
-                              fontSize: 13.sp,
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 160.w,
-                          ),
-                          Container(
-                            width: 18.w,
-                            height: 18.h,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5.r),
-                              border: Border.all(
-                                color: const Color(
-                                  0xffB2BCA8,
-                                ),
-                              ),
-                            ),
-                            child: Icon(
-                              Icons.arrow_forward,
-                              size: 12.w.h,
-                              color: const Color(
-                                0xffB2BCA8,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                  AccountWidgets(
+                    onPress: () {
+                      navigateTo(
+                        const SugestionsAndComplaints(),
+                      );
+                    },
+                    title: "الشكاوي والأقتراحات",
+                    imageName: "proposal.svg",
+                    isLogout: true,
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 14.w,
-                      vertical: 15.h,
-                    ),
-                    child: GestureDetector(
-                      onTap: ()
-                      {
-                        Share.share(
-                          "https://com.example.thimar_app",
-                        );
-                      },
-                      child: Row(
-                        children: [
-                          SvgPicture.asset(
-                            "assets/images/icons/accountIcons/sharing.svg",
-                            width: 18.w,
-                            height: 18.h,
-                            fit: BoxFit.scaleDown,
-                          ),
-                          SizedBox(
-                            width: 7.w,
-                          ),
-                          Text(
-                            "مشاركة التطبيق",
-                            style: TextStyle(
-                              fontSize: 13.sp,
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 183.w,
-                          ),
-                          Container(
-                            width: 18.w,
-                            height: 18.h,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5.r),
-                              border: Border.all(
-                                color: const Color(
-                                  0xffB2BCA8,
-                                ),
-                              ),
-                            ),
-                            child: Icon(
-                              Icons.arrow_forward,
-                              size: 12.w.h,
-                              color: const Color(
-                                0xffB2BCA8,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                  AccountWidgets(
+                    onPress: () {
+                      Share.share(
+                        "https://com.example.thimar_app",
+                      );
+                    },
+                    title: "مشاركة التطبيق",
+                    imageName: "sharing.svg",
+                    isLogout: true,
                   ),
                 ],
               ),
@@ -597,215 +249,45 @@ class AccountScreen extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 14.w,
-                      vertical: 15.h,
-                    ),
-                    child: GestureDetector(
-                      onTap: () {
-                        navigateTo(
-                          const AboutUs(),
-                        );
-                      },
-                      child: Row(
-                        children: [
-                          SvgPicture.asset(
-                            "assets/images/icons/accountIcons/about_us.svg",
-                            width: 18.w,
-                            height: 18.h,
-                            fit: BoxFit.scaleDown,
-                          ),
-                          SizedBox(
-                            width: 7.w,
-                          ),
-                          Text(
-                            "عن التطبيق",
-                            style: TextStyle(
-                              fontSize: 13.sp,
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 208.w,
-                          ),
-                          Container(
-                            width: 18.w,
-                            height: 18.h,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5.r),
-                              border: Border.all(
-                                color: const Color(
-                                  0xffB2BCA8,
-                                ),
-                              ),
-                            ),
-                            child: Icon(
-                              Icons.arrow_forward,
-                              size: 12.w.h,
-                              color: const Color(
-                                0xffB2BCA8,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                  AccountWidgets(
+                    onPress: () {
+                      navigateTo(
+                        const AboutUs(),
+                      );
+                    },
+                    title: "عن التطبيق",
+                    imageName: "about_us.svg",
+                    isLogout: true,
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 14.w,
-                      vertical: 15.h,
-                    ),
-                    child: Row(
-                      children: [
-                        SvgPicture.asset(
-                          "assets/images/icons/accountIcons/lang.svg",
-                          width: 18.w,
-                          height: 18.h,
-                          fit: BoxFit.scaleDown,
+                  AccountWidgets(
+                    onPress: () {
+                      String code =
+                          context.locale.languageCode == "en" ? "ar" : "en";
+                      context.setLocale(
+                        Locale(
+                          code,
                         ),
-                        SizedBox(
-                          width: 7.w,
-                        ),
-                        Text(
-                          "تغيير اللغة",
-                          style: TextStyle(
-                            fontSize: 13.sp,
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).primaryColor,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 213.w,
-                        ),
-                        Container(
-                          width: 18.w,
-                          height: 18.h,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5.r),
-                            border: Border.all(
-                              color: const Color(
-                                0xffB2BCA8,
-                              ),
-                            ),
-                          ),
-                          child: Icon(
-                            Icons.arrow_forward,
-                            size: 12.w.h,
-                            color: const Color(
-                              0xffB2BCA8,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                      );
+                    },
+                    title: "تغيير اللغة",
+                    imageName: "lang.svg",
+                    isLogout: true,
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 14.w,
-                      vertical: 15.h,
-                    ),
-                    child: GestureDetector(
-                      onTap: () {
-                        navigateTo(
-                          const TermsAndConditions(),
-                        );
-                      },
-                      child: Row(
-                        children: [
-                          SvgPicture.asset(
-                            "assets/images/icons/accountIcons/conditions.svg",
-                            width: 18.w,
-                            height: 18.h,
-                            fit: BoxFit.scaleDown,
-                          ),
-                          SizedBox(
-                            width: 7.w,
-                          ),
-                          Text(
-                            "الشروط والأحكام",
-                            style: TextStyle(
-                              fontSize: 13.sp,
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 180.w,
-                          ),
-                          Container(
-                            width: 18.w,
-                            height: 18.h,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5.r),
-                              border: Border.all(
-                                color: const Color(
-                                  0xffB2BCA8,
-                                ),
-                              ),
-                            ),
-                            child: Icon(
-                              Icons.arrow_forward,
-                              size: 12.w.h,
-                              color: const Color(
-                                0xffB2BCA8,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                  AccountWidgets(
+                    onPress: () {
+                      navigateTo(
+                        const TermsAndConditions(),
+                      );
+                    },
+                    title: "الشروط والأحكام",
+                    imageName: "conditions.svg",
+                    isLogout: true,
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 14.w,
-                      vertical: 15.h,
-                    ),
-                    child: Row(
-                      children: [
-                        SvgPicture.asset(
-                          "assets/images/icons/accountIcons/app_rate.svg",
-                          width: 18.w,
-                          height: 18.h,
-                          fit: BoxFit.scaleDown,
-                        ),
-                        SizedBox(
-                          width: 7.w,
-                        ),
-                        Text(
-                          "تقييم التطبيق",
-                          style: TextStyle(
-                            fontSize: 13.sp,
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).primaryColor,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 197.w,
-                        ),
-                        Container(
-                          width: 18.w,
-                          height: 18.h,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5.r),
-                            border: Border.all(
-                              color: const Color(
-                                0xffB2BCA8,
-                              ),
-                            ),
-                          ),
-                          child: Icon(
-                            Icons.arrow_forward,
-                            size: 12.w.h,
-                            color: const Color(
-                              0xffB2BCA8,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                  AccountWidgets(
+                    onPress: () {},
+                    title: "تقييم التطبيق",
+                    imageName: "app_rate.svg",
+                    isLogout: true,
                   ),
                 ],
               ),
@@ -813,61 +295,22 @@ class AccountScreen extends StatelessWidget {
             SizedBox(
               height: 20.h,
             ),
-            GestureDetector(
-              onTap: ()
-              {
-                CacheHelper.removeLoginData();
-                navigateTo(const LoginScreen(),);
+            BlocBuilder(
+              bloc: bloc,
+              builder: (context, state) {
+                return AccountWidgets(
+                  onPress: () {
+                    bloc.add(
+                      SendLogout(),
+                    );
+                    navigateTo(
+                      const LoginScreen(),
+                    );
+                  },
+                  isLoading: state is LogoutLoadingState,
+                  title: "تسجيل الخروج",
+                );
               },
-              child: Container(
-                width: 342.w,
-                height: 50.h,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(
-                    17.r,
-                  ),
-                  color: const Color(
-                    0xffFFFFFF,
-                  ),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 14.w,
-                    vertical: 15.h,
-                  ),
-                  child: Row(
-                    children: [
-                      Text(
-                        "تسجيل الخروج",
-                        style: TextStyle(
-                          fontSize: 13.sp,
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 216.w,
-                      ),
-                      Container(
-                        width: 18.w,
-                        height: 18.h,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5.r),
-                          color: const Color(0xffFFFFFF),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.all(1.w.h),
-                          child: SvgPicture.asset(
-                            "assets/images/icons/accountIcons/exit.svg",
-                            width: 18.w,
-                            height: 18.h,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
             ),
           ],
         ),

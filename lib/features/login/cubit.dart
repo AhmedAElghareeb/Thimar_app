@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:thimar_app/core/logic/cache_helper.dart';
@@ -26,12 +27,12 @@ class LoginCubit extends Cubit<LoginStates> {
         "phone": phoneNumberController.text,
         "password": passwordController.text,
         "type": Platform.operatingSystem,
-        "device_token": "test",
+        "device_token": FirebaseMessaging.instance.getToken(),
         "user_type": "client",
       },
     );
     if (response.success) {
-      CacheHelper.saveLoginData(UserModel.fromJson(response.response!.data['data']));
+      await CacheHelper.saveLoginData(UserModel.fromJson(response.response!.data['data']));
       showSnackBar(
         response.msg,
         typ: MessageType.success,

@@ -8,8 +8,8 @@ class CacheHelper {
     _prefs = await SharedPreferences.getInstance();
   }
 
-  static getToken() async {
-    await _prefs.getString("token");
+  static String getToken() {
+    return _prefs.getString("token") ?? "Static";
   }
 
   static Future<bool> saveImageProfile(String url) async {
@@ -30,6 +30,10 @@ class CacheHelper {
 
   static String getCity() {
     return _prefs.getString("cityName") ?? "";
+  }
+
+  static int getCityId() {
+    return int.parse(_prefs.getString("cityId") ?? "0");
   }
 
   static Future saveLoginData(UserModel user) async {

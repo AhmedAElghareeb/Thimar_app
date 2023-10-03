@@ -7,6 +7,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:thimar_app/core/design/app_button.dart';
 import 'package:thimar_app/core/design/app_input.dart';
 import 'package:thimar_app/core/logic/cache_helper.dart';
+import 'package:thimar_app/features/edit_profile/cubit.dart';
+import 'package:thimar_app/features/edit_profile/states.dart';
 import 'package:thimar_app/features/get_cities/cubit.dart';
 import 'package:thimar_app/features/get_cities/states.dart';
 
@@ -33,6 +35,7 @@ class _EditProfileState extends State<EditProfile> {
   final passwordController = TextEditingController();
 
   File? selectedImage;
+  int cityId = CacheHelper.getCityId();
 
   @override
   Widget build(BuildContext context) {
@@ -157,11 +160,14 @@ class _EditProfileState extends State<EditProfile> {
                                                   ),
                                                 ),
                                                 child: Row(
-                                                  children: const [
-                                                    Icon(
+                                                  children: [
+                                                    const Icon(
                                                       Icons.camera_alt,
                                                     ),
-                                                    Text(
+                                                    SizedBox(
+                                                      width: 5.w,
+                                                    ),
+                                                    const Text(
                                                       "الكاميرا",
                                                     ),
                                                   ],
@@ -179,6 +185,8 @@ class _EditProfileState extends State<EditProfile> {
                                                       File(image.path);
                                                   setState(() {});
                                                 }
+                                                Navigator.pop(
+                                                    context, selectedImage);
                                               },
                                             ),
                                             GestureDetector(
@@ -192,13 +200,16 @@ class _EditProfileState extends State<EditProfile> {
                                                   ),
                                                 ),
                                                 child: Row(
-                                                  children: const [
-                                                    Icon(
+                                                  children: [
+                                                    const Icon(
                                                       Icons
                                                           .photo_library_outlined,
                                                     ),
-                                                    Text(
-                                                      "معرض الصور",
+                                                    SizedBox(
+                                                      width: 5.w,
+                                                    ),
+                                                    const Text(
+                                                      "المعرض",
                                                     ),
                                                   ],
                                                 ),
@@ -215,6 +226,8 @@ class _EditProfileState extends State<EditProfile> {
                                                       File(image.path);
                                                   setState(() {});
                                                 }
+                                                Navigator.pop(
+                                                    context, selectedImage);
                                               },
                                             ),
                                           ],
@@ -329,6 +342,7 @@ class _EditProfileState extends State<EditProfile> {
                                               state.list.length,
                                               (index) => GestureDetector(
                                                 onTap: () {
+                                                  cityId = state.list[index].id;
                                                   Navigator.pop(
                                                     context,
                                                     state.list[index].name,
@@ -409,12 +423,28 @@ class _EditProfileState extends State<EditProfile> {
                 SizedBox(
                   height: 178.h,
                 ),
-                AppButton(
-                  onTap: () {},
-                  text: "تعديل البيانات",
-                  radius: 15.r,
-                  width: 343.w,
-                  height: 60.h,
+                BlocProvider(
+                  create: (context) => EditProfileCubit(),
+                  child: BlocBuilder<EditProfileCubit, EditProfileSates>(
+                    builder: (context, state) {
+                      EditProfileCubit cubit = BlocProvider.of(context);
+                      return AppButton(
+                        isLoading: state is EditProfileLoadingState,
+                        onTap: () {
+                          cubit.update(
+                            selectedImage,
+                            nameController.text,
+                            phoneNumberController.text,
+                            cityId,
+                          );
+                        },
+                        text: "تعديل البيانات",
+                        radius: 15.r,
+                        width: 343.w,
+                        height: 60.h,
+                      );
+                    },
+                  ),
                 ),
               ],
             ),

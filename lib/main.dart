@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -9,9 +10,6 @@ import 'package:thimar_app/core/logic/helper_methods.dart';
 import 'package:thimar_app/features/category/cubit.dart';
 import 'package:thimar_app/features/category_products/cubit.dart';
 import 'package:thimar_app/features/confirm_code/cubit.dart';
-import 'package:thimar_app/features/contact_us/cubit.dart';
-import 'package:thimar_app/features/create_contact/cubit.dart';
-import 'package:thimar_app/features/get_cities/cubit.dart';
 import 'package:thimar_app/features/get_faqs/cubit.dart';
 import 'package:thimar_app/features/login/cubit.dart';
 import 'package:thimar_app/features/policy/cubit.dart';
@@ -19,7 +17,9 @@ import 'package:thimar_app/features/products/cubit.dart';
 import 'package:thimar_app/features/products_details/cubit.dart';
 import 'package:thimar_app/features/register/cubit.dart';
 import 'package:thimar_app/features/slider_images/cubit.dart';
+import 'package:thimar_app/generated/codegen_loader.g.dart';
 import 'package:thimar_app/views/auth/splash.dart';
+import 'core/logic/kiwi.dart';
 import 'features/about_us/cubit.dart';
 import 'features/suggestions_and_complaints/cubit.dart';
 import 'features/terms_conditions/cubit.dart';
@@ -27,6 +27,8 @@ import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  initKiwi();
+  await EasyLocalization.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -42,7 +44,17 @@ Future<void> main() async {
       statusBarIconBrightness: Brightness.light,
     ),
   );
-  runApp(const MyApp());
+  runApp(
+    EasyLocalization(
+        supportedLocales: const [Locale('en'), Locale('ar')],
+        path: 'assets/translations',
+        fallbackLocale: const Locale('en'),
+        startLocale: const Locale("ar",),
+        saveLocale: true,
+        assetLoader: const CodegenLoader(),
+        child: const MyApp()
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -140,10 +152,10 @@ class MyApp extends StatelessWidget {
               ),
             ),
           ),
-          builder: (context, child) => Directionality(
-            textDirection: TextDirection.rtl,
-            child: child!,
-          ),
+          builder: (context, child) => child!,
+          localizationsDelegates: context.localizationDelegates,
+          supportedLocales: context.supportedLocales,
+          locale: context.locale,
           home: const SplashScreen(),
         ),
       ),

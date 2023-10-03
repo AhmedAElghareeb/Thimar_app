@@ -11,6 +11,7 @@ class AppButton extends StatelessWidget {
     this.width,
     this.height,
     this.radius,
+    this.isLoading = false,
   });
 
   final VoidCallback onTap;
@@ -18,29 +19,35 @@ class AppButton extends StatelessWidget {
   final Color? backColor;
   final Color? textColor;
   final double? width, height, radius;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: width,
-      height: height,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(
-          radius!,
-        ),
-        color: backColor ?? Theme.of(context).primaryColor,
-      ),
-      child: MaterialButton(
-        onPressed: onTap,
-        child: Text(
-          text,
-          style: TextStyle(
-            color: textColor ?? const Color(0xFFFFFFFF),
-            fontSize: 15.sp,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-    );
+    return isLoading
+        ? const FittedBox(
+            fit: BoxFit.scaleDown,
+            child: CircularProgressIndicator(),
+          )
+        : Container(
+            width: width,
+            height: height,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(
+                radius!,
+              ),
+              color: backColor ?? Theme.of(context).primaryColor,
+            ),
+            child: MaterialButton(
+              onPressed: onTap,
+              child: Text(
+                text,
+                style: TextStyle(
+                  color: textColor ?? const Color(0xFFFFFFFF),
+                  fontSize: 15.sp,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          );
   }
 }

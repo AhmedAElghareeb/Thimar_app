@@ -78,6 +78,7 @@ import 'package:flutter/foundation.dart';
 import 'package:quick_log/quick_log.dart';
 
 import '../../views/auth/splash.dart';
+import 'cache_helper.dart';
 import 'helper_methods.dart';
 
 const log = Logger("");
@@ -90,6 +91,10 @@ class DioHelper {
       // receiveTimeout: const Duration(seconds: 5000),
       receiveDataWhenStatusError: true,
       contentType: "multipart/form-data; boundary=<calculated when request is sent>",
+      headers: {
+        "Authorization" : "Bearer ${CacheHelper.getToken()}",
+        "Accept" : "application/json"
+      }
     ),
   );
 
@@ -159,6 +164,7 @@ class DioHelper {
               "Accept": "application/json",
               "Accept-Language": "ar",
               "lang": "ar",
+              "Authorization" : "Bearer ${CacheHelper.getToken()}",
             },
           ),
           queryParameters: params,

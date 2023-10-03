@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:thimar_app/core/design/app_button.dart';
 import 'package:thimar_app/core/design/app_input.dart';
 import 'package:thimar_app/features/suggestions_and_complaints/cubit.dart';
+import 'package:thimar_app/features/suggestions_and_complaints/states.dart';
 
 class SugestionsAndComplaints extends StatefulWidget {
   const SugestionsAndComplaints({super.key});
@@ -127,6 +128,7 @@ class _SugestionsAndComplaintsState extends State<SugestionsAndComplaints> {
                       bloc: cubit,
                       builder: (context, state) {
                         return AppButton(
+                          isLoading: state is SuggestionsLoadingState,
                           onTap: () async {
                             if(_formKey.currentState!.validate()) {
                               cubit.sendSuggestions();
