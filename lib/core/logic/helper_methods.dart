@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
@@ -48,7 +49,7 @@ void showSnackBar(String message, {MessageType typ = MessageType.fail}) {
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(
-            15,
+            15.r,
           ),
         ),
       ),

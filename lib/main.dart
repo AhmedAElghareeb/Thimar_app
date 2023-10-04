@@ -7,22 +7,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:thimar_app/core/logic/cache_helper.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
-import 'package:thimar_app/features/category/cubit.dart';
-import 'package:thimar_app/features/category_products/cubit.dart';
 import 'package:thimar_app/features/confirm_code/cubit.dart';
-import 'package:thimar_app/features/get_faqs/cubit.dart';
 import 'package:thimar_app/features/login/cubit.dart';
-import 'package:thimar_app/features/policy/cubit.dart';
 import 'package:thimar_app/features/products/cubit.dart';
 import 'package:thimar_app/features/products_details/cubit.dart';
 import 'package:thimar_app/features/register/cubit.dart';
-import 'package:thimar_app/features/slider_images/cubit.dart';
 import 'package:thimar_app/generated/codegen_loader.g.dart';
 import 'package:thimar_app/views/auth/splash.dart';
 import 'core/logic/kiwi.dart';
 import 'features/about_us/cubit.dart';
-import 'features/suggestions_and_complaints/cubit.dart';
-import 'features/terms_conditions/cubit.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -73,34 +66,13 @@ class MyApp extends StatelessWidget {
             create: (context) => RegisterCubit(),
           ),
           BlocProvider(
-            create: (context) => CategoryCubit(),
-          ),
-          BlocProvider(
-            create: (context) => CategoryProductsCubit(),
-          ),
-          BlocProvider(
             create: (context) => ProductsCubit(),
           ),
           BlocProvider(
             create: (context) => ShowProductsDetailsCubit(),
           ),
           BlocProvider(
-            create: (context) => GetSliderImagesCubit(),
-          ),
-          BlocProvider(
-            create: (context) => GetFaqsCubit(),
-          ),
-          BlocProvider(
-            create: (context) => GetPolicyCubit(),
-          ),
-          BlocProvider(
             create: (context) => GetAboutUsCubit(),
-          ),
-          BlocProvider(
-            create: (context) => GetTermsCubit(),
-          ),
-          BlocProvider(
-            create: (context) => SuggestionsCubit(),
           ),
           BlocProvider(
             create: (context) => VerifyCodeCubit(),
@@ -129,7 +101,7 @@ class MyApp extends StatelessWidget {
             outlinedButtonTheme: OutlinedButtonThemeData(
               style: OutlinedButton.styleFrom(
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(
+                  borderRadius: BorderRadiusDirectional.circular(
                     15.r,
                   ),
                 ),
@@ -141,7 +113,7 @@ class MyApp extends StatelessWidget {
             filledButtonTheme: FilledButtonThemeData(
               style: OutlinedButton.styleFrom(
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(
+                  borderRadius: BorderRadiusDirectional.circular(
                     15.r,
                   ),
                 ),

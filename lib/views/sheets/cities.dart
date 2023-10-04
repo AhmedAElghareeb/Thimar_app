@@ -45,7 +45,7 @@ class _CitiesSheetsState extends State<CitiesSheets> {
                     } else if (state is GetCitiesSuccessState) {
                       return Expanded(
                         child: ListView.builder(
-                          padding: EdgeInsets.symmetric(
+                          padding: EdgeInsetsDirectional.symmetric(
                             horizontal: 16.w,
                             vertical: 16.h,
                           ),
@@ -90,15 +90,15 @@ class _ItemCity extends StatelessWidget {
         Navigator.pop(context, model);
       },
       child: Container(
-        padding: EdgeInsets.symmetric(
+        padding: EdgeInsetsDirectional.symmetric(
           horizontal: 8.w,
           vertical: 8.h,
         ),
-        margin: EdgeInsets.only(
+        margin: EdgeInsetsDirectional.only(
           bottom: 10.h,
         ),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(7.r),
+          borderRadius: BorderRadiusDirectional.circular(7.r),
           color: Theme.of(context).primaryColor.withOpacity(
                 0.04,
               ),

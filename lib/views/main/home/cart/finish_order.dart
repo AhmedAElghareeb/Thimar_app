@@ -17,26 +17,26 @@ class FinishOrder extends StatelessWidget {
           "إتمام الطلب",
         ),
         leading: Padding(
-          padding: EdgeInsets.all(
-            10.w.h,
+          padding: EdgeInsetsDirectional.all(
+            10.r,
           ),
           child: GestureDetector(
             child: Container(
               width: 32.w,
               height: 32.h,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(9.r),
+                borderRadius: BorderRadiusDirectional.circular(9.r),
                 color: const Color(
                   0xff707070,
                 ).withOpacity(0.1),
               ),
               child: Padding(
-                padding: EdgeInsets.only(
-                  right: 7.w,
+                padding: EdgeInsetsDirectional.only(
+                  start: 7.w,
                 ),
                 child: Icon(
                   Icons.arrow_back_ios,
-                  size: 16.w.h,
+                  size: 16.r,
                   color: Theme.of(context).primaryColor,
                 ),
               ),
@@ -49,7 +49,7 @@ class FinishOrder extends StatelessWidget {
       ),
       body: SafeArea(
         child: ListView(
-          padding: EdgeInsets.symmetric(
+          padding: EdgeInsetsDirectional.symmetric(
             horizontal: 16.w,
             vertical: 31.h,
           ),
@@ -111,7 +111,7 @@ class FinishOrder extends StatelessWidget {
                         child: Icon(
                           Icons.add,
                           color: Theme.of(context).primaryColor,
-                          size: 22.w.h,
+                          size: 22.r,
                         ),
                       ),
                     ),
@@ -123,12 +123,12 @@ class FinishOrder extends StatelessWidget {
                 Container(
                   width: 339.w,
                   height: 33.h,
-                  padding: EdgeInsets.symmetric(
+                  padding: EdgeInsetsDirectional.symmetric(
                     horizontal: 13.w,
                     vertical: 8.h,
                   ),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(
+                    borderRadius: BorderRadiusDirectional.circular(
                       17.r,
                     ),
                     border: Border.all(
@@ -149,7 +149,7 @@ class FinishOrder extends StatelessWidget {
                       Icon(
                         Icons.keyboard_arrow_down_sharp,
                         color: Theme.of(context).primaryColor,
-                        size: 20.w.h,
+                        size: 20.r,
                       ),
                     ],
                   ),
@@ -195,7 +195,7 @@ class FinishOrder extends StatelessWidget {
                       child: Container(
                         width: 163.w,
                         height: 60.h,
-                        padding: EdgeInsets.symmetric(
+                        padding: EdgeInsetsDirectional.symmetric(
                           horizontal: 13.w,
                         ),
                         decoration: BoxDecoration(
@@ -211,7 +211,7 @@ class FinishOrder extends StatelessWidget {
                               offset: Offset(0.w, 6.h),
                             ),
                           ],
-                          borderRadius: BorderRadius.circular(
+                          borderRadius: BorderRadiusDirectional.circular(
                             15.r,
                           ),
                         ),
@@ -249,7 +249,7 @@ class FinishOrder extends StatelessWidget {
                       child: Container(
                         width: 163.w,
                         height: 60.h,
-                        padding: EdgeInsets.symmetric(
+                        padding: EdgeInsetsDirectional.symmetric(
                           horizontal: 13.w,
                         ),
                         decoration: BoxDecoration(
@@ -268,7 +268,7 @@ class FinishOrder extends StatelessWidget {
                               ),
                             ),
                           ],
-                          borderRadius: BorderRadius.circular(
+                          borderRadius: BorderRadiusDirectional.circular(
                             15.r,
                           ),
                         ),
@@ -344,7 +344,7 @@ class FinishOrder extends StatelessWidget {
                       width: 104.w,
                       height: 50.h,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(
+                        borderRadius: BorderRadiusDirectional.circular(
                           11.r,
                         ),
                         border: Border.all(
@@ -378,7 +378,7 @@ class FinishOrder extends StatelessWidget {
                       width: 104.w,
                       height: 50.h,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(
+                        borderRadius: BorderRadiusDirectional.circular(
                           11.r,
                         ),
                         border: Border.all(
@@ -402,7 +402,7 @@ class FinishOrder extends StatelessWidget {
                       width: 104.w,
                       height: 50.h,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(
+                        borderRadius: BorderRadiusDirectional.circular(
                           11.r,
                         ),
                         border: Border.all(
@@ -446,12 +446,12 @@ class FinishOrder extends StatelessWidget {
                 Container(
                   width: 342.w,
                   height: 139.h,
-                  padding: EdgeInsets.symmetric(
+                  padding: EdgeInsetsDirectional.symmetric(
                     horizontal: 16.w,
                     vertical: 9.h,
                   ),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(
+                    borderRadius: BorderRadiusDirectional.circular(
                       13.r,
                     ),
                     color: const Color(

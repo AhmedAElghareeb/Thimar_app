@@ -7,6 +7,11 @@
 	    <string>en</string>
 	    <string>ar</string>
     </array>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+      <string>sms</string>
+      <string>tel</string>
+    </array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>

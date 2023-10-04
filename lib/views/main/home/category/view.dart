@@ -13,7 +13,8 @@ class CategoryProducts extends StatefulWidget {
   final String nameCategory;
   final int id;
 
-  const CategoryProducts({super.key, required this.nameCategory, required this.id});
+  const CategoryProducts(
+      {super.key, required this.nameCategory, required this.id});
 
   @override
   State<CategoryProducts> createState() => _CategoryProductsState();
@@ -34,24 +35,26 @@ class _CategoryProductsState extends State<CategoryProducts> {
           widget.nameCategory,
         ),
         leading: Padding(
-          padding: EdgeInsets.all(10.w.h),
+          padding: EdgeInsetsDirectional.all(
+            10.r,
+          ),
           child: GestureDetector(
             child: Container(
               width: 32.w,
               height: 32.h,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(9.r),
+                borderRadius: BorderRadiusDirectional.circular(9.r),
                 color: const Color(
                   0xff707070,
                 ).withOpacity(0.1),
               ),
               child: Padding(
-                padding: EdgeInsets.only(
-                  right: 7.w,
+                padding: EdgeInsetsDirectional.only(
+                  start: 7.w,
                 ),
                 child: Icon(
                   Icons.arrow_back_ios,
-                  size: 16.w.h,
+                  size: 16.r,
                   color: Theme.of(context).primaryColor,
                 ),
               ),
@@ -66,9 +69,9 @@ class _CategoryProductsState extends State<CategoryProducts> {
         child: ListView(
           children: [
             Padding(
-              padding: EdgeInsets.only(
-                right: 16.w,
-                left: 16.w,
+              padding: EdgeInsetsDirectional.only(
+                start: 16.w,
+                end: 16.w,
                 top: 29.h,
               ),
               child: AppInput(
@@ -92,7 +95,7 @@ class _CategoryProductsState extends State<CategoryProducts> {
                 } else if (state is GetProductsSuccessState) {
                   return GridView.builder(
                     physics: const NeverScrollableScrollPhysics(),
-                    padding: EdgeInsets.symmetric(
+                    padding: EdgeInsetsDirectional.symmetric(
                       horizontal: 16.w,
                     ),
                     itemCount: state.list.length,
@@ -100,7 +103,7 @@ class _CategoryProductsState extends State<CategoryProducts> {
                       height: 250.h,
                       width: 163.w,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(17.r),
+                        borderRadius: BorderRadiusDirectional.circular(17.r),
                         color: const Color(
                           0xffffffff,
                         ),
@@ -120,12 +123,14 @@ class _CategoryProductsState extends State<CategoryProducts> {
                               GestureDetector(
                                 child: Container(
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(11.r,),
+                                    borderRadius: BorderRadiusDirectional.circular(
+                                      11.r,
+                                    ),
                                   ),
-                                  margin: EdgeInsets.only(
+                                  margin: EdgeInsetsDirectional.only(
                                     top: 9.h,
-                                    right: 9.w,
-                                    left: 9.w,
+                                    start: 9.w,
+                                    end: 9.w,
                                   ),
                                   clipBehavior: Clip.antiAliasWithSaveLayer,
                                   child: Image.network(
@@ -146,17 +151,15 @@ class _CategoryProductsState extends State<CategoryProducts> {
                               Align(
                                 alignment: AlignmentDirectional.topEnd,
                                 child: Container(
-                                  margin: EdgeInsets.only(
-                                    top: 9.h,
-                                    left: 12.5.w
-                                  ),
+                                  margin:
+                                      EdgeInsetsDirectional.only(top: 9.h, end: 12.5.w),
                                   width: 54.w,
                                   height: 20.h,
                                   decoration: BoxDecoration(
                                     color: Theme.of(context).primaryColor,
-                                    borderRadius: BorderRadius.only(
-                                      bottomRight: Radius.circular(25.r),
-                                      topLeft: Radius.circular(11.r),
+                                    borderRadius: BorderRadiusDirectional.only(
+                                      bottomStart: Radius.circular(25.r),
+                                      topEnd: Radius.circular(11.r),
                                     ),
                                   ),
                                   child: Center(
@@ -176,11 +179,11 @@ class _CategoryProductsState extends State<CategoryProducts> {
                             ],
                           ),
                           Padding(
-                            padding: EdgeInsets.only(
-                              right: 10.w,
+                            padding: EdgeInsetsDirectional.only(
+                              start: 10.w,
                             ),
                             child: Align(
-                              alignment: Alignment.topRight,
+                              alignment: AlignmentDirectional.topStart,
                               child: Text(
                                 state.list[index].title,
                                 style: TextStyle(
@@ -195,11 +198,11 @@ class _CategoryProductsState extends State<CategoryProducts> {
                             height: 4.h,
                           ),
                           Padding(
-                            padding: EdgeInsets.only(
-                              right: 11.w,
+                            padding: EdgeInsetsDirectional.only(
+                              start: 11.w,
                             ),
                             child: Align(
-                              alignment: Alignment.topRight,
+                              alignment: AlignmentDirectional.topStart,
                               child: Text(
                                 "السعر / ${state.list[index].unit.name}",
                                 style: TextStyle(
@@ -216,13 +219,11 @@ class _CategoryProductsState extends State<CategoryProducts> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Padding(
-                                padding: EdgeInsets.only(
-                                  right: 9.w
-                                ),
+                                padding: EdgeInsetsDirectional.only(start: 9.w),
                                 child: Row(
                                   children: [
                                     Align(
-                                      alignment: Alignment.topRight,
+                                      alignment: AlignmentDirectional.topStart,
                                       child: Text(
                                         "${state.list[index].price} ر.س",
                                         style: TextStyle(
@@ -233,7 +234,7 @@ class _CategoryProductsState extends State<CategoryProducts> {
                                       ),
                                     ),
                                     Align(
-                                      alignment: Alignment.bottomRight,
+                                      alignment: AlignmentDirectional.bottomStart,
                                       child: Text(
                                         "${state.list[index].priceBeforeDiscount} ر.س",
                                         textAlign: TextAlign.justify,
@@ -254,30 +255,33 @@ class _CategoryProductsState extends State<CategoryProducts> {
                             height: 19.h,
                           ),
                           Align(
-                            alignment: Alignment.center,
+                            alignment: AlignmentDirectional.center,
                             child: Padding(
-                              padding: EdgeInsets.only(
-                                left: 24.w,
-                                right: 24.w,
+                              padding: EdgeInsetsDirectional.only(
+                                end: 24.w,
+                                start: 24.w,
                                 bottom: 10.h,
                               ),
                               child: AppButton(
                                 onTap: () {},
-                                text: state.list[index].amount == 0 ? "تم نفاذ الكمية" : "أضف للسلة",
+                                text: state.list[index].amount == 0
+                                    ? "تم نفاذ الكمية"
+                                    : "أضف للسلة",
                                 width: 120.w,
                                 height: 30.h,
                                 radius: 9.r,
-                                backColor: state.list[index].amount == 0 ? Colors.grey : const Color(
-                                  0xff61B80C,
-                                ),
+                                backColor: state.list[index].amount == 0
+                                    ? Colors.grey
+                                    : const Color(
+                                        0xff61B80C,
+                                      ),
                               ),
                             ),
                           ),
                         ],
                       ),
                     ),
-                    gridDelegate:
-                    SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       crossAxisSpacing: 11.w,
                       mainAxisSpacing: 11.h,

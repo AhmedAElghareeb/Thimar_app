@@ -3,18 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:kiwi/kiwi.dart';
 import 'package:thimar_app/core/design/app_button.dart';
 import 'package:thimar_app/core/design/app_input.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
-import 'package:thimar_app/features/category/cubit.dart';
+import 'package:thimar_app/features/category/bloc.dart';
 import 'package:thimar_app/features/category/states.dart';
-import 'package:thimar_app/features/category_products/cubit.dart';
+import 'package:thimar_app/features/category_products/bloc.dart';
 import 'package:thimar_app/features/category_products/states.dart';
-import 'package:thimar_app/features/slider_images/cubit.dart';
+import 'package:thimar_app/features/slider_images/bloc.dart';
+import 'package:thimar_app/features/slider_images/events.dart';
 import 'package:thimar_app/features/slider_images/states.dart';
 import 'package:thimar_app/views/main/home/cart/view.dart';
 import 'package:thimar_app/views/main/home/category/view.dart';
 import 'package:thimar_app/views/main/home/product_details/view.dart';
+import '../../../../features/category/events.dart';
+import '../../../../features/category_products/events.dart';
 
 class HomeScreen extends StatefulWidget {
   final int? id;
@@ -28,17 +32,23 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final searchController = TextEditingController();
 
+  final bloc = KiwiContainer().resolve<CategoryProductBloc>()..add(GetCategoryProductsDataEvent());
+
+  @override
+  void dispose() {
+    super.dispose();
+    bloc.close();
+  }
+
   @override
   Widget build(BuildContext context) {
-    CategoryProductsCubit cubit = BlocProvider.of(context);
-    cubit.getCategoryProducts();
     return Scaffold(
       appBar: const MainAppBar(),
       body: SafeArea(
         child: ListView(
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(
+              padding: EdgeInsetsDirectional.symmetric(
                 horizontal: 16.w,
                 vertical: 15.h,
               ),
@@ -58,7 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 29.h,
             ),
             Padding(
-              padding: EdgeInsets.symmetric(
+              padding: EdgeInsetsDirectional.symmetric(
                 horizontal: 16.w,
               ),
               child: Align(
@@ -78,14 +88,15 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 27.9.h,
             ),
             Padding(
-              padding: EdgeInsets.symmetric(
+              padding: EdgeInsetsDirectional.symmetric(
                 horizontal: 16.w,
               ),
               child: Align(
                 alignment: AlignmentDirectional.centerStart,
                 child: Text(
                   "الأصناف",
-                  style: TextStyle(fontWeight: FontWeight.w900, fontSize: 15.sp),
+                  style:
+                      TextStyle(fontWeight: FontWeight.w900, fontSize: 15.sp),
                 ),
               ),
             ),
@@ -93,7 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 7.h,
             ),
             BlocBuilder(
-              bloc: cubit,
+              bloc: bloc,
               builder: (context, state) {
                 if (state is CategoryProductsFailedState) {
                   return const Center(
@@ -102,7 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 } else if (state is CategoryProductsSuccessState) {
                   return GridView.builder(
                     physics: const NeverScrollableScrollPhysics(),
-                    padding: EdgeInsets.symmetric(
+                    padding: EdgeInsetsDirectional.symmetric(
                       horizontal: 16.w,
                     ),
                     itemCount: state.list.length,
@@ -110,7 +121,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       height: 250.h,
                       width: 163.w,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(17.r),
+                        borderRadius: BorderRadiusDirectional.circular(17.r),
                         color: const Color(
                           0xffffffff,
                         ),
@@ -129,11 +140,16 @@ class _HomeScreenState extends State<HomeScreen> {
                             children: [
                               GestureDetector(
                                 child: Container(
-                                  margin: EdgeInsets.only(
-                                      top: 9.h, right: 9.w, left: 9.w),
+                                  margin: EdgeInsetsDirectional.only(
+                                    top: 9.h,
+                                    start: 9.w,
+                                    end: 9.w,
+                                  ),
                                   clipBehavior: Clip.antiAliasWithSaveLayer,
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(11.r),
+                                    borderRadius: BorderRadius.circular(
+                                      11.r,
+                                    ),
                                   ),
                                   child: Image.network(
                                     state.list[index].mainImage,
@@ -153,14 +169,17 @@ class _HomeScreenState extends State<HomeScreen> {
                               Align(
                                 alignment: AlignmentDirectional.topEnd,
                                 child: Container(
-                                  margin: EdgeInsets.only(top: 9.h, left: 12.5.w),
+                                  margin: EdgeInsetsDirectional.only(
+                                    top: 9.h,
+                                    end: 12.5.w,
+                                  ),
                                   width: 54.w,
                                   height: 20.h,
                                   decoration: BoxDecoration(
                                     color: Theme.of(context).primaryColor,
-                                    borderRadius: BorderRadius.only(
-                                      bottomRight: Radius.circular(25.r),
-                                      topLeft: Radius.circular(11.r),
+                                    borderRadius: BorderRadiusDirectional.only(
+                                      bottomStart: Radius.circular(25.r),
+                                      topEnd: Radius.circular(11.r),
                                     ),
                                   ),
                                   child: Center(
@@ -180,8 +199,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ),
                           Padding(
-                            padding: EdgeInsets.only(
-                              right: 10.w,
+                            padding: EdgeInsetsDirectional.only(
+                              start: 10.w,
                             ),
                             child: Align(
                               alignment: AlignmentDirectional.topStart,
@@ -199,8 +218,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             height: 4.h,
                           ),
                           Padding(
-                            padding: EdgeInsets.only(
-                              right: 11.w,
+                            padding: EdgeInsetsDirectional.only(
+                              start: 11.w,
                             ),
                             child: Align(
                               alignment: AlignmentDirectional.topStart,
@@ -217,7 +236,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             height: 3.h,
                           ),
                           Padding(
-                            padding: EdgeInsets.only(right: 9.w),
+                            padding: EdgeInsetsDirectional.only(
+                              start: 9.w,
+                            ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -238,7 +259,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       width: 3.w,
                                     ),
                                     Align(
-                                      alignment: AlignmentDirectional.bottomStart,
+                                      alignment:
+                                          AlignmentDirectional.bottomStart,
                                       child: Text(
                                         "${state.list[index].priceBeforeDiscount} ر.س",
                                         textAlign: TextAlign.justify,
@@ -261,20 +283,24 @@ class _HomeScreenState extends State<HomeScreen> {
                           Align(
                             alignment: AlignmentDirectional.center,
                             child: Padding(
-                              padding: EdgeInsets.only(
-                                left: 24.w,
-                                right: 24.w,
+                              padding: EdgeInsetsDirectional.only(
+                                end: 24.w,
+                                start: 24.w,
                                 bottom: 10.h,
                               ),
                               child: AppButton(
                                 onTap: () {},
-                                text: state.list[index].amount == 0 ? "تم نفاذ الكمية" : "أضف للسلة",
+                                text: state.list[index].amount == 0
+                                    ? "تم نفاذ الكمية"
+                                    : "أضف للسلة",
                                 width: 120.w,
                                 height: 30.h,
                                 radius: 9.r,
-                                backColor: state.list[index].amount == 0 ? Colors.grey : const Color(
-                                  0xff61B80C,
-                                ),
+                                backColor: state.list[index].amount == 0
+                                    ? Colors.grey
+                                    : const Color(
+                                        0xff61B80C,
+                                      ),
                               ),
                             ),
                           ),
@@ -311,7 +337,9 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
     return SafeArea(
       child: Container(
         height: 60.h,
-        padding: EdgeInsets.symmetric(horizontal: 16.w),
+        padding: EdgeInsetsDirectional.symmetric(
+          horizontal: 16.w,
+        ),
         child: Row(
           children: [
             SvgPicture.asset(
@@ -378,10 +406,12 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
                 child: Container(
                   height: 33.h,
                   width: 33.w,
-                  padding: EdgeInsets.all(7.r),
+                  padding: EdgeInsetsDirectional.all(
+                    7.r,
+                  ),
                   decoration: BoxDecoration(
                     color: Theme.of(context).primaryColor.withOpacity(.13),
-                    borderRadius: BorderRadius.circular(
+                    borderRadius: BorderRadiusDirectional.circular(
                       9.r,
                     ),
                   ),
@@ -399,6 +429,106 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => Size.fromHeight(60.h);
 }
 
+class SliderImages extends StatefulWidget {
+  const SliderImages({super.key});
+
+  @override
+  State<SliderImages> createState() => _SliderImagesState();
+}
+
+class _SliderImagesState extends State<SliderImages> {
+
+  final bloc = KiwiContainer().resolve<SliderBloc>()..add(GetSliderDataEvent());
+
+  @override
+  void dispose() {
+    super.dispose();
+    bloc.close();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder(
+      bloc: bloc,
+      builder: (context, state) {
+        if (state is GetSliderImagesLoadingState) {
+          return Center(
+            child: CircularProgressIndicator(
+              color: Theme.of(context).primaryColor,
+            ),
+          );
+        } else if (state is GetSliderImagesSuccessState) {
+          return StatefulBuilder(
+            builder: (context, setState2) => Stack(
+              alignment: AlignmentDirectional.bottomCenter,
+              children: [
+                CarouselSlider(
+                  items: List.generate(
+                    state.list.length,
+                        (index) => Image.network(
+                      state.list[index].media,
+                      height: 164.h,
+                      width: double.infinity,
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                  options: CarouselOptions(
+                    height: 164.h,
+                    autoPlay: true,
+                    viewportFraction: 1,
+                    onPageChanged: (index, reason) {
+                      bloc.currentIndex = index;
+                      setState2(() {});
+                    },
+                  ),
+                ),
+                Container(
+                  width: 60.w,
+                  height: 20.h,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadiusDirectional.circular(
+                      7.r,
+                    ),
+                    color: Theme.of(context).primaryColor.withOpacity(
+                      0.8,
+                    ),
+                  ),
+                  margin: EdgeInsetsDirectional.only(
+                    bottom: 5.h,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(
+                      state.list.length,
+                          (index) => Padding(
+                        padding: EdgeInsetsDirectional.only(
+                          end: 6.w,
+                        ),
+                        child: CircleAvatar(
+                          radius: bloc.currentIndex == index ? 4 : 2,
+                          backgroundColor: bloc.currentIndex == index
+                              ? Theme.of(context).primaryColor
+                              : const Color(0xffFFFFFF).withOpacity(
+                            0.8,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        } else {
+          return const Center(
+            child: Text("فشل فى الاتصال"),
+          );
+        }
+      },
+    );
+  }
+}
+
 class SectionsSlider extends StatefulWidget {
   const SectionsSlider({super.key});
 
@@ -407,15 +537,22 @@ class SectionsSlider extends StatefulWidget {
 }
 
 class _SectionsSliderState extends State<SectionsSlider> {
+
+  final bloc = KiwiContainer().resolve<CategoriesBloc>()..add(GetCategoriesEvent());
+
+  @override
+  void dispose() {
+    super.dispose();
+    bloc.close();
+  }
+
   @override
   Widget build(BuildContext context) {
-    CategoryCubit cubit = BlocProvider.of(context);
-    cubit.getCategories();
     return SizedBox(
       height: 103.h,
       width: 375.w,
       child: BlocBuilder(
-        bloc: cubit,
+        bloc: bloc,
         builder: (context, state) {
           if (state is CategoryFailedState) {
             return const Center(
@@ -424,7 +561,7 @@ class _SectionsSliderState extends State<SectionsSlider> {
           } else if (state is CategorySuccessState) {
             var model = state.list;
             return ListView.builder(
-              padding: EdgeInsets.symmetric(
+              padding: EdgeInsetsDirectional.symmetric(
                 horizontal: 16.w,
               ),
               scrollDirection: Axis.horizontal,
@@ -442,7 +579,7 @@ class _SectionsSliderState extends State<SectionsSlider> {
                   children: [
                     Container(
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(
+                        borderRadius: BorderRadiusDirectional.circular(
                           30.r,
                         ),
                       ),
@@ -450,7 +587,7 @@ class _SectionsSliderState extends State<SectionsSlider> {
                       child: Container(
                         clipBehavior: Clip.antiAlias,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15.r),
+                          borderRadius: BorderRadiusDirectional.circular(15.r),
                         ),
                         child: Image.network(
                           model[index].media,
@@ -484,95 +621,3 @@ class _SectionsSliderState extends State<SectionsSlider> {
   }
 }
 
-class SliderImages extends StatefulWidget {
-  const SliderImages({super.key});
-
-  @override
-  State<SliderImages> createState() => _SliderImagesState();
-}
-
-class _SliderImagesState extends State<SliderImages> {
-  @override
-  Widget build(BuildContext context) {
-    GetSliderImagesCubit cubit = BlocProvider.of(context);
-    cubit.getSliderImages();
-    return BlocBuilder(
-      bloc: cubit,
-      builder: (context, state) {
-        if (state is GetSliderImagesLoadingState) {
-          return Center(
-            child: CircularProgressIndicator(
-              color: Theme.of(context).primaryColor,
-            ),
-          );
-        } else if (state is GetSliderImagesSuccessState) {
-          return StatefulBuilder(
-            builder: (context, setState2) => Stack(
-              alignment: AlignmentDirectional.bottomCenter,
-              children: [
-                CarouselSlider(
-                  items: List.generate(
-                    state.list.length,
-                    (index) => Image.network(
-                      state.list[index].media,
-                      height: 164.h,
-                      width: double.infinity,
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                  options: CarouselOptions(
-                    height: 164.h,
-                    autoPlay: true,
-                    viewportFraction: 1,
-                    onPageChanged: (index, reason) {
-                      cubit.currentIndex = index;
-                      setState2(() {});
-                    },
-                  ),
-                ),
-                Container(
-                  width: 60.w,
-                  height: 20.h,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(
-                      7.r,
-                    ),
-                    color: Theme.of(context).primaryColor.withOpacity(
-                          0.8,
-                        ),
-                  ),
-                  margin: EdgeInsets.only(
-                    bottom: 5.h,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(
-                      state.list.length,
-                      (index) => Padding(
-                        padding: EdgeInsets.only(
-                          left: 6.w,
-                        ),
-                        child: CircleAvatar(
-                          radius: cubit.currentIndex == index ? 4 : 2,
-                          backgroundColor: cubit.currentIndex == index
-                              ? Theme.of(context).primaryColor
-                              : const Color(0xffFFFFFF).withOpacity(
-                                  0.8,
-                                ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
-        } else {
-          return const Center(
-            child: Text("فشل فى الاتصال"),
-          );
-        }
-      },
-    );
-  }
-}

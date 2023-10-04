@@ -64,7 +64,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
               child: CircularProgressIndicator(),
             )
           : ListView.builder(
-              padding: EdgeInsets.symmetric(
+              padding: EdgeInsetsDirectional.symmetric(
                 horizontal: 16.w,
                 vertical: 16.h,
               ),
@@ -88,7 +88,7 @@ class _Item extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(
+      padding: EdgeInsetsDirectional.only(
         bottom: 16.h,
       ),
       child: Row(
@@ -96,7 +96,7 @@ class _Item extends StatelessWidget {
           Container(
             height: 33.h,
             width: 33.w,
-            padding: EdgeInsets.symmetric(
+            padding: EdgeInsetsDirectional.symmetric(
               horizontal: 6.5.w,
               vertical: 6.5.h
             ),

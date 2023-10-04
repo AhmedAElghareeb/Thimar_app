@@ -15,7 +15,9 @@ class WalletView extends StatelessWidget {
       appBar: AppBar(
         title: const Text("المحفظة"),
         leading: Padding(
-          padding: EdgeInsets.all(10.w.h),
+          padding: EdgeInsetsDirectional.all(
+            10.r,
+          ),
           child: GestureDetector(
             child: Container(
               width: 32.w,
@@ -27,12 +29,12 @@ class WalletView extends StatelessWidget {
                 ).withOpacity(0.1),
               ),
               child: Padding(
-                padding: EdgeInsets.only(
-                  right: 7.w,
+                padding: EdgeInsetsDirectional.only(
+                  start: 7.w,
                 ),
                 child: Icon(
                   Icons.arrow_back_ios,
-                  size: 16.w.h,
+                  size: 16.r,
                   color: Theme.of(context).primaryColor,
                 ),
               ),
@@ -45,7 +47,10 @@ class WalletView extends StatelessWidget {
       ),
       body: SafeArea(
         child: ListView(
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
+          padding: EdgeInsetsDirectional.symmetric(
+            horizontal: 16.w,
+            vertical: 20.h,
+          ),
           children: [
             Container(
               width: 343.w,
@@ -155,7 +160,7 @@ class WalletView extends StatelessWidget {
                   Row(
                     children: [
                       Padding(
-                        padding: EdgeInsets.all(8.w.h),
+                        padding: EdgeInsetsDirectional.all(8.w.h),
                         child: SvgPicture.asset(
                           "assets/images/icons/walletIcons/incoming.svg",
                           width: 18.w,
@@ -193,9 +198,9 @@ class WalletView extends StatelessWidget {
                     height: 8.h,
                   ),
                   Padding(
-                    padding: EdgeInsets.only(
-                      right: 40.w,
-                      left: 200.w,
+                    padding: EdgeInsetsDirectional.only(
+                      start: 40.w,
+                      end: 200.w,
                     ),
                     child: Text(
                       "255 ر.س",
@@ -234,7 +239,9 @@ class WalletView extends StatelessWidget {
                   Row(
                     children: [
                       Padding(
-                        padding: EdgeInsets.all(8.w.h),
+                        padding: EdgeInsetsDirectional.all(
+                          8.r,
+                        ),
                         child: SvgPicture.asset(
                           "assets/images/icons/walletIcons/incoming.svg",
                           width: 18.w,
@@ -272,7 +279,10 @@ class WalletView extends StatelessWidget {
                     height: 8.h,
                   ),
                   Padding(
-                    padding: EdgeInsets.only(right: 40.w, left: 200.w),
+                    padding: EdgeInsetsDirectional.only(
+                      start: 40.w,
+                      end: 200.w,
+                    ),
                     child: Text(
                       "255 ر.س",
                       style: TextStyle(
@@ -310,7 +320,9 @@ class WalletView extends StatelessWidget {
                   Row(
                     children: [
                       Padding(
-                        padding: EdgeInsets.all(8.w.h),
+                        padding: EdgeInsetsDirectional.all(
+                          8.r,
+                        ),
                         child: SvgPicture.asset(
                           "assets/images/icons/walletIcons/paidTo.svg",
                           width: 18.w,
@@ -368,9 +380,9 @@ class WalletView extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: EdgeInsets.only(
+                          padding: EdgeInsetsDirectional.only(
                             top: 7.h,
-                            right: 13.w,
+                            start: 13.w,
                           ),
                           child: Text(
                             "طلب #4587",
@@ -387,7 +399,9 @@ class WalletView extends StatelessWidget {
                         Row(
                           children: [
                             Padding(
-                              padding: EdgeInsets.all(10.w.h),
+                              padding: EdgeInsetsDirectional.all(
+                                10.r,
+                              ),
                               child: Image.network(
                                 "https://avatars.mds.yandex.net/get-tycoon/5573087/2a000001813e654364145f8d466e8d00ffb8/priority-product-x-large",
                                 width: 25.w,
@@ -396,7 +410,9 @@ class WalletView extends StatelessWidget {
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsets.all(10.w.h),
+                              padding: EdgeInsetsDirectional.all(
+                                10.r,
+                              ),
                               child: Image.network(
                                 "https://avatars.mds.yandex.net/get-tycoon/5573087/2a000001813e654364145f8d466e8d00ffb8/priority-product-x-large",
                                 width: 25.w,
@@ -405,7 +421,9 @@ class WalletView extends StatelessWidget {
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsets.all(10.w.h),
+                              padding: EdgeInsetsDirectional.all(
+                                10.r,
+                              ),
                               child: Image.network(
                                 "https://avatars.mds.yandex.net/get-tycoon/5573087/2a000001813e654364145f8d466e8d00ffb8/priority-product-x-large",
                                 width: 25.w,

@@ -13,7 +13,9 @@ class DotButton extends StatelessWidget {
     return DottedBorder(
       borderType: BorderType.RRect,
       color: Theme.of(context).primaryColor,
-      radius: Radius.circular(15.r),
+      radius: Radius.circular(
+        15.r,
+      ),
       padding: EdgeInsets.symmetric(
         horizontal: 2.w,
         vertical: 2.h,

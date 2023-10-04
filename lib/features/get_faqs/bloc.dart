@@ -1,16 +1,16 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:thimar_app/core/logic/dio_helper.dart';
 import 'package:thimar_app/features/get_faqs/states.dart';
 
+import '../../core/logic/dio_helper.dart';
 import '../../models/faqs_model.dart';
+import 'events.dart';
 
-class GetFaqsCubit extends Cubit<GetFaqsStates> {
-  GetFaqsCubit()
-      : super(
-          GetFaqsStates(),
-        );
+class FaqsBloc extends Bloc<FaqsEvents, GetFaqsStates> {
+  FaqsBloc() : super(GetFaqsStates(),){
+    on<GetFaqsEvent>(getFaqsData);
+  }
 
-  void getFaqsData() async {
+  void getFaqsData(GetFaqsEvent event, Emitter<GetFaqsStates> emit) async {
     emit(
       GetFaqsLoadingState(),
     );
@@ -31,4 +31,5 @@ class GetFaqsCubit extends Cubit<GetFaqsStates> {
       );
     }
   }
+
 }

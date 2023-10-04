@@ -3,8 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:thimar_app/core/design/app_button.dart';
 import 'package:thimar_app/core/design/app_input.dart';
 
-
-
 class RateProducts extends StatelessWidget {
   const RateProducts({super.key});
 
@@ -16,7 +14,7 @@ class RateProducts extends StatelessWidget {
           "تقييم المنتجات",
         ),
         leading: Padding(
-          padding: EdgeInsets.symmetric(
+          padding: EdgeInsetsDirectional.symmetric(
             horizontal: 10.w,
             vertical: 10.h,
           ),
@@ -25,18 +23,18 @@ class RateProducts extends StatelessWidget {
               width: 32.w,
               height: 32.h,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(9.r),
+                borderRadius: BorderRadiusDirectional.circular(9.r),
                 color: const Color(
                   0xff707070,
                 ).withOpacity(0.1),
               ),
               child: Padding(
-                padding: EdgeInsets.only(
-                  right: 7.w,
+                padding: EdgeInsetsDirectional.only(
+                  start: 7.w,
                 ),
                 child: Icon(
                   Icons.arrow_back_ios,
-                  size: 16.w.h,
+                  size: 16.r,
                   color: Theme.of(context).primaryColor,
                 ),
               ),
@@ -48,7 +46,7 @@ class RateProducts extends StatelessWidget {
         ),
       ),
       body: ListView(
-        padding: EdgeInsets.symmetric(
+        padding: EdgeInsetsDirectional.symmetric(
           horizontal: 16.w,
           vertical: 41.h,
         ),
@@ -63,7 +61,9 @@ class RateProducts extends StatelessWidget {
               height: 16.h,
             ),
           ),
-          SizedBox(height: 16.h,),
+          SizedBox(
+            height: 16.h,
+          ),
           AppButton(
             onTap: () {},
             text: "تقييم",
@@ -88,7 +88,7 @@ class _Item extends StatelessWidget {
       height: 225.h,
       width: 343.w,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15.r),
+        borderRadius: BorderRadiusDirectional.circular(15.r),
         color: const Color(
           0xffffffff,
         ),
@@ -104,7 +104,7 @@ class _Item extends StatelessWidget {
       child: Column(
         children: [
           Padding(
-            padding: EdgeInsets.only(
+            padding: EdgeInsetsDirectional.only(
               top: 8.h,
             ),
             child: Row(
@@ -208,7 +208,7 @@ class _Item extends StatelessWidget {
             height: 14.h,
           ),
           Padding(
-            padding: EdgeInsets.symmetric(
+            padding: EdgeInsetsDirectional.symmetric(
               horizontal: 11.w,
             ),
             child: AppInput(

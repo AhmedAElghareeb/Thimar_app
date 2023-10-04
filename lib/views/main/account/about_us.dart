@@ -22,7 +22,9 @@ class _AboutUsState extends State<AboutUs> {
       appBar: AppBar(
         title: const Text("عن التطبيق"),
         leading: Padding(
-          padding: EdgeInsets.all(10.w.h),
+          padding: EdgeInsetsDirectional.all(
+            10.r,
+          ),
           child: GestureDetector(
             child: Container(
               width: 32.w,
@@ -34,12 +36,12 @@ class _AboutUsState extends State<AboutUs> {
                 ).withOpacity(0.1),
               ),
               child: Padding(
-                padding: EdgeInsets.only(
-                  right: 7.w,
+                padding: EdgeInsetsDirectional.only(
+                  start: 7.w,
                 ),
                 child: Icon(
                   Icons.arrow_back_ios,
-                  size: 16.w.h,
+                  size: 16.r,
                   color: Theme.of(context).primaryColor,
                 ),
               ),
@@ -60,7 +62,7 @@ class _AboutUsState extends State<AboutUs> {
               );
             } else if (state is GetAboutUsSuccessState) {
               return ListView(
-                padding: EdgeInsets.symmetric(
+                padding: EdgeInsetsDirectional.symmetric(
                   vertical: 26.h,
                 ),
                 children: [

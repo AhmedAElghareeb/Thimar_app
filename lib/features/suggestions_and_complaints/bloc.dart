@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:thimar_app/core/logic/helper_methods.dart';
+import 'package:thimar_app/features/suggestions_and_complaints/events.dart';
 import 'package:thimar_app/features/suggestions_and_complaints/states.dart';
 
 import '../../core/logic/dio_helper.dart';
+import '../../core/logic/helper_methods.dart';
 
-class SuggestionsCubit extends Cubit<SuggestionsStates> {
-  SuggestionsCubit()
-      : super(
-          SuggestionsStates(),
-        );
+class SuggestionsBloc extends Bloc<SuggestionsEvents, SuggestionsStates>{
+  SuggestionsBloc() : super(SuggestionsStates(),) {
+    on<SendSuggestionEvent>(sendSuggestions);
+  }
 
   final nameController = TextEditingController();
   final phoneNumberController = TextEditingController();
   final subjectController = TextEditingController();
   final titleController = TextEditingController();
 
-  Future<void> sendSuggestions() async {
+  Future<void> sendSuggestions(SendSuggestionEvent event, Emitter<SuggestionsStates> emit) async {
     emit(
       SuggestionsLoadingState(),
     );
@@ -48,4 +48,5 @@ class SuggestionsCubit extends Cubit<SuggestionsStates> {
       );
     }
   }
+
 }

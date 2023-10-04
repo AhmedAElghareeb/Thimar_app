@@ -16,8 +16,8 @@ class Address extends StatelessWidget {
           "العناوين",
         ),
         leading: Padding(
-          padding: EdgeInsets.all(
-            10.w.h,
+          padding: EdgeInsetsDirectional.all(
+            10.r,
           ),
           child: GestureDetector(
             child: Container(
@@ -30,12 +30,12 @@ class Address extends StatelessWidget {
                 ).withOpacity(0.1),
               ),
               child: Padding(
-                padding: EdgeInsets.only(
-                  right: 7.w,
+                padding: EdgeInsetsDirectional.only(
+                  start: 7.w,
                 ),
                 child: Icon(
                   Icons.arrow_back_ios,
-                  size: 16.w.h,
+                  size: 16.r,
                   color: Theme.of(context).primaryColor,
                 ),
               ),
@@ -48,7 +48,7 @@ class Address extends StatelessWidget {
       ),
       body: SafeArea(
         child: ListView(
-          padding: EdgeInsets.symmetric(
+          padding: EdgeInsetsDirectional.symmetric(
             horizontal: 12.w,
             vertical: 28.h,
           ),
@@ -108,8 +108,8 @@ class _Item extends StatelessWidget {
           Row(
             children: [
               Padding(
-                padding: EdgeInsets.only(
-                  right: 16.w,
+                padding: EdgeInsetsDirectional.only(
+                  start: 16.w,
                 ),
                 child: Text(
                   "المنزل",
@@ -124,7 +124,9 @@ class _Item extends StatelessWidget {
                 width: 217.w,
               ),
               Padding(
-                padding: EdgeInsets.all(5.w.h),
+                padding: EdgeInsetsDirectional.all(
+                  5.r,
+                ),
                 child: SvgPicture.asset(
                   "assets/images/icons/addressIcons/delete.svg",
                   width: 24.w,
@@ -133,7 +135,9 @@ class _Item extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.all(5.w.h),
+                padding: EdgeInsetsDirectional.all(
+                  5.r,
+                ),
                 child: SvgPicture.asset(
                   "assets/images/icons/addressIcons/edit.svg",
                   width: 24.w,
@@ -147,7 +151,9 @@ class _Item extends StatelessWidget {
             height: 3.h,
           ),
           Padding(
-            padding: EdgeInsets.only(right: 16.w),
+            padding: EdgeInsetsDirectional.only(
+              start: 16.w,
+            ),
             child: Text(
               "العنوان : 119 طريق الملك عبدالعزيز",
               style: TextStyle(
@@ -158,7 +164,9 @@ class _Item extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(right: 16.w),
+            padding: EdgeInsetsDirectional.only(
+              start: 16.w,
+            ),
             child: Text(
               "الوصف",
               style: TextStyle(
@@ -171,7 +179,9 @@ class _Item extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(right: 16.w),
+            padding: EdgeInsetsDirectional.only(
+              start: 16.w,
+            ),
             child: Text(
               "رقم الجوال",
               style: TextStyle(

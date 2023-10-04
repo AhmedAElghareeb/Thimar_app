@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:thimar_app/features/policy/cubit.dart';
+import 'package:kiwi/kiwi.dart';
+import 'package:thimar_app/features/policy/bloc.dart';
 import 'package:thimar_app/features/policy/states.dart';
+
+import '../../../features/policy/events.dart';
 
 class PolicyView extends StatefulWidget {
   const PolicyView({super.key});
@@ -13,17 +16,26 @@ class PolicyView extends StatefulWidget {
 }
 
 class _PolicyViewState extends State<PolicyView> {
+
+  final bloc = KiwiContainer().resolve<PolicyBloc>()..add(GetPolicyEvent());
+
+  @override
+  void dispose() {
+    super.dispose();
+    bloc.close();
+  }
+
   @override
   Widget build(BuildContext context) {
-    GetPolicyCubit cubit = BlocProvider.of(context);
-    cubit.getPolicyData();
     return Scaffold(
       appBar: AppBar(
         title: const Text(
           "سياسة الخصوصية",
         ),
         leading: Padding(
-          padding: EdgeInsets.all(10.w.h),
+          padding: EdgeInsetsDirectional.all(
+            10.r,
+          ),
           child: GestureDetector(
             child: Container(
               width: 32.w,
@@ -35,12 +47,12 @@ class _PolicyViewState extends State<PolicyView> {
                 ).withOpacity(0.1),
               ),
               child: Padding(
-                padding: EdgeInsets.only(
-                  right: 7.w,
+                padding: EdgeInsetsDirectional.only(
+                  start: 7.w,
                 ),
                 child: Icon(
                   Icons.arrow_back_ios,
-                  size: 16.w.h,
+                  size: 16.r,
                   color: Theme.of(context).primaryColor,
                 ),
               ),
@@ -53,7 +65,7 @@ class _PolicyViewState extends State<PolicyView> {
       ),
       body: SafeArea(
         child: BlocBuilder(
-          bloc: cubit,
+          bloc: bloc,
           builder: (context, state) {
             if (state is GetPolicyLoadingState) {
               return const Center(
@@ -61,7 +73,7 @@ class _PolicyViewState extends State<PolicyView> {
               );
             } else if (state is GetPolicySuccessState) {
               return Html(
-                data: cubit.data,
+                data: bloc.data,
               );
             } else {
               return const Center(

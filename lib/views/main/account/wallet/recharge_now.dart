@@ -25,7 +25,9 @@ class _RechargeNowState extends State<RechargeNow> {
           "شحن الان",
         ),
         leading: Padding(
-          padding: EdgeInsets.all(10.w.h),
+          padding: EdgeInsetsDirectional.all(
+            10.r,
+          ),
           child: GestureDetector(
             child: Container(
               width: 32.w,
@@ -37,8 +39,8 @@ class _RechargeNowState extends State<RechargeNow> {
                 ).withOpacity(0.1),
               ),
               child: Padding(
-                padding: EdgeInsets.only(
-                  right: 7.w,
+                padding: EdgeInsetsDirectional.only(
+                  start: 7.w,
                 ),
                 child: Icon(
                   Icons.arrow_back_ios,
@@ -55,9 +57,9 @@ class _RechargeNowState extends State<RechargeNow> {
       ),
       body: SafeArea(
         child: ListView(
-          padding: EdgeInsets.symmetric(
+          padding: EdgeInsetsDirectional.symmetric(
             horizontal: 16.w,
-            vertical: 20.h
+            vertical: 20.h,
           ),
           children: [
             Text(

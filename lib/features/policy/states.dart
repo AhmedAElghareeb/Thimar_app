@@ -1,7 +1,7 @@
-class GetPolicyStates {}
+class PolicyStates {}
 
-class GetPolicyLoadingState extends GetPolicyStates {}
+class GetPolicyLoadingState extends PolicyStates {}
 
-class GetPolicySuccessState extends GetPolicyStates {}
+class GetPolicySuccessState extends PolicyStates {}
 
-class GetPolicyFailedState extends GetPolicyStates {}
+class GetPolicyFailedState extends PolicyStates {}

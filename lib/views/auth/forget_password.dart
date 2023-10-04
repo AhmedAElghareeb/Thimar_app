@@ -65,7 +65,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
             backgroundColor: Colors.transparent,
             body: SafeArea(
               child: ListView(
-                padding: EdgeInsets.symmetric(
+                padding: EdgeInsetsDirectional.symmetric(
                   horizontal: 16.w,
                   vertical: 20.h,
                 ),

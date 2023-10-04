@@ -28,7 +28,9 @@ class _ContactUsState extends State<ContactUs> {
       appBar: AppBar(
         title: const Text("تواصل معنا"),
         leading: Padding(
-          padding: EdgeInsets.all(10.w.h),
+          padding: EdgeInsetsDirectional.all(
+            10.r,
+          ),
           child: GestureDetector(
             child: Container(
               width: 32.w,
@@ -40,12 +42,12 @@ class _ContactUsState extends State<ContactUs> {
                 ).withOpacity(0.1),
               ),
               child: Padding(
-                padding: EdgeInsets.only(
-                  right: 7.w,
+                padding: EdgeInsetsDirectional.only(
+                  start: 7.w,
                 ),
                 child: Icon(
                   Icons.arrow_back_ios,
-                  size: 16.w.h,
+                  size: 16.r,
                   color: Theme.of(context).primaryColor,
                 ),
               ),
@@ -67,7 +69,7 @@ class _ContactUsState extends State<ContactUs> {
         ],
         child: SafeArea(
           child: Padding(
-            padding: EdgeInsets.symmetric(
+            padding: EdgeInsetsDirectional.symmetric(
               horizontal: 16.w,
               vertical: 20.h,
             ),
@@ -107,7 +109,9 @@ class _ContactUsState extends State<ContactUs> {
                             child: Container(
                               width: 312.w,
                               height: 119.h,
-                              margin: EdgeInsets.only(top: 170.h),
+                              margin: EdgeInsetsDirectional.only(
+                                top: 170.h,
+                              ),
                               decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(
@@ -126,7 +130,7 @@ class _ContactUsState extends State<ContactUs> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Padding(
-                                    padding: EdgeInsets.symmetric(
+                                    padding: EdgeInsetsDirectional.symmetric(
                                       horizontal: 10.w,
                                       vertical: 10.h,
                                     ),
@@ -148,7 +152,7 @@ class _ContactUsState extends State<ContactUs> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.symmetric(
+                                    padding: EdgeInsetsDirectional.symmetric(
                                       horizontal: 10.w,
                                       vertical: 10.h,
                                     ),
@@ -170,7 +174,7 @@ class _ContactUsState extends State<ContactUs> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.symmetric(
+                                    padding: EdgeInsetsDirectional.symmetric(
                                       horizontal: 10.w,
                                       vertical: 10.h,
                                     ),
@@ -278,6 +282,7 @@ class _ContactUsState extends State<ContactUs> {
                             width: 343.w,
                             height: 54.h,
                             radius: 15.r,
+                            isLoading: state2 is SendContactLoadingState,
                           ),
                         ],
                       ),

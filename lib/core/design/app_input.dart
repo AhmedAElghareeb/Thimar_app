@@ -112,7 +112,9 @@ class _AppInputState extends State<AppInput> {
           ),
           prefixIcon: widget.prefixIcon != null
               ? Padding(
-                  padding: EdgeInsets.all(12.r),
+                  padding: EdgeInsetsDirectional.all(
+                    12.r,
+                  ),
                   child: SvgPicture.asset(
                     widget.prefixIcon!,
                     fit: BoxFit.scaleDown,

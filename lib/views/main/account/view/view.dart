@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:share/share.dart';
 import 'package:thimar_app/core/design/account_widgets.dart';
@@ -19,6 +20,7 @@ import 'package:thimar_app/views/main/account/suggestions_and_complaints.dart';
 import 'package:thimar_app/views/main/account/policy.dart';
 import 'package:thimar_app/views/main/account/terms_conditions.dart';
 import 'package:thimar_app/views/main/account/wallet/view.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../../../features/logout/events.dart';
 
@@ -223,7 +225,7 @@ class _AccountScreenState extends State<AccountScreen> {
                   AccountWidgets(
                     onPress: () {
                       Share.share(
-                        "https://com.example.thimar_app",
+                        "https://play.google.com/store/apps/details?id=com.alalmiya.thamra&hl=ar&gl=US&pli=1",
                       );
                     },
                     title: "مشاركة التطبيق",
@@ -268,6 +270,10 @@ class _AccountScreenState extends State<AccountScreen> {
                           code,
                         ),
                       );
+                      showSnackBar(
+                        "تم تغيير اللغة",
+                        typ: MessageType.success,
+                      );
                     },
                     title: "تغيير اللغة",
                     imageName: "lang.svg",
@@ -284,7 +290,11 @@ class _AccountScreenState extends State<AccountScreen> {
                     isLogout: true,
                   ),
                   AccountWidgets(
-                    onPress: () {},
+                    onPress: () {
+                      launchUrlString(
+                        "https://play.google.com/store/apps/details?id=com.alalmiya.thamra&hl=ar&gl=US&pli=1",
+                      );
+                    },
                     title: "تقييم التطبيق",
                     imageName: "app_rate.svg",
                     isLogout: true,
@@ -298,18 +308,48 @@ class _AccountScreenState extends State<AccountScreen> {
             BlocBuilder(
               bloc: bloc,
               builder: (context, state) {
-                return AccountWidgets(
-                  onPress: () {
-                    bloc.add(
-                      SendLogout(),
-                    );
-                    navigateTo(
-                      const LoginScreen(),
-                    );
-                  },
-                  isLoading: state is LogoutLoadingState,
-                  title: "تسجيل الخروج",
-                );
+                if (state is LogoutLoadingState) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (state is LogoutFailedState) {
+                  return const Text(
+                    "Failed",
+                  );
+                } else {
+                  return Padding(
+                    padding: EdgeInsetsDirectional.symmetric(
+                      horizontal: 16.w,
+                      vertical: 10.h,
+                    ),
+                    child: InkWell(
+                      onTap: () {
+                        bloc.add(
+                          SendLogout(),
+                        );
+                        navigateTo(
+                          const LoginScreen(),
+                        );
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "تسجيل الخروج",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15.sp,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          ),
+                          SvgPicture.asset(
+                            "assets/images/icons/accountIcons/exit.svg",
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }
               },
             ),
           ],

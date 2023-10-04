@@ -13,7 +13,7 @@ class OrderDetails extends StatelessWidget {
           "تفاصيل الطلب",
         ),
         leading: Padding(
-          padding: EdgeInsets.symmetric(
+          padding: EdgeInsetsDirectional.symmetric(
             horizontal: 10.w,
             vertical: 10.h,
           ),
@@ -28,12 +28,12 @@ class OrderDetails extends StatelessWidget {
                 ).withOpacity(0.1),
               ),
               child: Padding(
-                padding: EdgeInsets.only(
-                  right: 7.w,
+                padding: EdgeInsetsDirectional.only(
+                  start: 7.w,
                 ),
                 child: Icon(
                   Icons.arrow_back_ios,
-                  size: 16.w.h,
+                  size: 16.r,
                   color: Theme.of(context).primaryColor,
                 ),
               ),
@@ -46,14 +46,14 @@ class OrderDetails extends StatelessWidget {
       ),
       body: SafeArea(
         child: ListView(
-          padding: EdgeInsets.symmetric(
+          padding: EdgeInsetsDirectional.symmetric(
             horizontal: 16.w,
             vertical: 21.h,
           ),
           children: [
             Container(
               height: 109.h,
-              padding: EdgeInsets.symmetric(
+              padding: EdgeInsetsDirectional.symmetric(
                 horizontal: 14.w,
                 vertical: 10.h,
               ),
@@ -103,12 +103,12 @@ class OrderDetails extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Container(
-                            padding: EdgeInsets.symmetric(
+                            padding: EdgeInsetsDirectional.symmetric(
                               horizontal: 11.w,
                               vertical: 5.h,
                             ),
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(7.r),
+                              borderRadius: BorderRadiusDirectional.circular(7.r),
                               color: Theme.of(context)
                                   .primaryColor
                                   .withOpacity(0.13),
@@ -155,7 +155,7 @@ class OrderDetails extends StatelessWidget {
                                 end: 3.w,
                               ),
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(7.r),
+                                borderRadius: BorderRadiusDirectional.circular(7.r),
                                 border: Border.all(
                                   color: const Color(
                                     0xff61B80C,
@@ -178,7 +178,7 @@ class OrderDetails extends StatelessWidget {
                               end: 3.w,
                             ),
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(7.r),
+                              borderRadius: BorderRadiusDirectional.circular(7.r),
                               color: Theme.of(context)
                                   .primaryColor
                                   .withOpacity(0.13),
@@ -204,14 +204,14 @@ class OrderDetails extends StatelessWidget {
                           end: 3.w,
                         ),
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(7),
+                          borderRadius: BorderRadiusDirectional.circular(7),
                           color:
                               Theme.of(context).primaryColor.withOpacity(0.13),
                         ),
                         child: Center(
                           child: Icon(
                             Icons.arrow_forward_ios_sharp,
-                            size: 14,
+                            size: 14.r,
                             color: Theme.of(context).primaryColor,
                           ),
                         ),
@@ -241,12 +241,12 @@ class OrderDetails extends StatelessWidget {
                 Container(
                   width: 343.w,
                   height: 83.h,
-                  padding: EdgeInsets.symmetric(
+                  padding: EdgeInsetsDirectional.symmetric(
                     horizontal: 15.w,
                     vertical: 10.h,
                   ),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(
+                    borderRadius: BorderRadiusDirectional.circular(
                       15.r,
                     ),
                     boxShadow: [
@@ -333,12 +333,12 @@ class OrderDetails extends StatelessWidget {
                 Container(
                   width: 342.w,
                   height: 148.h,
-                  padding: EdgeInsets.symmetric(
+                  padding: EdgeInsetsDirectional.symmetric(
                     horizontal: 16.w,
                     vertical: 9.h,
                   ),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(
+                    borderRadius: BorderRadiusDirectional.circular(
                       13.r,
                     ),
                     color: const Color(
@@ -448,9 +448,9 @@ class OrderDetails extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: Container(
-        margin: EdgeInsets.only(
-          right: 16.w,
-          left: 16.w,
+        margin: EdgeInsetsDirectional.only(
+          start: 16.w,
+          end: 16.w,
           bottom: 16.h,
         ),
         height: 60.h,

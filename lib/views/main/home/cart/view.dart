@@ -19,24 +19,26 @@ class Cart extends StatelessWidget {
           "السلة",
         ),
         leading: Padding(
-          padding: EdgeInsets.all(10.w.h),
+          padding: EdgeInsetsDirectional.all(
+            10.r,
+          ),
           child: GestureDetector(
             child: Container(
               width: 32.w,
               height: 32.h,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(9.r),
+                borderRadius: BorderRadiusDirectional.circular(9.r),
                 color: const Color(
                   0xff707070,
                 ).withOpacity(0.1),
               ),
               child: Padding(
-                padding: EdgeInsets.only(
-                  right: 7.w,
+                padding: EdgeInsetsDirectional.only(
+                  start: 7.w,
                 ),
                 child: Icon(
                   Icons.arrow_back_ios,
-                  size: 16.w.h,
+                  size: 16.r,
                   color: Theme.of(context).primaryColor,
                 ),
               ),
@@ -49,7 +51,7 @@ class Cart extends StatelessWidget {
       ),
       body: SafeArea(
         child: ListView(
-          padding: EdgeInsets.symmetric(
+          padding: EdgeInsetsDirectional.symmetric(
             horizontal: 16.w,
             vertical: 16.h,
           ),
@@ -110,12 +112,12 @@ class Cart extends StatelessWidget {
             Container(
               width: 343.w,
               height: 111.h,
-              padding: EdgeInsets.symmetric(
+              padding: EdgeInsetsDirectional.symmetric(
                 horizontal: 16.w,
                 vertical: 9.h,
               ),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(
+                borderRadius: BorderRadiusDirectional.circular(
                   13.r,
                 ),
                 color: const Color(
@@ -223,12 +225,12 @@ class _Item extends StatelessWidget {
     return Container(
       width: 342.w,
       height: 94.h,
-      padding: EdgeInsets.only(
-        right: 6.w,
-        left: 16.w,
+      padding: EdgeInsetsDirectional.only(
+        start: 6.w,
+        end: 16.w,
       ),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(
+        borderRadius: BorderRadiusDirectional.circular(
           15.r,
         ),
         boxShadow: [
@@ -252,7 +254,7 @@ class _Item extends StatelessWidget {
                 Container(
                   clipBehavior: Clip.antiAlias,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(
+                    borderRadius: BorderRadiusDirectional.circular(
                       25.r,
                     ),
                   ),
@@ -295,7 +297,7 @@ class _Item extends StatelessWidget {
                       width: 72.w,
                       height: 27.h,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(7.r),
+                        borderRadius: BorderRadiusDirectional.circular(7.r),
                         color: const Color(
                           0xff707070,
                         ).withOpacity(
@@ -311,6 +313,7 @@ class _Item extends StatelessWidget {
                             child: FloatingActionButton(
                               onPressed: () {},
                               mini: true,
+                              heroTag: null,
                               backgroundColor: const Color(0xffFFFFFF),
                               elevation: 0.0,
                               shape: OutlineInputBorder(
@@ -326,7 +329,7 @@ class _Item extends StatelessWidget {
                               child: Icon(
                                 Icons.add,
                                 color: Theme.of(context).primaryColor,
-                                size: 16.w.h,
+                                size: 16.r,
                               ),
                             ),
                           ),
@@ -344,6 +347,7 @@ class _Item extends StatelessWidget {
                             child: FloatingActionButton(
                               onPressed: () {},
                               mini: true,
+                              heroTag: null,
                               backgroundColor: const Color(0xffFFFFFF),
                               elevation: 0.0,
                               shape: OutlineInputBorder(
@@ -359,7 +363,7 @@ class _Item extends StatelessWidget {
                               child: Icon(
                                 Icons.remove,
                                 color: Theme.of(context).primaryColor,
-                                size: 16.w.h,
+                                size: 16.r,
                               ),
                             ),
                           ),

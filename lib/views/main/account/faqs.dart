@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:thimar_app/features/get_faqs/cubit.dart';
+import 'package:kiwi/kiwi.dart';
+import 'package:thimar_app/features/get_faqs/bloc.dart';
+import 'package:thimar_app/features/get_faqs/events.dart';
 import 'package:thimar_app/features/get_faqs/states.dart';
 
 class Faqs extends StatefulWidget {
@@ -12,15 +14,23 @@ class Faqs extends StatefulWidget {
 }
 
 class _FaqsState extends State<Faqs> {
+
+  final bloc = KiwiContainer().resolve<FaqsBloc>()..add(GetFaqsEvent());
+
+  @override
+  void dispose() {
+    super.dispose();
+    bloc.close();
+  }
   @override
   Widget build(BuildContext context) {
-    GetFaqsCubit cubit = BlocProvider.of(context);
-    cubit.getFaqsData();
     return Scaffold(
       appBar: AppBar(
         title: const Text("أسئلة متكررة"),
         leading: Padding(
-          padding: EdgeInsets.all(10.w.h),
+          padding: EdgeInsetsDirectional.all(
+            10.r,
+          ),
           child: GestureDetector(
             child: Container(
               width: 32.w,
@@ -32,12 +42,12 @@ class _FaqsState extends State<Faqs> {
                 ).withOpacity(0.1),
               ),
               child: Padding(
-                padding: EdgeInsets.only(
-                  right: 7.w,
+                padding: EdgeInsetsDirectional.only(
+                  start: 7.w,
                 ),
                 child: Icon(
                   Icons.arrow_back_ios,
-                  size: 16.w.h,
+                  size: 16.r,
                   color: Theme.of(context).primaryColor,
                 ),
               ),
@@ -50,7 +60,7 @@ class _FaqsState extends State<Faqs> {
       ),
       body: SafeArea(
         child: BlocBuilder(
-          bloc: cubit,
+          bloc: bloc,
           builder: (context, state) {
             if (state is GetFaqsLoadingState) {
               return const Center(
@@ -58,7 +68,10 @@ class _FaqsState extends State<Faqs> {
               );
             } else if (state is GetFaqsSuccessState) {
               return ListView.builder(
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 44.h),
+                padding: EdgeInsetsDirectional.symmetric(
+                  horizontal: 16.w,
+                  vertical: 44.h,
+                ),
                 itemCount: state.list.length,
                 itemBuilder: (context, index) => Container(
                   width: 342.w,
@@ -82,8 +95,8 @@ class _FaqsState extends State<Faqs> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(
-                          right: 10.w,
+                        padding: EdgeInsetsDirectional.only(
+                          start: 10.w,
                         ),
                         child: Text(
                           state.list[index].question,
@@ -98,7 +111,9 @@ class _FaqsState extends State<Faqs> {
                         child: Container(
                           width: 25.w,
                           height: 25.h,
-                          margin: EdgeInsets.only(left: 10.w),
+                          margin: EdgeInsetsDirectional.only(
+                            end: 10.w,
+                          ),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5.r),
                             color: const Color(
@@ -128,13 +143,14 @@ class _FaqsState extends State<Faqs> {
                               children: [
                                 Center(
                                   child: Padding(
-                                    padding: EdgeInsets.all(5.w.h),
+                                    padding: EdgeInsetsDirectional.all(
+                                      5.r,
+                                    ),
                                     child: Text(
                                       state.list[index].answer,
                                       style: TextStyle(
-                                        fontSize: 18.sp,
-                                        fontWeight: FontWeight.bold
-                                      ),
+                                          fontSize: 18.sp,
+                                          fontWeight: FontWeight.bold),
                                     ),
                                   ),
                                 ),

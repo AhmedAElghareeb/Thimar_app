@@ -25,7 +25,7 @@ class AuthHeader extends StatelessWidget {
           height: 21.h,
         ),
         Align(
-          alignment: Alignment.centerRight,
+          alignment: AlignmentDirectional.centerStart,
           child: Text(
             text1,
             style: TextStyle(
@@ -39,7 +39,7 @@ class AuthHeader extends StatelessWidget {
           height: 10.h,
         ),
         Align(
-          alignment: Alignment.centerRight,
+          alignment: AlignmentDirectional.centerStart,
           child: Text(
             text2,
             style: TextStyle(

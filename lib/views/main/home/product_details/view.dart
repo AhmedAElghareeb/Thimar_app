@@ -41,13 +41,15 @@ class _ProductDetailsState extends State<ProductDetails> {
                     children: [
                       CarouselSlider(
                         items: List.generate(
-                          state.model.images.length > 1 ? state.model.images.length : 1,
+                          state.model.images.length > 1
+                              ? state.model.images.length
+                              : 1,
                           (index) => Container(
                             clipBehavior: Clip.antiAliasWithSaveLayer,
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(40.r),
-                                bottomRight: Radius.circular(40.r),
+                              borderRadius: BorderRadiusDirectional.only(
+                                bottomEnd: Radius.circular(40.r),
+                                bottomStart: Radius.circular(40.r),
                               ),
                             ),
                             child: Image.network(
@@ -94,9 +96,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16.w
-                  ),
+                  padding: EdgeInsetsDirectional.symmetric(horizontal: 16.w),
                   child: Row(
                     children: [
                       Expanded(
@@ -173,11 +173,11 @@ class _ProductDetailsState extends State<ProductDetails> {
                           Container(
                             width: 109.w,
                             height: 35.h,
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 5.w
-                            ),
+                            padding: EdgeInsetsDirectional.symmetric(
+                                horizontal: 5.w),
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.r),
+                              borderRadius:
+                                  BorderRadiusDirectional.circular(10.r),
                               color: const Color(
                                 0xff707070,
                               ).withOpacity(
@@ -192,7 +192,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                   icon: Icon(
                                     Icons.add,
                                     color: Theme.of(context).primaryColor,
-                                    size: 16.w.h,
+                                    size: 16.r,
                                   ),
                                 ),
                                 Text(
@@ -208,7 +208,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                   icon: Icon(
                                     Icons.remove,
                                     color: Theme.of(context).primaryColor,
-                                    size: 16.w.h,
+                                    size: 16.r,
                                   ),
                                 ),
                               ],
@@ -231,9 +231,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                   height: 14.5.h,
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16.w
-                  ),
+                  padding: EdgeInsetsDirectional.symmetric(horizontal: 16.w),
                   child: Row(
                     children: [
                       Text(
@@ -269,7 +267,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(
+                  padding: EdgeInsetsDirectional.symmetric(
                     horizontal: 16.w,
                   ),
                   child: Column(
@@ -336,14 +334,15 @@ class _ProductDetailsState extends State<ProductDetails> {
                           children: List.generate(
                             3,
                             (index) => Container(
-                              padding: EdgeInsets.only(
-                                right: 13.w,
+                              padding: EdgeInsetsDirectional.only(
+                                start: 13.w,
                                 top: 6.h,
                               ),
                               width: 267.w,
                               height: 87.h,
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20.r),
+                                borderRadius:
+                                    BorderRadiusDirectional.circular(20.r),
                                 color: const Color(
                                   0xff707070,
                                 ).withOpacity(0.008),
@@ -455,7 +454,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                               height: 172.h,
                               width: 130.w,
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(17.r),
+                                borderRadius:
+                                    BorderRadiusDirectional.circular(17.r),
                                 color: const Color(
                                   0xffffffff,
                                 ),
@@ -471,10 +471,10 @@ class _ProductDetailsState extends State<ProductDetails> {
                               child: Column(
                                 children: [
                                   Padding(
-                                    padding: EdgeInsets.only(
+                                    padding: EdgeInsetsDirectional.only(
                                       top: 9.h,
-                                      left: 9.w,
-                                      right: 9.w,
+                                      end: 9.w,
+                                      start: 9.w,
                                     ),
                                     child: Stack(
                                       children: [
@@ -484,20 +484,24 @@ class _ProductDetailsState extends State<ProductDetails> {
                                           height: 94.h,
                                         ),
                                         Align(
-                                          alignment: AlignmentDirectional.topEnd,
+                                          alignment:
+                                              AlignmentDirectional.topEnd,
                                           child: GestureDetector(
                                             onTap: () {},
                                             child: Container(
                                               width: 43.w,
                                               height: 16.h,
-                                              margin: EdgeInsets.only(
-                                                left: 11.w,
+                                              margin:
+                                                  EdgeInsetsDirectional.only(
+                                                end: 11.w,
                                               ),
                                               decoration: BoxDecoration(
                                                 color: Theme.of(context)
                                                     .primaryColor,
-                                                borderRadius: BorderRadius.only(
-                                                  bottomRight:
+                                                borderRadius:
+                                                    BorderRadiusDirectional
+                                                        .only(
+                                                  bottomStart:
                                                       Radius.circular(25.r),
                                                 ),
                                               ),
@@ -523,10 +527,10 @@ class _ProductDetailsState extends State<ProductDetails> {
                                     height: 2.h,
                                   ),
                                   Align(
-                                    alignment: Alignment.topRight,
+                                    alignment: AlignmentDirectional.topStart,
                                     child: Padding(
-                                      padding: EdgeInsets.only(
-                                        right: 9.w,
+                                      padding: EdgeInsetsDirectional.only(
+                                        start: 9.w,
                                       ),
                                       child: Text(
                                         state.model.title,
@@ -542,10 +546,10 @@ class _ProductDetailsState extends State<ProductDetails> {
                                     height: 4.h,
                                   ),
                                   Align(
-                                    alignment: Alignment.topRight,
+                                    alignment: AlignmentDirectional.topStart,
                                     child: Padding(
-                                      padding: EdgeInsets.only(
-                                        right: 10.w,
+                                      padding: EdgeInsetsDirectional.only(
+                                        start: 10.w,
                                       ),
                                       child: Text(
                                         state.model.unit.name,
@@ -564,36 +568,35 @@ class _ProductDetailsState extends State<ProductDetails> {
                                   Row(
                                     children: [
                                       Align(
-                                        alignment: Alignment.topRight,
+                                        alignment:
+                                            AlignmentDirectional.topStart,
                                         child: Padding(
-                                          padding: EdgeInsets.only(
-                                            right: 9.w,
+                                          padding: EdgeInsetsDirectional.only(
+                                            start: 9.w,
                                           ),
                                           child: Text(
                                             "${state.model.price} ر.س",
                                             style: TextStyle(
                                               fontSize: 13.sp,
                                               fontWeight: FontWeight.bold,
-                                              color:
-                                                  Theme.of(context).primaryColor,
+                                              color: Theme.of(context)
+                                                  .primaryColor,
                                             ),
                                           ),
                                         ),
                                       ),
                                       Align(
-                                        alignment: Alignment.bottomRight,
-                                        child: Padding(
-                                          padding: EdgeInsets.zero,
-                                          child: Text(
-                                            "${state.model.priceBeforeDiscount} ر.س",
-                                            textAlign: TextAlign.justify,
-                                            style: TextStyle(
-                                              fontSize: 10.sp,
-                                              color:
-                                                  Theme.of(context).primaryColor,
-                                              decoration:
-                                                  TextDecoration.lineThrough,
-                                            ),
+                                        alignment:
+                                            AlignmentDirectional.bottomStart,
+                                        child: Text(
+                                          "${state.model.priceBeforeDiscount} ر.س",
+                                          textAlign: TextAlign.justify,
+                                          style: TextStyle(
+                                            fontSize: 10.sp,
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            decoration:
+                                                TextDecoration.lineThrough,
                                           ),
                                         ),
                                       ),
@@ -618,7 +621,7 @@ class _ProductDetailsState extends State<ProductDetails> {
         },
       ),
       bottomNavigationBar: Container(
-        height: 60,
+        height: 60.h,
         color: Theme.of(context).primaryColor,
         child: Row(
           children: [
@@ -626,13 +629,13 @@ class _ProductDetailsState extends State<ProductDetails> {
               child: Row(
                 children: [
                   Container(
-                    margin: EdgeInsets.all(
-                      16.w.h,
+                    margin: EdgeInsetsDirectional.all(
+                      16.r,
                     ),
                     width: 35.w,
                     height: 32.h,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(
+                      borderRadius: BorderRadiusDirectional.circular(
                         10.r,
                       ),
                       color: Colors.grey.withOpacity(
@@ -666,8 +669,8 @@ class _ProductDetailsState extends State<ProductDetails> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(
-                left: 20.w,
+              padding: EdgeInsetsDirectional.only(
+                end: 20.w,
               ),
               child: Text(
                 "225 ر.س",
@@ -695,7 +698,9 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
     return SafeArea(
       child: Container(
         height: 60.h,
-        margin: EdgeInsets.symmetric(horizontal: 16.w),
+        margin: EdgeInsetsDirectional.symmetric(
+          horizontal: 16.w,
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -704,16 +709,16 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
                 width: 32.w,
                 height: 32.h,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(9.r),
+                  borderRadius: BorderRadiusDirectional.circular(9.r),
                   color: Theme.of(context).primaryColor.withOpacity(0.13),
                 ),
                 child: Padding(
-                  padding: EdgeInsets.only(
-                    right: 7.w,
+                  padding: EdgeInsetsDirectional.only(
+                    start: 7.w,
                   ),
                   child: Icon(
                     Icons.arrow_back_ios,
-                    size: 16.w.h,
+                    size: 16.r,
                     color: Theme.of(context).primaryColor,
                   ),
                 ),
@@ -739,12 +744,15 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
                   9.r,
                 ),
               ),
-              child: IconButton(
-                onPressed: () {},
-                icon: Center(
-                  child: Icon(
+              child: Padding(
+                padding: EdgeInsetsDirectional.only(
+                  start: 7.w,
+                ),
+                child: IconButton(
+                  onPressed: () {},
+                  icon: Icon(
                     Icons.favorite_border,
-                    size: 22.w.h,
+                    size: 22.r,
                     color: Theme.of(context).primaryColor,
                   ),
                 ),

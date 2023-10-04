@@ -42,7 +42,7 @@ class _AddAddressState extends State<AddAddress> {
           "إضافة عنوان",
         ),
         leading: Padding(
-          padding: EdgeInsets.all(
+          padding: EdgeInsetsDirectional.all(
             10.r,
           ),
           child: GestureDetector(
@@ -56,8 +56,8 @@ class _AddAddressState extends State<AddAddress> {
                 ).withOpacity(0.1),
               ),
               child: Padding(
-                padding: EdgeInsets.only(
-                  right: 7.w,
+                padding: EdgeInsetsDirectional.only(
+                  start: 7.w,
                 ),
                 child: Icon(
                   Icons.arrow_back_ios,
@@ -78,7 +78,7 @@ class _AddAddressState extends State<AddAddress> {
             Container(
               width: double.infinity,
               height: 200.h,
-              margin: EdgeInsets.symmetric(
+              margin: EdgeInsetsDirectional.symmetric(
                 horizontal: 8.w,
               ),
               child: MyMap(
@@ -87,16 +87,16 @@ class _AddAddressState extends State<AddAddress> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(
+              padding: EdgeInsetsDirectional.only(
                 top: 20.h,
               ),
               child: Container(
                 width: 350.w,
                 height: 400.h,
-                margin: EdgeInsets.symmetric(
+                margin: EdgeInsetsDirectional.symmetric(
                   horizontal: 16.w,
                 ),
-                padding: EdgeInsets.symmetric(
+                padding: EdgeInsetsDirectional.symmetric(
                   horizontal: 16.w,
                 ),
                 decoration: BoxDecoration(
@@ -108,7 +108,7 @@ class _AddAddressState extends State<AddAddress> {
                 child: Column(
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(
+                      padding: EdgeInsetsDirectional.only(
                         top: 10.h,
                       ),
                       child: Container(
@@ -129,9 +129,9 @@ class _AddAddressState extends State<AddAddress> {
                           ],
                         ),
                         child: Padding(
-                          padding: EdgeInsets.only(
-                            right: 12.w,
-                            left: 10.w,
+                          padding: EdgeInsetsDirectional.only(
+                            start: 12.w,
+                            end: 10.w,
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -277,7 +277,7 @@ class _MyMapState extends State<MyMap> {
   @override
   Widget build(BuildContext context) {
     return Stack(
-      alignment: Alignment.bottomLeft,
+      alignment: AlignmentDirectional.bottomEnd,
       children: [
         GoogleMap(
           markers: markers,
@@ -300,12 +300,12 @@ class _MyMapState extends State<MyMap> {
         //     _determinePosition();
         //   },
         //   child: Padding(
-        //     padding: EdgeInsets.symmetric(
+        //     padding: EdgeInsetsDirectional.symmetric(
         //       horizontal: 16.w,
         //       vertical: 24.h,
         //     ),
         //     child: Container(
-        //       padding: EdgeInsets.all(8.r),
+        //       padding: EdgeInsetsDirectional.all(8.r),
         //       decoration: BoxDecoration(
         //         borderRadius: BorderRadius.circular(
         //           8.r,

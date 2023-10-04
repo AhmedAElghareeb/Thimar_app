@@ -1,14 +1,20 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:thimar_app/features/policy/events.dart';
 import 'package:thimar_app/features/policy/states.dart';
 
 import '../../core/logic/dio_helper.dart';
 
-class GetPolicyCubit extends Cubit<GetPolicyStates> {
-  GetPolicyCubit() : super(GetPolicyStates());
+class PolicyBloc extends Bloc<PolicyEvents, PolicyStates> {
+  PolicyBloc()
+      : super(
+          PolicyStates(),
+        ) {
+    on<GetPolicyEvent>(getPolicyData);
+  }
 
   var data;
 
-  void getPolicyData() async {
+  void getPolicyData(GetPolicyEvent event, Emitter<PolicyStates> emit) async {
     emit(
       GetPolicyLoadingState(),
     );

@@ -24,7 +24,7 @@ class AccountWidgets extends StatelessWidget {
             child: CircularProgressIndicator(),
           )
         : Padding(
-            padding: EdgeInsets.symmetric(
+            padding: EdgeInsetsDirectional.symmetric(
               horizontal: 14.w,
               vertical: 15.h,
             ),
@@ -55,28 +55,19 @@ class AccountWidgets extends StatelessWidget {
                     ],
                   ),
                   isLogout
-                      ? Container(
-                          width: 18.w,
-                          height: 18.h,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5.r),
-                            border: Border.all(
-                              color: const Color(
-                                0xffB2BCA8,
-                              ),
-                            ),
+                      ? Padding(
+                          padding: EdgeInsetsDirectional.symmetric(
+                            horizontal: 8.w,
                           ),
-                          child: Icon(
-                            Icons.arrow_forward,
-                            size: 12.r,
-                            color: const Color(
-                              0xffB2BCA8,
-                            ),
+                          child: SvgPicture.asset(
+                            "assets/images/icons/arrow_left.svg",
+                            fit: BoxFit.scaleDown,
                           ),
                         )
                       : Padding(
-                          padding:
-                              EdgeInsetsDirectional.symmetric(horizontal: 16.w),
+                          padding: EdgeInsetsDirectional.symmetric(
+                            horizontal: 16.w,
+                          ),
                           child: SvgPicture.asset(
                             "assets/images/icons/accountIcons/exit.svg",
                           ),

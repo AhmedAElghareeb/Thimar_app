@@ -1,24 +1,117 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+class OrdersScreen extends StatefulWidget {
+  OrdersScreen({
+    super.key,
+    this.type = "الحالية",
+  });
 
+  String? type;
 
-class OrdersScreen extends StatelessWidget {
-  const OrdersScreen({super.key});
+  @override
+  State<OrdersScreen> createState() => _OrdersScreenState();
+}
 
+class _OrdersScreenState extends State<OrdersScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("طلباتي"),
       ),
-      body: ListView.builder(
-        itemBuilder: (context, index) => const _Item(),
-        itemCount: 5,
-        padding: EdgeInsets.symmetric(
+      body: ListView(
+        padding: EdgeInsetsDirectional.symmetric(
           horizontal: 16.w,
           vertical: 16.h,
         ),
+        children: [
+          Container(
+            height: 55.h,
+            padding: EdgeInsetsDirectional.symmetric(
+              horizontal: 5.w,
+            ),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadiusDirectional.circular(10.r),
+              border: Border.all(
+                color: const Color(0xff000000,).withOpacity(0.16,),
+              ),
+            ),
+            child: Row(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    widget.type = "الحالية";
+                    setState(() {});
+                  },
+                  child: Container(
+                    height: 42.h,
+                    width: 160.w,
+                    decoration: BoxDecoration(
+                        color: widget.type == "الحالية"
+                            ? Theme.of(context).primaryColor
+                            : null,
+                        borderRadius: BorderRadius.circular(10.r)),
+                    child: Center(
+                      child: Text(
+                        "الحالية",
+                        style: TextStyle(
+                          color: widget.type == "الحالية"
+                              ? Colors.white
+                              : const Color(
+                                  0xffA2A1A4,
+                                ),
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 5.w,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    widget.type = "المنتهية";
+                    setState(() {});
+                  },
+                  child: Container(
+                    height: 42.h,
+                    width: 165.w,
+                    decoration: BoxDecoration(
+                        color: widget.type == "المنتهية"
+                            ? Theme.of(context).primaryColor
+                            : null,
+                        borderRadius: BorderRadius.circular(10.r)),
+                    child: Center(
+                      child: Text(
+                        "المنتهية",
+                        style: TextStyle(
+                          color: widget.type == "المنتهية"
+                              ? Colors.white
+                              : const Color(
+                                  0xffA2A1A4,
+                                ),
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          ListView.separated(
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            separatorBuilder: (context, index) => const SizedBox(),
+            itemBuilder: (context, index) => const _Item(),
+            itemCount: 5,
+          ),
+        ],
       ),
       // bottomNavigationBar: HomeNavBar(),
     );
@@ -31,7 +124,7 @@ class _Item extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(
+      padding: EdgeInsetsDirectional.symmetric(
         vertical: 10.h,
         horizontal: 14.w,
       ),
@@ -85,7 +178,7 @@ class _Item extends StatelessWidget {
                           end: 3.w,
                         ),
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(7.r),
+                          borderRadius: BorderRadiusDirectional.circular(7.r),
                           border: Border.all(
                             color: const Color(
                               0xff61B80C,
@@ -108,7 +201,7 @@ class _Item extends StatelessWidget {
                         end: 3.w,
                       ),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(7.r),
+                        borderRadius: BorderRadiusDirectional.circular(7.r),
                         color: Theme.of(context).primaryColor.withOpacity(0.13),
                       ),
                       child: Center(
@@ -131,12 +224,12 @@ class _Item extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Container(
-                padding: EdgeInsets.symmetric(
+                padding: EdgeInsetsDirectional.symmetric(
                   horizontal: 11.w,
                   vertical: 5.h,
                 ),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(7.r),
+                  borderRadius: BorderRadiusDirectional.circular(7.r),
                   color: Theme.of(context).primaryColor.withOpacity(0.13),
                 ),
                 child: Center(

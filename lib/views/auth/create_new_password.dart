@@ -77,7 +77,7 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
               child: Form(
                 key: _formKey,
                 child: ListView(
-                  padding: EdgeInsets.symmetric(
+                  padding: EdgeInsetsDirectional.symmetric(
                     horizontal: 16.w,
                     vertical: 20.h,
                   ),
