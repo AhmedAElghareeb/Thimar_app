@@ -1,18 +1,22 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:thimar_app/core/logic/dio_helper.dart';
-import 'package:thimar_app/models/products_model.dart';
-import 'package:thimar_app/features/products/states.dart';
+
+import '../../core/logic/dio_helper.dart';
+import '../../models/products.dart';
+import 'events.dart';
+import 'states.dart';
+
+class ProductsDataBloc extends Bloc<ProductsEvents, ProductsStates>{
+  ProductsDataBloc() : super(ProductsStates(),){
+    on<GetProductsDataEvent>(getProducts);
+  }
 
 
-class ProductsCubit extends Cubit<ProductsStates> {
-  ProductsCubit() : super(ProductsStates());
-
-  Future<void> getProducts({int? id}) async {
+  Future<void> getProducts(GetProductsDataEvent event, Emitter<ProductsStates> emit) async {
     emit(
       GetProductsLoadingState(),
     );
     final response = await DioHelper().getFromServer(
-      url: "categories/$id",
+      url: "categories/${event.id}",
     );
     if (response.success) {
       final list = GetProductsModel.fromJson(response.response!.data).data;

@@ -1,4 +1,4 @@
-import '../../models/faqs_model.dart';
+import '../../models/faqs.dart';
 
 class GetFaqsStates {}
 

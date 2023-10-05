@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:thimar_app/features/get_cities/cubit.dart';
+import 'package:kiwi/kiwi.dart';
+import 'package:thimar_app/features/get_cities/events.dart';
 import 'package:thimar_app/features/get_cities/states.dart';
 import 'package:thimar_app/models/cities.dart';
+
+import '../../features/get_cities/bloc.dart';
 
 class CitiesSheets extends StatefulWidget {
   const CitiesSheets({super.key});
@@ -13,67 +16,74 @@ class CitiesSheets extends StatefulWidget {
 }
 
 class _CitiesSheetsState extends State<CitiesSheets> {
+
+  final citiesBloc = KiwiContainer().resolve<CitiesBloc>()..add(GetCitiesDataEvent(),);
+
+  @override
+  void dispose() {
+    super.dispose();
+    citiesBloc.close();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => GetCitiesCubit()..getData(),
-      child: Builder(
-        builder: (context) {
-          return Container(
-            color: Colors.white,
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 16.h,
+    return Builder(
+      builder: (context) {
+        return Container(
+          color: Colors.white,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 16.h,
+              ),
+              Text(
+                "اختر مدينتك",
+                style: TextStyle(
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.w700,
+                  color: Theme.of(context).primaryColor,
                 ),
-                Text(
-                  "اختر مدينتك",
-                  style: TextStyle(
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.w700,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                ),
-                BlocBuilder<GetCitiesCubit, GetCitiesStates>(
-                  builder: (context, state) {
-                    if (state is GetCitiesLoadingState) {
-                      return const Expanded(
-                        child: Center(
-                          child: CircularProgressIndicator(),
+              ),
+              BlocBuilder(
+                bloc: citiesBloc,
+                builder: (context, state) {
+                  if (state is GetCitiesLoadingState) {
+                    return const Expanded(
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
+                  } else if (state is GetCitiesSuccessState) {
+                    return Expanded(
+                      child: ListView.builder(
+                        padding: EdgeInsetsDirectional.symmetric(
+                          horizontal: 16.w,
+                          vertical: 16.h,
                         ),
-                      );
-                    } else if (state is GetCitiesSuccessState) {
-                      return Expanded(
-                        child: ListView.builder(
-                          padding: EdgeInsetsDirectional.symmetric(
-                            horizontal: 16.w,
-                            vertical: 16.h,
-                          ),
-                          itemBuilder: (context, index) => _ItemCity(
-                            model: state.list[index],
-                          ),
-                          itemCount: state.list.length,
+                        itemBuilder: (context, index) => _ItemCity(
+                          model: state.list[index],
                         ),
-                      );
-                    } else {
-                      return Center(
-                        child: Text(
-                          "فشل فى ايجاد المدن",
-                          style: TextStyle(
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).primaryColor,
-                          ),
+                        itemCount: state.list.length,
+                      ),
+                    );
+                  } else {
+                    return Center(
+                      child: Text(
+                        "فشل فى ايجاد المدن",
+                        style: TextStyle(
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).primaryColor,
                         ),
-                      );
-                    }
-                  },
-                ),
-              ],
-            ),
-          );
-        }
-      ),
+                      ),
+                    );
+                  }
+                },
+              ),
+            ],
+          ),
+        );
+      }
     );
   }
 }

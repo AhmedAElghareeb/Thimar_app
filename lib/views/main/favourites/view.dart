@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:thimar_app/models/favourites_model.dart';
+import 'package:thimar_app/models/favourites.dart';
 
 class FavouritesScreen extends StatefulWidget {
   const FavouritesScreen({super.key});

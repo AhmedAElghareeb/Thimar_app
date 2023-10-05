@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:thimar_app/core/logic/dio_helper.dart';
-import 'package:thimar_app/core/logic/helper_methods.dart';
-import 'package:thimar_app/features/register/states.dart';
-import 'package:thimar_app/models/cities.dart';
-import 'package:thimar_app/views/auth/verify_code.dart';
+import '../../core/logic/dio_helper.dart';
+import '../../core/logic/helper_methods.dart';
+import '../../models/cities.dart';
+import '../../views/auth/confirm_code.dart';
+import 'states.dart';
+import 'events.dart';
 
-
-class RegisterCubit extends Cubit<RegisterStates> {
-  RegisterCubit() : super(RegisterStates());
+class RegisterBloc extends Bloc<RegisterEvents, RegisterStates>{
+  RegisterBloc() : super(RegisterStates(),){
+    on<RegisterUserDataEvent>(userRegister);
+  }
 
   CityModel? selectedCity;
 
@@ -20,7 +22,7 @@ class RegisterCubit extends Cubit<RegisterStates> {
 
   final confirmPasswordController = TextEditingController();
 
-  void userRegister() async {
+  void userRegister(RegisterUserDataEvent event, Emitter<RegisterStates> emit) async {
     emit(
       RegisterLoadingState(),
     );
@@ -41,7 +43,7 @@ class RegisterCubit extends Cubit<RegisterStates> {
         typ: MessageType.success,
       );
       navigateTo(
-        VerifyCode(
+        ConfirmCode(
           isActive: true,
           phone: phoneNumberController.text,
         ),

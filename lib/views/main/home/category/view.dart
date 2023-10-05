@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:kiwi/kiwi.dart';
 import 'package:thimar_app/core/design/app_input.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
-import 'package:thimar_app/features/products/cubit.dart';
 import 'package:thimar_app/features/products/states.dart';
 import 'package:thimar_app/views/main/home/product_details/view.dart';
 
 import '../../../../core/design/app_button.dart';
+import '../../../../features/products/bloc.dart';
+import '../../../../features/products/events.dart';
 
 class CategoryProducts extends StatefulWidget {
   final String nameCategory;
@@ -23,12 +25,16 @@ class CategoryProducts extends StatefulWidget {
 class _CategoryProductsState extends State<CategoryProducts> {
   final searchController = TextEditingController();
 
+  final bloc = KiwiContainer().resolve<ProductsDataBloc>();
+
+  @override
+  void dispose() {
+    super.dispose();
+    bloc.close();
+  }
+
   @override
   Widget build(BuildContext context) {
-    ProductsCubit cubit = BlocProvider.of(context);
-    cubit.getProducts(
-      id: widget.id,
-    );
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -86,7 +92,9 @@ class _CategoryProductsState extends State<CategoryProducts> {
               height: 21.h,
             ),
             BlocBuilder(
-              bloc: cubit,
+              bloc: bloc..add(GetProductsDataEvent(
+                id: widget.id,
+              )),
               builder: (context, state) {
                 if (state is GetProductsFailedState) {
                   return const Center(

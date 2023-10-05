@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:thimar_app/models/notifications_model.dart';
+import 'package:thimar_app/models/notifications.dart';
 
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});

@@ -1,4 +1,4 @@
-import 'package:thimar_app/models/slider_model.dart';
+import 'package:thimar_app/models/slider.dart';
 
 class GetSliderImagesStates {}
 

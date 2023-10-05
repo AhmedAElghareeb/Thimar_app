@@ -1,4 +1,4 @@
-import 'package:thimar_app/models/category_products_model.dart';
+import 'package:thimar_app/models/category_products.dart';
 
 class CategoryProductsStates{}
 

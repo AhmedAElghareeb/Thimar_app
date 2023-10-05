@@ -4,13 +4,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:kiwi/kiwi.dart';
 import 'package:thimar_app/core/design/app_button.dart';
 import 'package:thimar_app/core/design/app_input.dart';
 import 'package:thimar_app/core/logic/cache_helper.dart';
-import 'package:thimar_app/features/edit_profile/cubit.dart';
+import 'package:thimar_app/features/edit_profile/events.dart';
 import 'package:thimar_app/features/edit_profile/states.dart';
-import 'package:thimar_app/features/get_cities/cubit.dart';
 import 'package:thimar_app/features/get_cities/states.dart';
+
+import '../../../features/edit_profile/bloc.dart';
+import '../../../features/get_cities/bloc.dart';
+import '../../../features/get_cities/events.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({super.key});
@@ -36,6 +40,19 @@ class _EditProfileState extends State<EditProfile> {
 
   File? selectedImage;
   int cityId = CacheHelper.getCityId();
+
+  final bloc = KiwiContainer().resolve<EditProfileBloc>();
+  final citiesBloc = KiwiContainer().resolve<CitiesBloc>()
+    ..add(
+      GetCitiesDataEvent(),
+    );
+
+  @override
+  void dispose() {
+    super.dispose();
+    bloc.close();
+    citiesBloc.close();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -314,75 +331,74 @@ class _EditProfileState extends State<EditProfile> {
                           var result = await showModalBottomSheet(
                             context: context,
                             useSafeArea: true,
-                            builder: (context) => BlocProvider(
-                              create: (context) => GetCitiesCubit()..getData(),
-                              child:
-                                  BlocBuilder<GetCitiesCubit, GetCitiesStates>(
-                                builder: (context, state) {
-                                  if (state is GetCitiesLoadingState) {
-                                    return const Center(
-                                      child: CircularProgressIndicator(),
-                                    );
-                                  } else if (state is GetCitiesSuccessState) {
-                                    return Container(
-                                      padding: EdgeInsetsDirectional.all(
-                                        16.r,
-                                      ),
-                                      decoration: const BoxDecoration(
-                                        color: Colors.white,
-                                      ),
-                                      child: SingleChildScrollView(
-                                        child: Column(
-                                          children: [
-                                            const Center(
-                                              child: Text(
-                                                "اختار مدينتك",
-                                              ),
+                            builder: (context) => BlocBuilder(
+                              bloc: citiesBloc,
+                              builder: (context, state) {
+                                if (state is GetCitiesLoadingState) {
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                } else if (state is GetCitiesSuccessState) {
+                                  return Container(
+                                    padding: EdgeInsetsDirectional.all(
+                                      16.r,
+                                    ),
+                                    decoration: const BoxDecoration(
+                                      color: Colors.white,
+                                    ),
+                                    child: SingleChildScrollView(
+                                      child: Column(
+                                        children: [
+                                          const Center(
+                                            child: Text(
+                                              "اختار مدينتك",
                                             ),
-                                            ...List.generate(
-                                              state.list.length,
-                                              (index) => GestureDetector(
-                                                onTap: () {
-                                                  cityId = state.list[index].id;
-                                                  Navigator.pop(
-                                                    context,
+                                          ),
+                                          ...List.generate(
+                                            state.list.length,
+                                            (index) => GestureDetector(
+                                              onTap: () {
+                                                cityId = state.list[index].id;
+                                                Navigator.pop(
+                                                  context,
+                                                  state.list[index].name,
+                                                );
+                                              },
+                                              child: Container(
+                                                margin:
+                                                    EdgeInsetsDirectional.only(
+                                                  bottom: 16.h,
+                                                ),
+                                                width: double.infinity,
+                                                padding:
+                                                    EdgeInsetsDirectional.all(
+                                                  16.r,
+                                                ),
+                                                decoration: BoxDecoration(
+                                                  color: Theme.of(context)
+                                                      .primaryColor
+                                                      .withOpacity(
+                                                        0.2,
+                                                      ),
+                                                ),
+                                                child: Center(
+                                                  child: Text(
                                                     state.list[index].name,
-                                                  );
-                                                },
-                                                child: Container(
-                                                  margin: EdgeInsetsDirectional.only(
-                                                    bottom: 16.h,
-                                                  ),
-                                                  width: double.infinity,
-                                                  padding: EdgeInsetsDirectional.all(
-                                                    16.r,
-                                                  ),
-                                                  decoration: BoxDecoration(
-                                                    color: Theme.of(context)
-                                                        .primaryColor
-                                                        .withOpacity(
-                                                          0.2,
-                                                        ),
-                                                  ),
-                                                  child: Center(
-                                                    child: Text(
-                                                      state.list[index].name,
-                                                    ),
                                                   ),
                                                 ),
                                               ),
                                             ),
-                                          ],
-                                        ),
+                                          ),
+                                        ],
                                       ),
-                                    );
-                                  } else {
-                                    return const Center(
-                                      child: Text("فشل فى الاتصال"),
-                                    );
-                                  }
-                                },
-                              ),
+                                    ),
+                                  );
+                                } else {
+                                  return const Center(
+                                    child: Text("فشل فى الاتصال"),
+                                  );
+                                }
+                              },
                             ),
                           );
                           if (result != null) {
@@ -424,28 +440,27 @@ class _EditProfileState extends State<EditProfile> {
                 SizedBox(
                   height: 178.h,
                 ),
-                BlocProvider(
-                  create: (context) => EditProfileCubit(),
-                  child: BlocBuilder<EditProfileCubit, EditProfileSates>(
-                    builder: (context, state) {
-                      EditProfileCubit cubit = BlocProvider.of(context);
-                      return AppButton(
-                        isLoading: state is EditProfileLoadingState,
-                        onTap: () {
-                          cubit.update(
+                BlocBuilder(
+                  bloc: bloc,
+                  builder: (context, state) {
+                    return AppButton(
+                      isLoading: state is EditProfileLoadingState,
+                      onTap: () {
+                        bloc.add(
+                          UpdateUserDataEvent(
                             selectedImage,
                             nameController.text,
                             phoneNumberController.text,
                             cityId,
-                          );
-                        },
-                        text: "تعديل البيانات",
-                        radius: 15.r,
-                        width: 343.w,
-                        height: 60.h,
-                      );
-                    },
-                  ),
+                          ),
+                        );
+                      },
+                      text: "تعديل البيانات",
+                      radius: 15.r,
+                      width: 343.w,
+                      height: 60.h,
+                    );
+                  },
                 ),
               ],
             ),

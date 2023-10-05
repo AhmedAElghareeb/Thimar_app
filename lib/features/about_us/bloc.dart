@@ -1,13 +1,17 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:thimar_app/features/about_us/states.dart';
 
 import '../../core/logic/dio_helper.dart';
+import 'events.dart';
+import 'states.dart';
 
-class GetAboutUsCubit extends Cubit<GetAboutUsStates>{
-  GetAboutUsCubit() : super(GetAboutUsStates(),);
+class AboutUsBloc extends Bloc<AboutUsEvents, GetAboutUsStates>
+{
+  AboutUsBloc() : super(GetAboutUsStates(),){
+    on<GetAboutUsEvent>(getAboutData);
+  }
 
   var data;
-  void getAboutData() async {
+  void getAboutData(GetAboutUsEvent event, Emitter<GetAboutUsStates> emit) async {
     emit(
       GetAboutUsLoadingState(),
     );
@@ -26,4 +30,5 @@ class GetAboutUsCubit extends Cubit<GetAboutUsStates>{
       );
     }
   }
+
 }

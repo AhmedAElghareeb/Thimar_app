@@ -13,3 +13,9 @@ class GetContactSuccessState extends ContactUsStates {
     required this.model,
   });
 }
+
+class SendContactLoadingState extends ContactUsStates {}
+
+class SendContactFailedState extends ContactUsStates {}
+
+class SendContactSuccessState extends ContactUsStates {}

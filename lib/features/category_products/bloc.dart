@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/logic/dio_helper.dart';
-import '../../models/category_products_model.dart';
+import '../../models/category_products.dart';
 import 'events.dart';
 import 'states.dart';
 

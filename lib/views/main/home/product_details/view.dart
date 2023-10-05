@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:thimar_app/features/products_details/cubit.dart';
+import 'package:kiwi/kiwi.dart';
 import 'package:thimar_app/features/products_details/states.dart';
+
+import '../../../../features/products_details/bloc.dart';
+import '../../../../features/products_details/events.dart';
 
 class ProductDetails extends StatefulWidget {
   final int id;
@@ -18,16 +21,22 @@ class ProductDetails extends StatefulWidget {
 class _ProductDetailsState extends State<ProductDetails> {
   int currentIndex = 0;
 
+  final bloc= KiwiContainer().resolve<ProductDetailsBloc>();
+
+  @override
+  void dispose() {
+    super.dispose();
+    bloc.close();
+  }
+
   @override
   Widget build(BuildContext context) {
-    ShowProductsDetailsCubit cubit = BlocProvider.of(context);
-    cubit.showProducts(
-      id: widget.id,
-    );
     return Scaffold(
       appBar: const MainAppBar(),
       body: BlocBuilder(
-        bloc: cubit,
+        bloc: bloc..add(GetProductsDetailsEvent(
+          id: widget.id,
+        ),),
         builder: (context, state) {
           if (state is ShowProductsDetailsFailedState) {
             return const Center(

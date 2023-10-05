@@ -2,14 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:kiwi/kiwi.dart';
 import 'package:thimar_app/core/design/app_button.dart';
 import 'package:thimar_app/core/design/app_input.dart';
 import 'package:thimar_app/core/design/auth_header.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
-import 'package:thimar_app/features/register/cubit.dart';
 import 'package:thimar_app/features/register/states.dart';
 import 'package:thimar_app/views/auth/login.dart';
 import 'package:thimar_app/views/sheets/cities.dart';
+
+import '../../features/get_cities/bloc.dart';
+import '../../features/get_cities/events.dart';
+import '../../features/register/bloc.dart';
+import '../../features/register/events.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -21,9 +26,18 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
 
+  final bloc = KiwiContainer().resolve<RegisterBloc>();
+  final citiesBloc = KiwiContainer().resolve<CitiesBloc>()..add(GetCitiesDataEvent(),);
+
+  @override
+  void dispose() {
+    super.dispose();
+    bloc.close();
+    citiesBloc.close();
+  }
+
   @override
   Widget build(BuildContext context) {
-    RegisterCubit cubit = BlocProvider.of(context);
     return Container(
       color: Colors.white,
       child: Stack(
@@ -37,7 +51,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           Scaffold(
             backgroundColor: Colors.transparent,
             body: BlocBuilder(
-              bloc: cubit,
+              bloc: bloc,
               builder: (context, state) => SafeArea(
                 child: Form(
                   key: _formKey,
@@ -55,7 +69,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         height: 22.h,
                       ),
                       AppInput(
-                        controller: cubit.nameController,
+                        controller: bloc.nameController,
                         labelText: "اسم المستخدم",
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -71,7 +85,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         height: 16.h,
                       ),
                       AppInput(
-                        controller: cubit.phoneNumberController,
+                        controller: bloc.phoneNumberController,
                         labelText: "رقم الجوال",
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -95,7 +109,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               builder: (context) => const CitiesSheets(),
                             );
                             if (result != null) {
-                              cubit.selectedCity = result;
+                              bloc.selectedCity = result;
                               setState(() {});
                             }
                           },
@@ -107,9 +121,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   absorbing: true,
                                   child: AppInput(
                                     labelText:
-                                        cubit.selectedCity?.name ?? "المدينة",
+                                        bloc.selectedCity?.name ?? "المدينة",
                                     validator: (value) {
-                                      if (cubit.selectedCity == null) {
+                                      if (bloc.selectedCity == null) {
                                         return "حقل المدينة مطلوب";
                                       }
                                       return null;
@@ -119,10 +133,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   ),
                                 ),
                               ),
-                              if (cubit.selectedCity != null)
+                              if (bloc.selectedCity != null)
                                 IconButton(
                                   onPressed: () {
-                                    cubit.selectedCity = null;
+                                    bloc.selectedCity = null;
                                     setState(() {});
                                   },
                                   icon: Icon(
@@ -139,7 +153,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         height: 16.h,
                       ),
                       AppInput(
-                        controller: cubit.passwordController,
+                        controller: bloc.passwordController,
                         labelText: "كلمة المرور",
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -157,13 +171,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         height: 16.h,
                       ),
                       AppInput(
-                        controller: cubit.confirmPasswordController,
+                        controller: bloc.confirmPasswordController,
                         labelText: "تأكيد كلمة المرور",
                         validator: (value) {
                           if (value!.isEmpty) {
                             return "حقل تأكيد كلمة المرور مطلوب";
                           } else if (value.toString() !=
-                              cubit.passwordController.text) {
+                              bloc.passwordController.text) {
                             return "كلمتا المرور غير متطابقتين";
                           }
                           return null;
@@ -187,16 +201,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             );
                           }
                           return AppButton(
-                              onTap: () {
-                                if (_formKey.currentState!.validate()) {
-                                  cubit.userRegister();
-                                }
-                              },
-                              text: "تسجيل",
+                            onTap: () {
+                              if (_formKey.currentState!.validate()) {
+                                bloc.add(
+                                  RegisterUserDataEvent(),
+                                );
+                              }
+                            },
+                            text: "تسجيل",
                             radius: 15.r,
                             width: 343.w,
                             height: 60.h,
-                            );
+                          );
                         },
                       ),
                       SizedBox(

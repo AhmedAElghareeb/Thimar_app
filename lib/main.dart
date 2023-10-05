@@ -3,20 +3,15 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:thimar_app/core/logic/cache_helper.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
-import 'package:thimar_app/features/confirm_code/cubit.dart';
-import 'package:thimar_app/features/login/cubit.dart';
-import 'package:thimar_app/features/products/cubit.dart';
-import 'package:thimar_app/features/products_details/cubit.dart';
-import 'package:thimar_app/features/register/cubit.dart';
 import 'package:thimar_app/generated/codegen_loader.g.dart';
 import 'package:thimar_app/views/auth/splash.dart';
 import 'core/logic/kiwi.dart';
-import 'features/about_us/cubit.dart';
 import 'firebase_options.dart';
+
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -57,79 +52,57 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: const Size(375, 812),
-      builder: (context, child) => MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (context) => LoginCubit(),
-          ),
-          BlocProvider(
-            create: (context) => RegisterCubit(),
-          ),
-          BlocProvider(
-            create: (context) => ProductsCubit(),
-          ),
-          BlocProvider(
-            create: (context) => ShowProductsDetailsCubit(),
-          ),
-          BlocProvider(
-            create: (context) => GetAboutUsCubit(),
-          ),
-          BlocProvider(
-            create: (context) => VerifyCodeCubit(),
-          ),
-        ],
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          navigatorKey: navigatorKey,
-          theme: ThemeData(
-            appBarTheme: AppBarTheme(
-              backgroundColor: const Color(
-                0xffFFFFFF,
-              ),
-              centerTitle: true,
-              elevation: 0.0,
-              titleTextStyle: TextStyle(
-                fontSize: 20.sp,
-                fontWeight: FontWeight.bold,
-                color: getMaterialColor(),
-              ),
+      builder: (context, child) => MaterialApp(
+        debugShowCheckedModeBanner: false,
+        navigatorKey: navigatorKey,
+        theme: ThemeData(
+          appBarTheme: AppBarTheme(
+            backgroundColor: const Color(
+              0xffFFFFFF,
             ),
-            primarySwatch: getMaterialColor(),
-            platform: TargetPlatform.iOS,
-            fontFamily: "Tajawal",
-            scaffoldBackgroundColor: Colors.white,
-            outlinedButtonTheme: OutlinedButtonThemeData(
-              style: OutlinedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadiusDirectional.circular(
-                    15.r,
-                  ),
-                ),
-                side: const BorderSide(
-                  color: Color(0xFF4C8613),
+            centerTitle: true,
+            elevation: 0.0,
+            titleTextStyle: TextStyle(
+              fontSize: 20.sp,
+              fontWeight: FontWeight.bold,
+              color: getMaterialColor(),
+            ),
+          ),
+          primarySwatch: getMaterialColor(),
+          platform: TargetPlatform.iOS,
+          fontFamily: "Tajawal",
+          scaffoldBackgroundColor: Colors.white,
+          outlinedButtonTheme: OutlinedButtonThemeData(
+            style: OutlinedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadiusDirectional.circular(
+                  15.r,
                 ),
               ),
-            ),
-            filledButtonTheme: FilledButtonThemeData(
-              style: OutlinedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadiusDirectional.circular(
-                    15.r,
-                  ),
-                ),
-                side: const BorderSide(
-                  color: Color(0xFFFFE1E1),
-                ),
-                backgroundColor: const Color(0xFFFFE1E1),
+              side: const BorderSide(
+                color: Color(0xFF4C8613),
               ),
             ),
           ),
-          builder: (context, child) => child!,
-          localizationsDelegates: context.localizationDelegates,
-          supportedLocales: context.supportedLocales,
-          locale: context.locale,
-          home: const SplashScreen(),
+          filledButtonTheme: FilledButtonThemeData(
+            style: OutlinedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadiusDirectional.circular(
+                  15.r,
+                ),
+              ),
+              side: const BorderSide(
+                color: Color(0xFFFFE1E1),
+              ),
+              backgroundColor: const Color(0xFFFFE1E1),
+            ),
+          ),
         ),
+        builder: (context, child) => child!,
+        localizationsDelegates: context.localizationDelegates,
+        supportedLocales: context.supportedLocales,
+        locale: context.locale,
+        home: const SplashScreen(),
       ),
     );
   }

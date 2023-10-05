@@ -3,8 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:thimar_app/features/about_us/cubit.dart';
+import 'package:kiwi/kiwi.dart';
 import 'package:thimar_app/features/about_us/states.dart';
+
+import '../../../features/about_us/bloc.dart';
+import '../../../features/about_us/events.dart';
 
 class AboutUs extends StatefulWidget {
   const AboutUs({super.key});
@@ -14,10 +17,17 @@ class AboutUs extends StatefulWidget {
 }
 
 class _AboutUsState extends State<AboutUs> {
+
+  final bloc = KiwiContainer().resolve<AboutUsBloc>()..add(GetAboutUsEvent());
+
+  @override
+  void dispose() {
+    super.dispose();
+    bloc.close();
+  }
+
   @override
   Widget build(BuildContext context) {
-    GetAboutUsCubit cubit = BlocProvider.of(context);
-    cubit.getAboutData();
     return Scaffold(
       appBar: AppBar(
         title: const Text("عن التطبيق"),
@@ -54,30 +64,32 @@ class _AboutUsState extends State<AboutUs> {
       ),
       body: SafeArea(
         child: BlocBuilder(
-          bloc: cubit,
+          bloc: bloc,
           builder: (context, state) {
             if (state is GetAboutUsLoadingState) {
               return const Center(
                 child: CircularProgressIndicator(),
               );
             } else if (state is GetAboutUsSuccessState) {
-              return ListView(
+              return Padding(
                 padding: EdgeInsetsDirectional.symmetric(
                   vertical: 26.h,
                 ),
-                children: [
-                  SvgPicture.asset(
-                    "assets/images/logo/logo1.svg",
-                    width: 160.w,
-                    height: 157.h,
-                  ),
-                  SizedBox(
-                    height: 25.h,
-                  ),
-                  Html(
-                    data: cubit.data,
-                  ),
-                ],
+                child: Column(
+                  children: [
+                    SvgPicture.asset(
+                      "assets/images/logo/logo1.svg",
+                      width: 160.w,
+                      height: 157.h,
+                    ),
+                    SizedBox(
+                      height: 25.h,
+                    ),
+                    Html(
+                      data: bloc.data,
+                    ),
+                  ],
+                ),
               );
             } else {
               return const Center(

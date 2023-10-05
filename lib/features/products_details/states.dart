@@ -1,13 +1,13 @@
-import 'package:thimar_app/models/product_details_model.dart';
+import 'package:thimar_app/models/product_details.dart';
 
-class ShowProducts{}
+class ShowProductsDetails{}
 
-class ShowProductsDetailsLoadingState extends ShowProducts{}
+class ShowProductsDetailsLoadingState extends ShowProductsDetails{}
 
-class ShowProductsDetailsSuccessState extends ShowProducts{
+class ShowProductsDetailsSuccessState extends ShowProductsDetails{
   final ProductDetailsData model;
 
   ShowProductsDetailsSuccessState({required this.model});
 }
 
-class ShowProductsDetailsFailedState extends ShowProducts{}
+class ShowProductsDetailsFailedState extends ShowProductsDetails{}

@@ -1,7 +1,7 @@
-class VerifyCodeStates {}
+class ConfirmCodeStates {}
 
-class VerifyCodeLoadingState extends VerifyCodeStates {}
+class ConfirmCodeLoadingState extends ConfirmCodeStates {}
 
-class VerifyCodeFailedState extends VerifyCodeStates {}
+class ConfirmCodeFailedState extends ConfirmCodeStates {}
 
-class VerifyCodeSuccessState extends VerifyCodeStates {}
+class ConfirmCodeSuccessState extends ConfirmCodeStates {}

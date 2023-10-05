@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/logic/dio_helper.dart';
-import '../../models/slider_model.dart';
+import '../../models/slider.dart';
 import 'events.dart';
 import 'states.dart';
 

@@ -1,5 +1,5 @@
 class GetProductsModel {
-  late final List<HProductsData> data;
+  late final List<ProductsData> data;
   late final String status;
   late final String message;
   late final num userCartCount;
@@ -7,7 +7,7 @@ class GetProductsModel {
   late final num minPrice;
 
   GetProductsModel.fromJson(Map<String, dynamic> json){
-    data = List.from(json['data']).map((e)=>HProductsData.fromJson(e)).toList();
+    data = List.from(json['data']).map((e)=>ProductsData.fromJson(e)).toList();
     status = json['status'] ?? "";
     message = json['message'] ?? "";
     userCartCount = json['user_cart_count'] ?? 0;
@@ -16,7 +16,7 @@ class GetProductsModel {
   }
 }
 
-class HProductsData {
+class ProductsData {
   late final num categoryId;
   late final int id;
   late final String title;
@@ -32,7 +32,7 @@ class HProductsData {
   late final String mainImage;
   late final String createdAt;
 
-  HProductsData.fromJson(Map<String, dynamic> json){
+  ProductsData.fromJson(Map<String, dynamic> json){
     categoryId = json['category_id'] ?? 0;
     id = json['id'] ?? 0;
     title = json['title'] ?? "";

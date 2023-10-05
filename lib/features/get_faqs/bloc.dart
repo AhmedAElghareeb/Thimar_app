@@ -2,7 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:thimar_app/features/get_faqs/states.dart';
 
 import '../../core/logic/dio_helper.dart';
-import '../../models/faqs_model.dart';
+import '../../models/faqs.dart';
 import 'events.dart';
 
 class FaqsBloc extends Bloc<FaqsEvents, GetFaqsStates> {
