@@ -122,7 +122,7 @@ class _AccountScreenState extends State<AccountScreen> {
             ),
             Container(
               width: 342.w,
-              height: 152.h,
+              height: 160.h,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(
                   17.r,
@@ -171,7 +171,7 @@ class _AccountScreenState extends State<AccountScreen> {
             ),
             Container(
               width: 342.w,
-              height: 244.h,
+              height: 255.h,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(
                   17.r,
@@ -240,7 +240,7 @@ class _AccountScreenState extends State<AccountScreen> {
             ),
             Container(
               width: 342.w,
-              height: 197.h,
+              height: 205.h,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(
                   17.r,

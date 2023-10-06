@@ -12,7 +12,7 @@ class ProductsDetails {
 
 class ProductDetailsData {
   late final num categoryId;
-  late final num id;
+  late final int id;
   late final String title;
   late final String description;
   late final String code;

@@ -13,6 +13,7 @@ import '../../features/logout/bloc.dart';
 import '../../features/policy/bloc.dart';
 import '../../features/products/bloc.dart';
 import '../../features/products_details/bloc.dart';
+import '../../features/products_rates/bloc.dart';
 import '../../features/register/bloc.dart';
 import '../../features/reset_password/bloc.dart';
 import '../../features/slider_images/bloc.dart';
@@ -43,5 +44,6 @@ void initKiwi() {
   container.registerFactory((c) => CategoryProductBloc());
   container.registerFactory((c) => ProductsDataBloc());
   container.registerFactory((c) => ProductDetailsBloc());
+  container.registerFactory((c) => ProductsRatesBloc());
   container.registerFactory((c) => LogoutBloc());
 }

@@ -162,6 +162,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   navigateTo(
                                     ProductDetails(
                                       id: state.list[index].id,
+                                      isFavorite: state.list[index].isFavorite,
                                     ),
                                   );
                                 },

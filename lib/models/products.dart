@@ -23,7 +23,7 @@ class ProductsData {
   late final String description;
   late final String code;
   late final num priceBeforeDiscount;
-  late final num? price;
+  late final num price;
   late final num discount;
   late final num amount;
   late final num isActive;

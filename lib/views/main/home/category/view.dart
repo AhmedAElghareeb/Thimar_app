@@ -152,6 +152,7 @@ class _CategoryProductsState extends State<CategoryProducts> {
                                   navigateTo(
                                     ProductDetails(
                                       id: state.list[index].id,
+                                      isFavorite: state.list[index].isFavorite,
                                     ),
                                   );
                                 },
