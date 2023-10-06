@@ -16,9 +16,9 @@ import '../../features/confirm_code/bloc.dart';
 
 class ConfirmCode extends StatefulWidget {
   final bool isActive;
-  final String phone;
+  final String phone, pinCode;
 
-  const ConfirmCode({super.key, required this.isActive, required this.phone});
+  const ConfirmCode({super.key, required this.isActive, required this.phone, required this.pinCode});
 
   @override
   State<ConfirmCode> createState() => _ConfirmCodeState();
@@ -78,7 +78,10 @@ class _ConfirmCodeState extends State<ConfirmCode> {
                             ),
                           ),
                           TextButton(
-                            onPressed: () {},
+                            onPressed: ()
+                            {
+                              Navigator.pop(context);
+                            },
                             child: Text(
                               "تغيير رقم الجوال",
                               style: TextStyle(
@@ -134,6 +137,7 @@ class _ConfirmCodeState extends State<ConfirmCode> {
                                     VerifyCodeEvent(
                                       isActive: widget.isActive,
                                       phone: widget.phone,
+                                      pinCode: widget.pinCode,
                                     ),
                                   );
                                 }

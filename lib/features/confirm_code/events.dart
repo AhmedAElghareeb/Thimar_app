@@ -2,9 +2,9 @@ class VerifyUserEvents {}
 
 class VerifyCodeEvent extends VerifyUserEvents {
   final bool isActive;
-  final String phone;
+  final String phone, pinCode;
 
-  VerifyCodeEvent({required this.isActive, required this.phone});
+  VerifyCodeEvent({required this.isActive, required this.phone, required this.pinCode});
 }
 
 class ResendCodeEvent extends VerifyUserEvents {

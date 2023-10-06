@@ -23,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
         const Duration(
           seconds: 3,
         ), () async {
-      if (CacheHelper.getToken()!=null) {
+      if (CacheHelper.getToken().isNotEmpty) {
         navigateTo(
           const HomeView(),
         );
@@ -59,6 +59,9 @@ class _SplashScreenState extends State<SplashScreen> {
           Center(
             child: Flash(
               animate: true,
+              duration: const Duration(
+                seconds: 3,
+              ),
               child: SvgPicture.asset(
                 "assets/images/logo/logo1.svg",
                 width: 160.w,

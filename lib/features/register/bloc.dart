@@ -46,6 +46,7 @@ class RegisterBloc extends Bloc<RegisterEvents, RegisterStates>{
         ConfirmCode(
           isActive: true,
           phone: phoneNumberController.text,
+          pinCode: "1111",
         ),
       );
       emit(

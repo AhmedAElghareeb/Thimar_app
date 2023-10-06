@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:kiwi/kiwi.dart';
 import 'package:thimar_app/core/design/app_button.dart';
 import 'package:thimar_app/core/design/app_input.dart';
 import 'package:thimar_app/core/design/auth_header.dart';
-import 'package:thimar_app/core/logic/dio_helper.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
 import 'package:thimar_app/views/auth/login.dart';
 
+import '../../features/reset_password/bloc.dart';
+import '../../features/reset_password/events.dart';
+import '../../features/reset_password/states.dart';
+
 class CreateNewPassword extends StatefulWidget {
-  const CreateNewPassword({super.key, required this.phone, required this.pinCode});
+  const CreateNewPassword(
+      {super.key, required this.phone, required this.pinCode});
 
   final String phone;
   final String pinCode;
@@ -21,42 +27,12 @@ class CreateNewPassword extends StatefulWidget {
 class _CreateNewPasswordState extends State<CreateNewPassword> {
   final _formKey = GlobalKey<FormState>();
 
-  final passwordController = TextEditingController();
+  final bloc = KiwiContainer().resolve<ResetPasswordBloc>();
 
-  final confirmPasswordController = TextEditingController();
-
-  bool isLoading = false;
-
-  void resetPassword() async {
-    isLoading = true;
-    setState(
-      () {},
-    );
-    final response = await DioHelper().sendToServer(
-      url: "reset_password",
-      body: {
-        "phone": widget.phone,
-        "code": widget.pinCode,
-        "password": passwordController.text,
-      },
-    );
-    if (response.success) {
-      showSnackBar(
-        response.msg,
-        typ: MessageType.success,
-      );
-      navigateTo(
-        const LoginScreen(),
-      );
-    } else {
-      showSnackBar(
-        response.msg,
-      );
-    }
-    isLoading = false;
-    setState(
-      () {},
-    );
+  @override
+  void dispose() {
+    super.dispose();
+    bloc.close();
   }
 
   @override
@@ -90,7 +66,7 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
                       height: 17.h,
                     ),
                     AppInput(
-                      controller: passwordController,
+                      controller: bloc.passwordController,
                       labelText: "كلمة المرور",
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -107,13 +83,13 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
                       height: 16.h,
                     ),
                     AppInput(
-                      controller: confirmPasswordController,
+                      controller: bloc.confirmPasswordController,
                       labelText: "تأكيد كلمة المرور",
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "حقل تأكيد كلمة المرور مطلوب";
-                        } else if (value.toString() !=
-                            passwordController.text) {
+                        } else
+                        if (value.toString() != bloc.passwordController.text) {
                           return "كلمتا المرور غير متطابقتين";
                         }
                         return null;
@@ -126,16 +102,25 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
                     SizedBox(
                       height: 25.h,
                     ),
-                    AppButton(
-                      onTap: () {
-                        if (_formKey.currentState!.validate()) {
-                          resetPassword();
-                        }
+                    BlocBuilder(
+                      bloc: bloc,
+                      builder: (context, state) {
+                        return AppButton(
+                          onTap: () {
+                            if (_formKey.currentState!.validate()) {
+                              bloc.add(UserResetPasswordEvent(
+                                  pinCode: widget.pinCode,
+                                  phone: widget.phone
+                              ),);
+                            }
+                          },
+                          text: "تأكيد كلمة المرور",
+                          radius: 15.r,
+                          width: 343.w,
+                          height: 60.h,
+                          isLoading: state is ResetPasswordLoadingState,
+                        );
                       },
-                      text: "تأكيد كلمة المرور",
-                      radius: 15.r,
-                      width: 343.w,
-                      height: 60.h,
                     ),
                     SizedBox(
                       height: 45.h,
@@ -146,7 +131,9 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
                         Text(
                           "لديك حساب بالفعل ؟",
                           style: TextStyle(
-                            color: Theme.of(context).primaryColor,
+                            color: Theme
+                                .of(context)
+                                .primaryColor,
                             fontSize: 15.sp,
                             fontWeight: FontWeight.bold,
                           ),
@@ -162,7 +149,9 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 18.sp,
-                              color: Theme.of(context).primaryColor,
+                              color: Theme
+                                  .of(context)
+                                  .primaryColor,
                             ),
                           ),
                         ),

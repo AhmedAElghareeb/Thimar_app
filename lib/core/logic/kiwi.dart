@@ -14,6 +14,7 @@ import '../../features/policy/bloc.dart';
 import '../../features/products/bloc.dart';
 import '../../features/products_details/bloc.dart';
 import '../../features/register/bloc.dart';
+import '../../features/reset_password/bloc.dart';
 import '../../features/slider_images/bloc.dart';
 import '../../features/suggestions_and_complaints/bloc.dart';
 import '../../features/terms_conditions/bloc.dart';
@@ -28,6 +29,7 @@ void initKiwi() {
   container.registerFactory((c) => RegisterBloc());
   container.registerFactory((c) => ConfirmCodeBloc());
   container.registerFactory((c) => ForgetPasswordBloc());
+  container.registerFactory((c) => ResetPasswordBloc());
   container.registerFactory((c) => CitiesBloc());
   container.registerFactory((c) => EditProfileBloc());
   container.registerFactory((c) => PolicyBloc());

@@ -28,6 +28,7 @@ class ForgetPasswordBloc extends Bloc<ForgetPasswordEvents, ForgetPasswordStates
         ConfirmCode(
           isActive: false,
           phone: phoneNumberController.text,
+          pinCode: "1111",
         ),
       );
       emit(ForgetPasswordSuccessState(),);

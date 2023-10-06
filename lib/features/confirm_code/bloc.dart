@@ -51,9 +51,10 @@ class ConfirmCodeBloc extends Bloc<VerifyUserEvents, ConfirmCodeStates> {
     );
     if (event.isActive) {
       await DioHelper().sendToServer(
-        url: "resend_code",
+        url: "check_code",
         body: {
           "phone": event.phone,
+          "code" : event.pinCode,
         },
       );
     }
