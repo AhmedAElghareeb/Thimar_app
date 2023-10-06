@@ -4,8 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:thimar_app/features/products/states.dart';
 import 'package:thimar_app/features/products_details/states.dart';
 
+import '../../../../features/products/bloc.dart';
+import '../../../../features/products/events.dart';
 import '../../../../features/products_details/bloc.dart';
 import '../../../../features/products_details/events.dart';
 
@@ -21,22 +24,20 @@ class ProductDetails extends StatefulWidget {
 class _ProductDetailsState extends State<ProductDetails> {
   int currentIndex = 0;
 
-  final bloc= KiwiContainer().resolve<ProductDetailsBloc>();
-
-  @override
-  void dispose() {
-    super.dispose();
-    bloc.close();
-  }
+  final bloc = KiwiContainer().resolve<ProductDetailsBloc>();
+  final categoryProductBloc = KiwiContainer().resolve<ProductsDataBloc>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const MainAppBar(),
       body: BlocBuilder(
-        bloc: bloc..add(GetProductsDetailsEvent(
-          id: widget.id,
-        ),),
+        bloc: bloc
+          ..add(
+            GetProductsDetailsEvent(
+              id: widget.id,
+            ),
+          ),
         builder: (context, state) {
           if (state is ShowProductsDetailsFailedState) {
             return const Center(
@@ -452,170 +453,188 @@ class _ProductDetailsState extends State<ProductDetails> {
                       SizedBox(
                         height: 13.h,
                       ),
-                      SizedBox(
-                        width: double.infinity,
-                        height: 172.h,
-                        child: ListView(
-                          scrollDirection: Axis.horizontal,
-                          children: List.generate(
-                            state.model.images.length,
-                            (index) => Container(
+                      BlocBuilder(
+                        bloc: categoryProductBloc..add(GetProductsDataEvent(
+                          id: widget.id,
+                        )),
+                        builder: (context, state2) {
+                          if (state2 is GetProductsLoadingState) {
+                            return const Center(child: CircularProgressIndicator(),);
+                          } else if (state2 is GetProductsSuccessState) {
+                            return SizedBox(
+                              width: double.infinity,
                               height: 172.h,
-                              width: 130.w,
-                              decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadiusDirectional.circular(17.r),
-                                color: const Color(
-                                  0xffffffff,
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    blurRadius: 5.r,
-                                    color: const Color(
-                                      0xfff5f5f5,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.only(
-                                      top: 9.h,
-                                      end: 9.w,
-                                      start: 9.w,
-                                    ),
-                                    child: Stack(
-                                      children: [
-                                        Image.network(
-                                          state.model.mainImage,
-                                          width: 116.w,
-                                          height: 94.h,
-                                        ),
-                                        Align(
-                                          alignment:
-                                              AlignmentDirectional.topEnd,
-                                          child: GestureDetector(
-                                            onTap: () {},
-                                            child: Container(
-                                              width: 43.w,
-                                              height: 16.h,
-                                              margin:
-                                                  EdgeInsetsDirectional.only(
-                                                end: 11.w,
-                                              ),
-                                              decoration: BoxDecoration(
-                                                color: Theme.of(context)
-                                                    .primaryColor,
-                                                borderRadius:
-                                                    BorderRadiusDirectional
-                                                        .only(
-                                                  bottomStart:
-                                                      Radius.circular(25.r),
-                                                ),
-                                              ),
-                                              child: Center(
-                                                child: Text(
-                                                  "${state.model.discount * 100} %",
-                                                  style: TextStyle(
-                                                    fontSize: 11.sp,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: const Color(
-                                                      0xffFFFFFF,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
+                              child: ListView(
+                                scrollDirection: Axis.horizontal,
+                                children: List.generate(
+                                  state2.list.length,
+                                      (index) => Container(
+                                    height: 172.h,
+                                    width: 130.w,
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                      BorderRadiusDirectional.circular(17.r),
+                                      color: const Color(
+                                        0xffffffff,
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          blurRadius: 5.r,
+                                          color: const Color(
+                                            0xfff5f5f5,
                                           ),
                                         ),
                                       ],
                                     ),
-                                  ),
-                                  SizedBox(
-                                    height: 2.h,
-                                  ),
-                                  Align(
-                                    alignment: AlignmentDirectional.topStart,
-                                    child: Padding(
-                                      padding: EdgeInsetsDirectional.only(
-                                        start: 9.w,
-                                      ),
-                                      child: Text(
-                                        state.model.title,
-                                        style: TextStyle(
-                                          fontSize: 13.sp,
-                                          fontWeight: FontWeight.bold,
-                                          color: Theme.of(context).primaryColor,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 4.h,
-                                  ),
-                                  Align(
-                                    alignment: AlignmentDirectional.topStart,
-                                    child: Padding(
-                                      padding: EdgeInsetsDirectional.only(
-                                        start: 10.w,
-                                      ),
-                                      child: Text(
-                                        state.model.unit.name,
-                                        style: TextStyle(
-                                          fontSize: 10.sp,
-                                          color: const Color(
-                                            0xFF808080,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 3.h,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Align(
-                                        alignment:
-                                            AlignmentDirectional.topStart,
-                                        child: Padding(
+                                    child: Column(
+                                      children: [
+                                        Padding(
                                           padding: EdgeInsetsDirectional.only(
+                                            top: 9.h,
+                                            end: 9.w,
                                             start: 9.w,
                                           ),
-                                          child: Text(
-                                            "${state.model.price} ر.س",
-                                            style: TextStyle(
-                                              fontSize: 13.sp,
-                                              fontWeight: FontWeight.bold,
-                                              color: Theme.of(context)
-                                                  .primaryColor,
+                                          child: Stack(
+                                            children: [
+                                              Image.network(
+                                                state2.list[index].mainImage,
+                                                width: 116.w,
+                                                height: 94.h,
+                                              ),
+                                              Align(
+                                                alignment:
+                                                AlignmentDirectional.topEnd,
+                                                child: GestureDetector(
+                                                  onTap: () {},
+                                                  child: Container(
+                                                    width: 43.w,
+                                                    height: 16.h,
+                                                    margin: EdgeInsetsDirectional
+                                                        .only(
+                                                      end: 11.w,
+                                                    ),
+                                                    decoration: BoxDecoration(
+                                                      color: Theme.of(context)
+                                                          .primaryColor,
+                                                      borderRadius:
+                                                      BorderRadiusDirectional
+                                                          .only(
+                                                        bottomStart:
+                                                        Radius.circular(25.r),
+                                                      ),
+                                                    ),
+                                                    child: Center(
+                                                      child: Text(
+                                                        "${state2.list[index].discount * 100} %",
+                                                        style: TextStyle(
+                                                          fontSize: 11.sp,
+                                                          fontWeight:
+                                                          FontWeight.bold,
+                                                          color: const Color(
+                                                            0xffFFFFFF,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 2.h,
+                                        ),
+                                        Align(
+                                          alignment:
+                                          AlignmentDirectional.topStart,
+                                          child: Padding(
+                                            padding: EdgeInsetsDirectional.only(
+                                              start: 9.w,
+                                            ),
+                                            child: Text(
+                                              state2.list[index].title,
+                                              style: TextStyle(
+                                                fontSize: 13.sp,
+                                                fontWeight: FontWeight.bold,
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                      Align(
-                                        alignment:
-                                            AlignmentDirectional.bottomStart,
-                                        child: Text(
-                                          "${state.model.priceBeforeDiscount} ر.س",
-                                          textAlign: TextAlign.justify,
-                                          style: TextStyle(
-                                            fontSize: 10.sp,
-                                            color:
-                                                Theme.of(context).primaryColor,
-                                            decoration:
-                                                TextDecoration.lineThrough,
+                                        SizedBox(
+                                          height: 4.h,
+                                        ),
+                                        Align(
+                                          alignment:
+                                          AlignmentDirectional.topStart,
+                                          child: Padding(
+                                            padding: EdgeInsetsDirectional.only(
+                                              start: 10.w,
+                                            ),
+                                            child: Text(
+                                              state2.list[index].unit.name,
+                                              style: TextStyle(
+                                                fontSize: 10.sp,
+                                                color: const Color(
+                                                  0xFF808080,
+                                                ),
+                                              ),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                        SizedBox(
+                                          height: 3.h,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Align(
+                                              alignment:
+                                              AlignmentDirectional.topStart,
+                                              child: Padding(
+                                                padding:
+                                                EdgeInsetsDirectional.only(
+                                                  start: 9.w,
+                                                ),
+                                                child: Text(
+                                                  "${state2.list[index].price} ر.س",
+                                                  style: TextStyle(
+                                                    fontSize: 13.sp,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Theme.of(context)
+                                                        .primaryColor,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Align(
+                                              alignment: AlignmentDirectional
+                                                  .bottomStart,
+                                              child: Text(
+                                                "${state2.list[index].priceBeforeDiscount} ر.س",
+                                                textAlign: TextAlign.justify,
+                                                style: TextStyle(
+                                                  fontSize: 10.sp,
+                                                  color: Theme.of(context)
+                                                      .primaryColor,
+                                                  decoration:
+                                                  TextDecoration.lineThrough,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ],
+                                ),
                               ),
-                            ),
-                          ),
-                        ),
+                            );
+                          } else {
+                            return const SizedBox.shrink();
+                          }
+                        },
                       ),
                     ],
                   ),
@@ -696,6 +715,13 @@ class _ProductDetailsState extends State<ProductDetails> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    bloc.close();
+    categoryProductBloc.close();
   }
 }
 
