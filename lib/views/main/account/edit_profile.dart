@@ -440,7 +440,7 @@ class _EditProfileState extends State<EditProfile> {
                   onPress: ()
                   {
                     navigateTo(
-                      EditPassword(),
+                      const EditPassword(),
                     );
                   },
                   maxLines: 1,

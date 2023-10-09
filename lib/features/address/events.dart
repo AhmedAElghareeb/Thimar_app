@@ -8,7 +8,7 @@ class AddUserAddressEvent extends AddressesEvents {
   String type;
 
   double lat, long;
-  TextEditingController? phoneNumber, discribtion;
+  TextEditingController? phoneNumber, discribtion,location;
   int id;
 
   AddUserAddressEvent({
@@ -19,6 +19,7 @@ class AddUserAddressEvent extends AddressesEvents {
   }) {
     phoneNumber = TextEditingController(text: CacheHelper.getPhone());
     discribtion = TextEditingController(text: '');
+    location = TextEditingController(text: '');
   }
 }
 

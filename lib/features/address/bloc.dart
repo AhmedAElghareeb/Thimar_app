@@ -16,15 +16,17 @@ class AddressBloc extends Bloc<AddressesEvents, AddressesStates> {
     on<RemoveUserAddressEvent>(removeAddress);
   }
 
+  bool withLoading = true;
+
   Future<void> addAddress(
       AddUserAddressEvent event, Emitter<AddressesStates> emit) async {
     emit(
       AddUserAddressLoadingState(),
     );
-String location ='test';
-   // final location = await getLocationFromLatLong(LatLng(31.0224366,31.3875197));
+
+//   final location = await getLocationFromLatLong(LatLng(31.0224366,31.3875197));
     // final location = await getLocationFromLatLong(LatLng(event.lat, event.long));
-    print('-==-=- locations is $location');
+    // print('-==-=- locations is $location');
     final response = await DioHelper().sendToServer(
         url:
             event.id == 0 ? "client/addresses" : "client/addresses/${event.id}",
@@ -32,7 +34,7 @@ String location ='test';
           "type": event.type,
           "phone": event.phoneNumber!.text,
           "description": event.discribtion!.text,
-          "location": location,
+          "location": event.location!.text,
           "lat": event.lat,
           "lng": event.long,
           "is_default": 1,
@@ -55,10 +57,11 @@ String location ='test';
 
   Future<void> getAddress(
       GetUserAddressEvent event, Emitter<AddressesStates> emit) async {
-    emit(
-      GetUserAddressLoadingState(),
-    );
-
+    if (withLoading) {
+      emit(
+        GetUserAddressLoadingState(),
+      );
+    }
     final response = await DioHelper().getFromServer(
       url: "client/addresses",
     );
@@ -70,6 +73,7 @@ String location ='test';
           typ: MessageType.warning,
         );
       }
+      withLoading = false;
       emit(
         GetUserAddressSuccessState(
           list: list,
@@ -130,5 +134,12 @@ String location ='test';
         RemoveUserAddressFailedState(),
       );
     }
+  }
+
+  deleteItem(AddressModel item) async {
+    final response = await DioHelper()
+        .removeFromServer(url: "client/addresses/${item.id}", body: {
+      "type": item.type,
+    });
   }
 }

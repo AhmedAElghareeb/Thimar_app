@@ -1,15 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:kiwi/kiwi.dart';
 import 'package:thimar_app/core/design/app_button.dart';
 import 'package:thimar_app/core/design/app_input.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
+import 'package:thimar_app/features/cart/events.dart';
+import 'package:thimar_app/features/cart/states.dart';
 import 'package:thimar_app/views/main/home/cart/finish_order.dart';
 
-class Cart extends StatelessWidget {
-  Cart({super.key});
+import '../../../../features/cart/bloc.dart';
+import '../../../../models/cart.dart';
 
+class Cart extends StatefulWidget {
+  const Cart({super.key});
+
+  @override
+  State<Cart> createState() => _CartState();
+}
+
+class _CartState extends State<Cart> {
   final couponController = TextEditingController();
+
+  final bloc = KiwiContainer().resolve<CartBloc>();
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    bloc.close();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,15 +77,33 @@ class Cart extends StatelessWidget {
             vertical: 16.h,
           ),
           children: [
-            ListView.separated(
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) => const _Item(),
-              itemCount: 4,
-              separatorBuilder: (context, index) => SizedBox(
-                height: 10.h,
-              ),
+            BlocBuilder(
+              bloc: bloc
+                ..add(
+                  GetCartDataEvent(),
+                ),
+              builder: (context, state) {
+                if (state is GetCartDataLoadingState) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (state is GetCartDataSuccessState) {
+                  return ListView.separated(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) => _Item(
+                      model: state.list[index],
+                    ),
+                    itemCount: state.list.length,
+                    separatorBuilder: (context, index) => SizedBox(
+                      height: 10.h,
+                    ),
+                  );
+                } else {
+                  return const SizedBox.shrink();
+                }
+              },
             ),
             SizedBox(
               height: 12.h,
@@ -217,8 +256,21 @@ class Cart extends StatelessWidget {
   }
 }
 
-class _Item extends StatelessWidget {
-  const _Item();
+class _Item extends StatefulWidget {
+  final CartModel model;
+
+  const _Item({
+    required this.model,
+  });
+
+  @override
+  State<_Item> createState() => _ItemState();
+}
+
+class _ItemState extends State<_Item> {
+  int counter = 1;
+
+  final bloc = KiwiContainer().resolve<CartBloc>();
 
   @override
   Widget build(BuildContext context) {
@@ -246,23 +298,16 @@ class _Item extends StatelessWidget {
         ],
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Expanded(
             child: Row(
               children: [
-                Container(
-                  clipBehavior: Clip.antiAlias,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadiusDirectional.circular(
-                      25.r,
-                    ),
-                  ),
-                  child: Image.network(
-                    "https://avatars.mds.yandex.net/i?id=02ddd2a087c23724f02d8b1fc6e388aa0e74c0d0-10933813-images-thumbs&n=13",
-                    width: 92.w,
-                    height: 78.h,
-                  ),
+                Image.network(
+                  widget.model.image,
+                  fit: BoxFit.cover,
+                  width: 92.w,
+                  height: 78.h,
                 ),
                 SizedBox(
                   width: 9.w,
@@ -272,7 +317,7 @@ class _Item extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "طماطم",
+                      widget.model.title,
                       style: TextStyle(
                         fontSize: 15.sp,
                         fontWeight: FontWeight.bold,
@@ -283,9 +328,9 @@ class _Item extends StatelessWidget {
                       height: 6.h,
                     ),
                     Text(
-                      "45 ر.س",
+                      "${widget.model.price} ر.س",
                       style: TextStyle(
-                        fontSize: 13.sp,
+                        fontSize: 15.sp,
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).primaryColor,
                       ),
@@ -311,7 +356,10 @@ class _Item extends StatelessWidget {
                             width: 23.w,
                             height: 23.h,
                             child: FloatingActionButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                counter++;
+                                setState(() {});
+                              },
                               mini: true,
                               heroTag: null,
                               backgroundColor: const Color(0xffFFFFFF),
@@ -334,7 +382,7 @@ class _Item extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "5",
+                            counter.toString(),
                             style: TextStyle(
                               fontSize: 15.sp,
                               fontWeight: FontWeight.w400,
@@ -345,7 +393,12 @@ class _Item extends StatelessWidget {
                             width: 23.w,
                             height: 23.h,
                             child: FloatingActionButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                if (counter > 1) {
+                                  counter--;
+                                  setState(() {});
+                                }
+                              },
                               mini: true,
                               heroTag: null,
                               backgroundColor: const Color(0xffFFFFFF),
@@ -375,14 +428,40 @@ class _Item extends StatelessWidget {
               ],
             ),
           ),
-          SvgPicture.asset(
-            "assets/images/delete.svg",
-            width: 27.w,
-            height: 27.h,
-            fit: BoxFit.scaleDown,
+          BlocBuilder(
+            bloc: bloc,
+            builder: (context, state) {
+              if (state is RemoveFromCartDataLoadingState) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else {
+                return GestureDetector(
+                  onTap: () {
+                    bloc.add(
+                      RemoveFromCartDataEvent(
+                        id: widget.model.id,
+                      ),
+                    );
+                    setState(() {});
+                  },
+                  child: SvgPicture.asset(
+                    "assets/images/delete.svg",
+                    fit: BoxFit.scaleDown,
+                  ),
+                );
+              }
+            },
           ),
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    bloc.close();
   }
 }

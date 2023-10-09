@@ -10,6 +10,9 @@ import 'package:thimar_app/core/design/dot_button.dart';
 import 'package:thimar_app/core/logic/cache_helper.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
 import 'package:thimar_app/features/address/bloc.dart';
+import 'package:thimar_app/features/address/events.dart';
+import 'package:thimar_app/features/address/states.dart';
+import 'package:thimar_app/features/cart/states.dart';
 import 'package:thimar_app/features/category/bloc.dart';
 import 'package:thimar_app/features/category/states.dart';
 import 'package:thimar_app/features/category_products/bloc.dart';
@@ -20,8 +23,12 @@ import 'package:thimar_app/features/slider_images/states.dart';
 import 'package:thimar_app/views/main/home/cart/view.dart';
 import 'package:thimar_app/views/main/home/category/view.dart';
 import 'package:thimar_app/views/main/home/product_details/view.dart';
+import '../../../../features/cart/bloc.dart';
+import '../../../../features/cart/events.dart';
 import '../../../../features/category/events.dart';
 import '../../../../features/category_products/events.dart';
+import '../../account/address/add_address.dart';
+import '../../account/address/address.dart';
 
 class HomeScreen extends StatefulWidget {
   final int? id;
@@ -38,10 +45,13 @@ class _HomeScreenState extends State<HomeScreen> {
   final bloc = KiwiContainer().resolve<CategoryProductBloc>()
     ..add(GetCategoryProductsDataEvent());
 
+  final cartBloc = KiwiContainer().resolve<CartBloc>();
+
   @override
   void dispose() {
     super.dispose();
     bloc.close();
+    cartBloc.close();
   }
 
   @override
@@ -296,15 +306,24 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               child: state.list[index].amount != 0
                                   ? AppButton(
-                                      onTap: () {},
-                                      text: "أضف للسلة",
-                                      width: 120.w,
-                                      height: 30.h,
-                                      radius: 9.r,
-                                      backColor: const Color(
-                                        0xff61B80C,
-                                      ),
-                                    )
+                                    isLoading: state is AddToCartDataLoadingState,
+                                    onTap: ()
+                                    {
+                                      cartBloc.add(
+                                          AddToCartDataEvent(
+                                            productId: state.list[index].id,
+                                            amount: state.list[index].amount.toInt(),
+                                          ),
+                                      );
+                                    },
+                                    text: "أضف للسلة",
+                                    width: 120.w,
+                                    height: 30.h,
+                                    radius: 9.r,
+                                    backColor: const Color(
+                                      0xff61B80C,
+                                    ),
+                                  )
                                   : AppButton(
                                       onTap: () {},
                                       text: "تم نفاذ الكمية",
@@ -388,147 +407,50 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
                       ),
                     ),
                     context: context,
-                    builder: (context) => ListView(
-                      scrollDirection: Axis.vertical,
-                      padding: EdgeInsetsDirectional.symmetric(
-                        vertical: 14.h,
-                        horizontal: 16.w,
-                      ),
-                      children: [
-                        Center(
-                          child: Text(
-                            "العناوين",
-                            style: TextStyle(
-                              fontSize: 15.sp,
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          ),
+                    builder: (context) => BlocBuilder(
+                      bloc: addressBloc
+                        ..add(
+                          GetUserAddressEvent(),
                         ),
-                        ListView.builder(
-                          itemBuilder: (context, index) => Container(
-                            width: 343.w,
-                            height: 97.h,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15.r),
-                              color: const Color(
-                                0xffffffff,
+                      builder: (context, state) {
+                        if (state is GetUserAddressLoadingState) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        } else if (state is GetUserAddressSuccessState) {
+                          return Column(
+
+                            children: [
+                              SizedBox(height: 20,
                               ),
-                              border: Border.all(
-                                color: Theme.of(context).primaryColor,
+                              Center(
+                                child: Text(
+                                  "العناوين",
+                                  style: TextStyle(
+                                    fontSize: 15.sp,
+                                    fontWeight: FontWeight.bold,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                ),
                               ),
-                            ),
-                            margin:
-                                EdgeInsetsDirectional.symmetric(vertical: 12.h),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsetsDirectional.only(
-                                        start: 16.w,
-                                      ),
-                                      child: Text(
-                                        "Home",
-                                        style: TextStyle(
-                                          fontSize: 15.sp,
-                                          fontWeight: FontWeight.bold,
-                                          color: Theme.of(context).primaryColor,
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 217.w,
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsetsDirectional.all(
-                                        5.r,
-                                      ),
-                                      child: GestureDetector(
-                                        onTap: () {},
-                                        child: SvgPicture.asset(
-                                          "assets/images/icons/addressIcons/delete.svg",
-                                          width: 24.w,
-                                          height: 24.h,
-                                          fit: BoxFit.scaleDown,
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsetsDirectional.all(
-                                        5.r,
-                                      ),
-                                      child: GestureDetector(
-                                        onTap: () {},
-                                        child: SvgPicture.asset(
-                                          "assets/images/icons/addressIcons/edit.svg",
-                                          width: 24.w,
-                                          height: 24.h,
-                                          fit: BoxFit.scaleDown,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 3.h,
-                                ),
-                                Padding(
-                                  padding: EdgeInsetsDirectional.only(
-                                    start: 16.w,
-                                  ),
-                                  child: Text(
-                                    "العنوان : ",
-                                    style: TextStyle(
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.w400,
-                                      color: Theme.of(context).primaryColor,
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsetsDirectional.only(
-                                    start: 16.w,
-                                  ),
-                                  child: Text(
-                                    "الوصف : ",
-                                    style: TextStyle(
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.w300,
-                                      color: const Color(
-                                        0xff999797,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsetsDirectional.only(
-                                    start: 16.w,
-                                  ),
-                                  child: Text(
-                                    "رقم الجوال : ",
-                                    style: TextStyle(
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.w300,
-                                      color: const Color(
-                                        0xff999797,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          itemCount: 5,
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                        ),
-                        DotButton(
-                          text: "إضافة عنوان جديد",
-                          onTap: () {},
-                        ),
-                      ],
+
+                              Expanded(child: AddressesListView()),
+
+                              SizedBox(height: 20,)
+                              // DotButton(
+                              //   text: "إضافة عنوان جديد",
+                              //   onTap: () {
+                              //     navigateTo(
+                              //       const AddAddress(),
+                              //     );
+                              //   },
+                              // ),
+                            ],
+                          );
+                        } else {
+                          return const SizedBox.shrink();
+                        }
+                      },
                     ),
                   );
                 },
@@ -573,7 +495,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
               child: GestureDetector(
                 onTap: () {
                   navigateTo(
-                    Cart(),
+                    const Cart(),
                   );
                 },
                 child: Container(

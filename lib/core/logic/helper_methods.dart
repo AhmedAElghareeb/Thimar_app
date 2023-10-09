@@ -66,7 +66,7 @@ Future<String> getLocationFromLatLong(LatLng latLng) async {
   String _x = '';
   if (placemarks.isNotEmpty) {
     print('-==-=-=-=-=-=-- ${placemarks.first.toJson()}');
-    _x = placemarks.first.subAdministrativeArea ?? '';
+    _x = '${placemarks.first.street ?? ''} - ${placemarks.first.subAdministrativeArea ?? ''}';
   }
   return _x;
 }

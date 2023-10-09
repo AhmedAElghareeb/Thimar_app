@@ -12,27 +12,14 @@ import '../../../../features/address/bloc.dart';
 import '../../../../features/address/events.dart';
 
 class Address extends StatefulWidget {
-  const Address({super.key});
+  final bool withAppBar;
+  const Address({super.key,this.withAppBar =true});
 
   @override
   State<Address> createState() => _AddressState();
 }
 
 class _AddressState extends State<Address> {
-  final addressBloc = KiwiContainer().resolve<AddressBloc>();
-
-  void _init() {
-    addressBloc.add(
-      GetUserAddressEvent(),
-    );
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _init();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,184 +59,225 @@ class _AddressState extends State<Address> {
           ),
         ),
       ),
-      body: BlocBuilder(
-        bloc: addressBloc,
-        builder: (context, state) {
-          if (state is GetUserAddressLoadingState) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (state is GetUserAddressSuccessState) {
-            return SafeArea(
-              child: ListView(
-                padding: EdgeInsetsDirectional.symmetric(
-                  horizontal: 12.w,
-                  vertical: 28.h,
-                ),
-                children: [
-                  Column(
-                    children: [
-                      ListView.separated(
-                        scrollDirection: Axis.vertical,
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) => Container(
-                          width: 343.w,
-                          height: 97.h,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15.r),
-                            color: const Color(
-                              0xffffffff,
-                            ),
-                            border: Border.all(
-                              color: Theme.of(context).primaryColor,
-                            ),
+      body:
+      const AddressesListView()
+    );
+  }
+}
+
+
+
+class AddressesListView extends StatefulWidget {
+  const AddressesListView({super.key});
+
+  @override
+  State<AddressesListView> createState() => _AddressesListViewState();
+}
+
+class _AddressesListViewState extends State<AddressesListView> {
+
+  final addressBloc = KiwiContainer().resolve<AddressBloc>();
+  final deleteBloc = KiwiContainer().resolve<AddressBloc>();
+
+  void _init() {
+    addressBloc.add(
+      GetUserAddressEvent(),
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _init();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return  BlocBuilder(
+      bloc: addressBloc,
+      builder: (context, state) {
+        if (state is GetUserAddressLoadingState) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (state is GetUserAddressSuccessState) {
+          return SafeArea(
+            child: ListView(
+              padding: EdgeInsetsDirectional.symmetric(
+                horizontal: 12.w,
+                vertical: 28.h,
+              ),
+              children: [
+                Column(
+                  children: [
+                    ListView.separated(
+                      scrollDirection: Axis.vertical,
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) => Container(
+                        width: 343.w,
+                        height: 97.h,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15.r),
+                          color: const Color(
+                            0xffffffff,
                           ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.only(
-                                      start: 16.w,
-                                    ),
-                                    child: Text(
-                                      state.list[index].type,
-                                      style: TextStyle(
-                                        fontSize: 15.sp,
-                                        fontWeight: FontWeight.bold,
-                                        color: Theme.of(context).primaryColor,
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 217.w,
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.all(
-                                      5.r,
-                                    ),
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        addressBloc.add(
-                                          RemoveUserAddressEvent(
-                                            type: state.list[index].type,
-                                            id: state.list[index].id,
-                                          ),
-                                        );
-                                      },
-                                      child: SvgPicture.asset(
-                                        "assets/images/icons/addressIcons/delete.svg",
-                                        width: 24.w,
-                                        height: 24.h,
-                                        fit: BoxFit.scaleDown,
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.all(
-                                      5.r,
-                                    ),
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        navigateTo(
-                                          AddAddress(
-                                            model: state.list[index],
-                                          ),
-                                        ).then((x) {
-                                          print('-==-=-= here');
-                                          _init();
-                                        });
-                                      },
-                                      child: SvgPicture.asset(
-                                        "assets/images/icons/addressIcons/edit.svg",
-                                        width: 24.w,
-                                        height: 24.h,
-                                        fit: BoxFit.scaleDown,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 3.h,
-                              ),
-                              Padding(
-                                padding: EdgeInsetsDirectional.only(
-                                  start: 16.w,
-                                ),
-                                child: Text(
-                                  "العنوان : ${state.list[index].location}",
-                                  style: TextStyle(
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w400,
-                                    color: Theme.of(context).primaryColor,
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsetsDirectional.only(
-                                  start: 16.w,
-                                ),
-                                child: Text(
-                                  "الوصف : ${state.list[index].description}",
-                                  style: TextStyle(
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w300,
-                                    color: const Color(
-                                      0xff999797,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsetsDirectional.only(
-                                  start: 16.w,
-                                ),
-                                child: Text(
-                                  "رقم الجوال : ${state.list[index].phone}",
-                                  style: TextStyle(
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w300,
-                                    color: const Color(
-                                      0xff999797,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
+                          border: Border.all(
+                            color: Theme.of(context).primaryColor,
                           ),
                         ),
-                        separatorBuilder: (context, index) => SizedBox(
-                          height: 20.h,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsetsDirectional.only(
+                                    start: 16.w,
+                                  ),
+                                  child: Text(
+                                    state.list[index].type,
+                                    style: TextStyle(
+                                      fontSize: 15.sp,
+                                      fontWeight: FontWeight.bold,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 217.w,
+                                ),
+                                Padding(
+                                  padding: EdgeInsetsDirectional.all(
+                                    5.r,
+                                  ),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      // deleteBloc.add(
+                                      //   RemoveUserAddressEvent(
+                                      //     type: state.list[index].type,
+                                      //     id: state.list[index].id,
+                                      //   ),
+                                      // );
+                                      addressBloc.deleteItem(state.list[index]);
+                                      state.list.removeWhere((element) => element.id ==
+                                          state.list[index].id  );
+                                      setState(() {
+
+                                      });
+
+                                    },
+                                    child: SvgPicture.asset(
+                                      "assets/images/icons/addressIcons/delete.svg",
+                                      width: 24.w,
+                                      height: 24.h,
+                                      fit: BoxFit.scaleDown,
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsetsDirectional.all(
+                                    5.r,
+                                  ),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      navigateTo(
+                                        AddAddress(
+                                          model: state.list[index],
+                                          isEditing: false,
+                                        ),
+                                      ).then((x) {
+                                        print('-==-=-= here');
+                                        _init();
+                                      });
+                                    },
+                                    child: SvgPicture.asset(
+                                      "assets/images/icons/addressIcons/edit.svg",
+                                      width: 24.w,
+                                      height: 24.h,
+                                      fit: BoxFit.scaleDown,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 3.h,
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.only(
+                                start: 16.w,
+                              ),
+                              child: Text(
+                                "العنوان : ${state.list[index].location}",
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w400,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.only(
+                                start: 16.w,
+                              ),
+                              child: Text(
+                                "الوصف : ${state.list[index].description}",
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w300,
+                                  color: const Color(
+                                    0xff999797,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.only(
+                                start: 16.w,
+                              ),
+                              child: Text(
+                                "رقم الجوال : ${state.list[index].phone}",
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w300,
+                                  color: const Color(
+                                    0xff999797,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                        itemCount: state.list.length,
                       ),
-                      SizedBox(
+                      separatorBuilder: (context, index) => SizedBox(
                         height: 20.h,
                       ),
-                      DotButton(
-                        text: "إضافة عنوان",
-                        onTap: () {
-                          navigateTo(
-                            const AddAddress(),
-                          ).then((x) {
-                            print('-==-=-= here');
-                            _init();
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            );
-          } else {
-            return const SizedBox.shrink();
-          }
-        },
-      ),
+                      itemCount: state.list.length,
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    DotButton(
+                      text: "إضافة عنوان",
+                      onTap: () {
+                        navigateTo(
+                          const AddAddress(),
+                        ).then((x) {
+                          print('-==-=-= here');
+                          _init();
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
+      },
     );
   }
 }
