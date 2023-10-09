@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
-void navigateTo(Widget page, {bool removeHistory = false}) {
-  Navigator.pushAndRemoveUntil(
-      navigatorKey.currentContext!,
-      MaterialPageRoute(
-        builder: (context) => page,
-      ),
-      (route) => true,
+Future navigateTo(Widget page, {bool removeHistory = false}) {
+  return Navigator.pushAndRemoveUntil(
+    navigatorKey.currentContext!,
+    MaterialPageRoute(
+      builder: (context) => page,
+    ),
+    (route) => true,
   );
 }
 
@@ -33,8 +35,7 @@ MaterialColor getMaterialColor() {
 enum MessageType { success, fail, warning }
 
 void showSnackBar(String message, {MessageType typ = MessageType.fail}) {
-  if (message.isNotEmpty)
-  {
+  if (message.isNotEmpty) {
     ScaffoldMessenger.of(navigatorKey.currentState!.context).showSnackBar(
       SnackBar(
         content: Text(
@@ -44,8 +45,8 @@ void showSnackBar(String message, {MessageType typ = MessageType.fail}) {
         backgroundColor: typ == MessageType.fail
             ? Colors.red
             : typ == MessageType.warning
-            ? Colors.yellow
-            : Colors.green,
+                ? Colors.yellow
+                : Colors.green,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(
@@ -57,4 +58,15 @@ void showSnackBar(String message, {MessageType typ = MessageType.fail}) {
   }
 }
 
+Future<String> getLocationFromLatLong(LatLng latLng) async {
+  List<Placemark> placemarks =
+      await placemarkFromCoordinates(
+          latLng.latitude, latLng.longitude);
 
+  String _x = '';
+  if (placemarks.isNotEmpty) {
+    print('-==-=-=-=-=-=-- ${placemarks.first.toJson()}');
+    _x = placemarks.first.subAdministrativeArea ?? '';
+  }
+  return _x;
+}

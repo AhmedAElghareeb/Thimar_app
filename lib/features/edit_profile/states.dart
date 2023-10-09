@@ -1,7 +1,13 @@
-class EditProfileSates {}
+class EditProfileStates {}
 
-class EditProfileLoadingState extends EditProfileSates {}
+class EditProfileLoadingState extends EditProfileStates {}
 
-class EditProfileSuccessState extends EditProfileSates {}
+class EditProfileSuccessState extends EditProfileStates {}
 
-class EditProfileFailedState extends EditProfileSates {}
+class EditProfileFailedState extends EditProfileStates {}
+
+class EditUserPasswordLoadingState extends EditProfileStates {}
+
+class EditUserPasswordSuccessState extends EditProfileStates {}
+
+class EditUserPasswordFailedState extends EditProfileStates {}

@@ -1,21 +1,23 @@
-
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:thimar_app/features/login/bloc.dart';
+import 'package:thimar_app/features/login/events.dart';
 
 import '../../core/logic/dio_helper.dart';
 import '../../core/logic/helper_methods.dart';
 import 'events.dart';
 import 'states.dart';
 
-class EditProfileBloc extends Bloc<EditProfileEvents, EditProfileSates> {
+class EditProfileBloc extends Bloc<EditProfileEvents, EditProfileStates> {
   EditProfileBloc()
       : super(
-          EditProfileSates(),
+          EditProfileStates(),
         ) {
     on<UpdateUserDataEvent>(update);
+    on<EditUserPasswordEvent>(editPassword);
   }
 
-  void update(UpdateUserDataEvent event, Emitter<EditProfileSates> emit) async {
+  void update(UpdateUserDataEvent event, Emitter<EditProfileStates> emit) async {
     emit(
       EditProfileLoadingState(),
     );
@@ -35,6 +37,33 @@ class EditProfileBloc extends Bloc<EditProfileEvents, EditProfileSates> {
     if (response.success) {
       emit(
         EditProfileSuccessState(),
+      );
+      showSnackBar(
+        response.msg,
+        typ: MessageType.success,
+      );
+    } else {
+      emit(
+        EditProfileFailedState(),
+      );
+      showSnackBar(response.msg);
+    }
+  }
+
+  void editPassword(EditUserPasswordEvent event, Emitter<EditProfileStates> emit) async {
+    emit(
+      EditUserPasswordLoadingState(),
+    );
+
+    final response =
+    await DioHelper().putToServer(url: "edit_password", body: {
+      "old_password" : event.oldPass,
+      "password" : event.pass,
+      "password_confirmation" : event.confirmPass,
+    });
+    if (response.success) {
+      emit(
+        EditUserPasswordSuccessState(),
       );
       showSnackBar(
         response.msg,

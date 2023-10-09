@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:kiwi/kiwi.dart';
+import 'package:thimar_app/features/favourites/events.dart';
+import 'package:thimar_app/features/favourites/states.dart';
 import 'package:thimar_app/models/favourites.dart';
+
+import '../../../core/logic/helper_methods.dart';
+import '../../../features/favourites/bloc.dart';
+import '../home/product_details/view.dart';
 
 class FavouritesScreen extends StatefulWidget {
   const FavouritesScreen({super.key});
@@ -10,41 +18,12 @@ class FavouritesScreen extends StatefulWidget {
 }
 
 class _FavouritesScreenState extends State<FavouritesScreen> {
-  List<FavouritesModel> list = [
-    FavouritesModel(
-      image:
-          "https://spfood.es/wa-data/public/shop/products/95/04/495/images/333/333.970.jpg",
-      title: "طماطم",
-      body: "السعر / 1كجم",
-      priceBefore: "45ر.س",
-      priceAfter: "56ر.س",
-      discount: "45% -",
-    ),
-    FavouritesModel(
-      image:
-          "https://avatars.mds.yandex.net/i?id=2d6afa9c074f3d9b120b09417e4b7425559f4cfd-8492261-images-thumbs&n=13",
-      title: "جزر",
-      body: "السعر / 1كجم",
-      priceBefore: "48ر.س",
-      priceAfter: "56ر.س",
-      discount: "45% -",
-    ),
-  ];
+  final bloc = KiwiContainer().resolve<FavouritesBloc>();
 
   @override
-  void initState() {
-    super.initState();
-    getData();
-  }
-
-  bool isLoading = true;
-
-  getData() async {
-    await Future.delayed(
-      const Duration(seconds: 3),
-    );
-    isLoading = false;
-    setState(() {});
+  void dispose() {
+    super.dispose();
+    bloc.close();
   }
 
   @override
@@ -55,26 +34,35 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
           "المفضلة",
         ),
       ),
-      body: isLoading
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : ListView(
-            children: [
-              GridView.builder(
-                itemBuilder: (context, index) => _Item(model: list[index]),
-                itemCount: list.length,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 11.w,
-                  mainAxisSpacing: 2.h,
-                  childAspectRatio: 0.70,
-                ),
-                shrinkWrap: true,
-              ),
-            ],
+      body: BlocBuilder(
+        bloc: bloc
+          ..add(
+            GetFavouritesDataEvent(),
           ),
+        builder: (context, state) {
+          if (state is GetFavouritesDataLoadingState) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (state is GetFavouritesDataSuccessState) {
+            return GridView.builder(
+              itemBuilder: (context, index) => _Item(
+                model: state.list[index],
+              ),
+              itemCount: state.list.length,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 11.w,
+                mainAxisSpacing: 2.h,
+                childAspectRatio: 0.70,
+              ),
+              shrinkWrap: true,
+            );
+          } else {
+            return const SizedBox.shrink();
+          }
+        },
+      ),
     );
   }
 }
@@ -86,128 +74,120 @@ class _Item extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsetsDirectional.only(
-        top: 29.h,
-        start: 5.w,
-        end: 5.w,
-      ),
-      child: Container(
-        height: 215.h,
-        width: 163.w,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10.r),
-          color: const Color(
-            0xffffffff,
-          ),
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 5.r,
-              color: const Color(
-                0xfff5f5f5,
+    return Column(
+      children: [
+        Stack(
+          children: [
+            GestureDetector(
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadiusDirectional.circular(
+                    11.r,
+                  ),
+                ),
+                margin: EdgeInsetsDirectional.only(
+                  top: 9.h,
+                  start: 9.w,
+                  end: 9.w,
+                ),
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                child: Image.network(
+                  model.mainImage,
+                  fit: BoxFit.cover,
+                  width: 145.w,
+                  height: 117.h,
+                ),
+              ),
+              onTap: () {
+                navigateTo(
+                  ProductDetails(
+                    id: model.id,
+                    isFavorite: model.isFavorite,
+                    price: model.price,
+                  ),
+                );
+              },
+            ),
+            Align(
+              alignment: AlignmentDirectional.topEnd,
+              child: Container(
+                margin: EdgeInsetsDirectional.only(
+                  top: 9.h,
+                  end: 28.w,
+                ),
+                width: 54.w,
+                height: 20.h,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  borderRadius: BorderRadiusDirectional.only(
+                    bottomStart: Radius.circular(25.r),
+                    topEnd: Radius.circular(11.r),
+                  ),
+                ),
+                child: Center(
+                  child: Text(
+                    "${model.discount * 100} %",
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.bold,
+                      color: const Color(
+                        0xffFFFFFF,
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ),
           ],
         ),
-        child: Column(
+        Padding(
+          padding: EdgeInsetsDirectional.only(
+            start: 10.w,
+          ),
+          child: Align(
+            alignment: AlignmentDirectional.topStart,
+            child: Text(
+              model.title,
+              style: TextStyle(
+                fontSize: 16.sp,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).primaryColor,
+              ),
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 4.h,
+        ),
+        Padding(
+          padding: EdgeInsetsDirectional.only(
+            start: 11.w,
+          ),
+          child: Align(
+            alignment: AlignmentDirectional.topStart,
+            child: Text(
+              "السعر / ${model.unit.name}",
+              style: TextStyle(
+                fontSize: 12.sp,
+                color: const Color(0xFF808080),
+              ),
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 3.h,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Padding(
-              padding: EdgeInsetsDirectional.only(
-                top: 9.h,
-                end: 9.w,
-                start: 9.w,
-              ),
-              child: Stack(
+              padding: EdgeInsetsDirectional.only(start: 9.w),
+              child: Row(
                 children: [
-                  Image.network(
-                    model.image,
-                    width: 146.w,
-                    height: 117.h,
-                  ),
                   Align(
-                    alignment: AlignmentDirectional.topEnd,
-                    child: Padding(
-                      padding: EdgeInsetsDirectional.only(
-                        end: 12.w
-                      ),
-                      child: Container(
-                        width: 54.w,
-                        height: 20.h,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor,
-                          borderRadius: BorderRadiusDirectional.only(
-                            bottomStart: Radius.circular(25.r),
-                            topEnd: Radius.circular(10.r),
-                          ),
-                        ),
-                        child: Center(
-                          child: Text(
-                            model.discount,
-                            style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.bold,
-                              color: const Color(
-                                0xffFFFFFF,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 2.h,
-            ),
-            Align(
-              alignment: AlignmentDirectional.topStart,
-              child: Padding(
-                padding: EdgeInsetsDirectional.only(
-                  start: 9.w,
-                ),
-                child: Text(
-                  model.title,
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 4.h,
-            ),
-            Align(
-              alignment: AlignmentDirectional.topStart,
-              child: Padding(
-                padding: EdgeInsetsDirectional.only(
-                  start: 10.w,
-                ),
-                child: Text(
-                  model.body,
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    color: const Color(0xFF808080),
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 3.h,
-            ),
-            Row(
-              children: [
-                Align(
-                  alignment: AlignmentDirectional.topStart,
-                  child: Padding(
-                    padding: EdgeInsetsDirectional.only(
-                      start: 9.w,
-                    ),
+                    alignment: AlignmentDirectional.topStart,
                     child: Text(
-                      model.priceBefore,
+                      "${model.price} ر.س",
                       style: TextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.bold,
@@ -215,24 +195,24 @@ class _Item extends StatelessWidget {
                       ),
                     ),
                   ),
-                ),
-                Align(
-                  alignment: AlignmentDirectional.bottomStart,
-                  child: Text(
-                    model.priceAfter,
-                    textAlign: TextAlign.justify,
-                    style: TextStyle(
-                      fontSize: 13.sp,
-                      color: Theme.of(context).primaryColor,
-                      decoration: TextDecoration.lineThrough,
+                  Align(
+                    alignment: AlignmentDirectional.bottomStart,
+                    child: Text(
+                      "${model.priceBeforeDiscount} ر.س",
+                      textAlign: TextAlign.justify,
+                      style: TextStyle(
+                        fontSize: 13.sp,
+                        color: Theme.of(context).primaryColor,
+                        decoration: TextDecoration.lineThrough,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),
-      ),
+      ],
     );
   }
 }

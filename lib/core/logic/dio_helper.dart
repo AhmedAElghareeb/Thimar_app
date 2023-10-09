@@ -87,8 +87,6 @@ class DioHelper {
   final dio = Dio(
     BaseOptions(
       baseUrl: "https://thimar.amr.aait-d.com/public/api/",
-      // connectTimeout: const Duration(seconds: 5000),
-      // receiveTimeout: const Duration(seconds: 5000),
       receiveDataWhenStatusError: true,
       contentType: "multipart/form-data; boundary=<calculated when request is sent>",
       headers: {
@@ -111,7 +109,6 @@ class DioHelper {
     dio.interceptors.add(CustomApiInterceptor());
   }
 
-  // final crash = KiwiContainer().resolve<FirebaseCrashlyticsConfig>();
   final Map<String, String> _cashedImage = {};
   final _imageDio = Dio();
 
@@ -125,10 +122,6 @@ class DioHelper {
     }
     final result = await _imageDio.get(url, options: Options(responseType: ResponseType.bytes));
     if (result.statusCode == 200) {
-      // final image = decodeImage(result.data);
-      // if (image == null) return null;
-      // final resizedImage = copyResize(image, height: height?.toInt() ?? 50, width: width?.toInt() ?? 50);
-      // final imageEncoder = base64Encode(encodePng(resizedImage));
       final imageEncoder = base64Encode(result.data);
       _cashedImage.addAll({result.requestOptions.path.split("/").last: imageEncoder});
       return imageEncoder;
@@ -194,10 +187,7 @@ class DioHelper {
     }
   }
 
-  Future<CustomResponse> getFromServer({
-    required String url,
-    Map<String, dynamic>? params,
-  }) async {
+  Future<CustomResponse> getFromServer({required String url, Map<String, dynamic>? params,}) async {
     if (params != null) {
       params.removeWhere((key, value) => params[key] == null || params[key] == "");
     }
@@ -218,6 +208,95 @@ class DioHelper {
           msg: (response.data["message"] ?? "Your request completed successfully").toString(),
           response: response,
         );
+      } else {
+        await Future.delayed(const Duration(milliseconds: 500));
+        return CustomResponse(
+          success: true,
+          statusCode: 200,
+        );
+      }
+    } on DioException catch (err) {
+      return handleServerError(err);
+    }
+  }
+
+  Future<CustomResponse> putToServer({required String url, String? token, Map<String, dynamic>? params, Map<String, dynamic>? body, String? lang, void Function(int, int)? onSendProgress}) async {
+    if (body != null) {
+      body.removeWhere(
+            (key, value) => body[key] == null || body[key] == "",
+      );
+    }
+    try {
+      if (url.isNotEmpty) {
+        final response = await dio.put(
+          url,
+          options: Options(
+            headers: {
+              "Accept": "application/json",
+              "Accept-Language": "ar",
+              "lang": "ar",
+              "Authorization" : "Bearer ${CacheHelper.getToken()}",
+            },
+          ),
+          queryParameters: params,
+          onSendProgress: onSendProgress,
+          data: FormData.fromMap(body ?? {}),
+        );
+        if (response.data["status"] != "fail") {
+          return CustomResponse(
+            success: true,
+            statusCode: 200,
+            msg: response.data["message"] ?? "Your request completed successfully",
+            response: response,
+          );
+        } else {
+          await Future.delayed(const Duration(milliseconds: 500));
+          return CustomResponse(success: false, statusCode: 422, msg: response.data["message"]);
+        }
+      } else {
+        await Future.delayed(const Duration(milliseconds: 500));
+        return CustomResponse(
+          success: true,
+          statusCode: 200,
+        );
+      }
+    } on DioException catch (err) {
+      return handleServerError(err);
+    }
+  }
+
+  Future<CustomResponse> removeFromServer({required String url, String? token, Map<String, dynamic>? params, Map<String, dynamic>? body, String? lang, void Function(int, int)? onSendProgress}) async {
+    if (body != null) {
+      body.removeWhere(
+            (key, value) => body[key] == null || body[key] == "",
+      );
+    }
+    try {
+      if (url.isNotEmpty) {
+        final response = await dio.delete(
+          url,
+          options: Options(
+            headers: {
+              "Accept": "application/json",
+              "Accept-Language": "ar",
+              "lang": "ar",
+              "Authorization" : "Bearer ${CacheHelper.getToken()}",
+            },
+          ),
+          queryParameters: params,
+          data: FormData.fromMap(body ?? {}),
+        );
+        if (response.data["status"] != "fail") {
+          return CustomResponse(
+            success: true,
+            statusCode: 200,
+            msg: response.data["message"] ?? "Your request completed successfully",
+            response: response,
+          );
+        } else {
+          await Future.delayed(const Duration(milliseconds: 500));
+          return CustomResponse(success: false, statusCode: 422, msg: response.data["message"]);
+        }
       } else {
         await Future.delayed(const Duration(milliseconds: 500));
         return CustomResponse(
@@ -330,10 +409,6 @@ class CustomResponse {
 }
 
 void printResponse(Response response) {
-  // if(CacheHelper.i().getUserToken().length<20)
-  //   {
-  //     CacheHelper.i().clearAllCache();
-  //   }
   log.warning("---------------------Start Of Request Details ---------------------------");
   log.warning("\x1B[31m(${response.requestOptions.method}) ( ${response.requestOptions.baseUrl + response.requestOptions.path} )");
   log.info("\x1B[50m( Headers )\x1B[0m");

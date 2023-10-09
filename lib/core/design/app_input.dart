@@ -18,6 +18,7 @@ class AppInput extends StatefulWidget {
     this.maxLines,
     this.onPress,
     this.suffixIcon,
+    this.onChanged,
   });
 
   final TextEditingController? controller;
@@ -28,7 +29,7 @@ class AppInput extends StatefulWidget {
   final int? minLines, maxLines;
   final VoidCallback? onPress;
   final Widget? suffixIcon;
-
+final Function(String)? onChanged ;
   @override
   State<AppInput> createState() => _AppInputState();
 }
@@ -41,6 +42,7 @@ class _AppInputState extends State<AppInput> {
     return GestureDetector(
       onTap: widget.onPress,
       child: TextFormField(
+        onChanged: widget.onChanged,
         validator: widget.validator,
         keyboardType: widget.keyboardType,
         controller: widget.controller,

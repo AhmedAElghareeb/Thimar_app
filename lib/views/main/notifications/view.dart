@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:kiwi/kiwi.dart';
+import 'package:thimar_app/features/notifications/events.dart';
+import 'package:thimar_app/features/notifications/states.dart';
 import 'package:thimar_app/models/notifications.dart';
+
+import '../../../features/notifications/bloc.dart';
 
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});
@@ -10,45 +16,15 @@ class NotificationsScreen extends StatefulWidget {
 }
 
 class _NotificationsScreenState extends State<NotificationsScreen> {
-  List<NotificationModel> list = [
-    NotificationModel(
-      image:
-          "https://img.freepik.com/free-vector/speech-bubble_53876-43873.jpg?w=740&t=st=1694029114~exp=1694029714~hmac=1c0d0bc90609e58ff236b3c73f11ca86a4174852b91096419757401909b41327",
-      title: "تم قبول طلبك وجاري تحضيره الأن",
-      body:
-          "هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى",
-      time: "منذ ساعتان",
-    ),
-    NotificationModel(
-      image:
-          "https://img.freepik.com/free-vector/speech-bubble_53876-43873.jpg?w=740&t=st=1694029114~exp=1694029714~hmac=1c0d0bc90609e58ff236b3c73f11ca86a4174852b91096419757401909b41327",
-      title: "تم قبول طلبك رقم 2",
-      body: "اهلا وسهلا",
-      time: "منذ ساعة",
-    ),
-    NotificationModel(
-      image:
-          "https://img.freepik.com/free-vector/speech-bubble_53876-43873.jpg?w=740&t=st=1694029114~exp=1694029714~hmac=1c0d0bc90609e58ff236b3c73f11ca86a4174852b91096419757401909b41327",
-      title: "تم قبول طلبك رقم 3",
-      body: "اهلا",
-      time: "منذ ساعتين",
-    ),
-  ];
+  final bloc = KiwiContainer().resolve<NotificationsBloc>()
+    ..add(
+      GetNotificationsEvent(),
+    );
 
   @override
-  void initState() {
-    super.initState();
-    getData();
-  }
-
-  bool isLoading = true;
-
-  getData() async {
-    await Future.delayed(
-      const Duration(seconds: 3),
-    );
-    isLoading = false;
-    setState(() {});
+  void dispose() {
+    super.dispose();
+    bloc.close();
   }
 
   @override
@@ -59,27 +35,34 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
           "الإشعارات",
         ),
       ),
-      body: isLoading
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : ListView.builder(
+      body: BlocBuilder(
+        bloc: bloc,
+        builder: (context, state) {
+          if(state is GetNotificationsLoadingState) {
+            return const Center(child: CircularProgressIndicator(),);
+          } else if (state is GetNotificationsSuccessState) {
+            return ListView.builder(
               padding: EdgeInsetsDirectional.symmetric(
                 horizontal: 16.w,
                 vertical: 16.h,
               ),
               itemBuilder: (context, index) => _Item(
-                model: list[index],
+                model: state.list[index],
               ),
-              itemCount: list.length,
-            ),
+              itemCount: state.list.length,
+            );
+          } else {
+            return const SizedBox.shrink();
+          }
+        },
+      ),
       // bottomNavigationBar: HomeNavBar(),
     );
   }
 }
 
 class _Item extends StatelessWidget {
-  final NotificationModel model;
+  final Notifications model;
 
   const _Item({
     required this.model,
@@ -97,9 +80,7 @@ class _Item extends StatelessWidget {
             height: 33.h,
             width: 33.w,
             padding: EdgeInsetsDirectional.symmetric(
-              horizontal: 6.5.w,
-              vertical: 6.5.h
-            ),
+                horizontal: 6.5.w, vertical: 6.5.h),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(9.r),
               color: Theme.of(context).primaryColor.withOpacity(0.13),
@@ -133,7 +114,7 @@ class _Item extends StatelessWidget {
                       )),
                 ),
                 Text(
-                  model.time,
+                  model.createdAt,
                   style: TextStyle(
                     fontSize: 10.sp,
                     fontWeight: FontWeight.w400,

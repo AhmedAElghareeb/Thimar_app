@@ -1,15 +1,18 @@
 import 'package:kiwi/kiwi.dart';
 import '../../features/about_us/bloc.dart';
+import '../../features/address/bloc.dart';
 import '../../features/category/bloc.dart';
 import '../../features/category_products/bloc.dart';
 import '../../features/confirm_code/bloc.dart';
 import '../../features/contact_us/bloc.dart';
 import '../../features/edit_profile/bloc.dart';
+import '../../features/favourites/bloc.dart';
 import '../../features/forget_password/bloc.dart';
 import '../../features/get_cities/bloc.dart';
 import '../../features/get_faqs/bloc.dart';
 import '../../features/login/bloc.dart';
 import '../../features/logout/bloc.dart';
+import '../../features/notifications/bloc.dart';
 import '../../features/policy/bloc.dart';
 import '../../features/products/bloc.dart';
 import '../../features/products_details/bloc.dart';
@@ -33,6 +36,7 @@ void initKiwi() {
   container.registerFactory((c) => ResetPasswordBloc());
   container.registerFactory((c) => CitiesBloc());
   container.registerFactory((c) => EditProfileBloc());
+  container.registerFactory((c) => AddressBloc());
   container.registerFactory((c) => PolicyBloc());
   container.registerFactory((c) => FaqsBloc());
   container.registerFactory((c) => TermsBloc());
@@ -45,5 +49,7 @@ void initKiwi() {
   container.registerFactory((c) => ProductsDataBloc());
   container.registerFactory((c) => ProductDetailsBloc());
   container.registerFactory((c) => ProductsRatesBloc());
+  container.registerFactory((c) => NotificationsBloc());
+  container.registerFactory((c) => FavouritesBloc());
   container.registerFactory((c) => LogoutBloc());
 }

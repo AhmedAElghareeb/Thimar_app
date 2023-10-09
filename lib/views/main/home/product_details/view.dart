@@ -6,22 +6,31 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
+import 'package:thimar_app/features/favourites/events.dart';
 import 'package:thimar_app/features/products/states.dart';
 import 'package:thimar_app/features/products_details/states.dart';
 import 'package:thimar_app/features/products_rates/states.dart';
 
+import '../../../../features/favourites/bloc.dart';
 import '../../../../features/products/bloc.dart';
 import '../../../../features/products/events.dart';
 import '../../../../features/products_details/bloc.dart';
 import '../../../../features/products_details/events.dart';
 import '../../../../features/products_rates/bloc.dart';
 import '../../../../features/products_rates/events.dart';
+import 'all_rates.dart';
 
 class ProductDetails extends StatefulWidget {
   final int id;
-  final bool isFavorite;
+  final num price;
+  bool isFavorite;
 
-  const ProductDetails({super.key, required this.id, required this.isFavorite});
+  ProductDetails({
+    super.key,
+    required this.id,
+    required this.isFavorite,
+    required this.price,
+  });
 
   @override
   State<ProductDetails> createState() => _ProductDetailsState();
@@ -34,6 +43,7 @@ class _ProductDetailsState extends State<ProductDetails> {
   final bloc = KiwiContainer().resolve<ProductDetailsBloc>();
   final categoryProductBloc = KiwiContainer().resolve<ProductsDataBloc>();
   final ratesBloc = KiwiContainer().resolve<ProductsRatesBloc>();
+  final favouritesBloc = KiwiContainer().resolve<FavouritesBloc>();
 
   @override
   Widget build(BuildContext context) {
@@ -63,9 +73,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                 child: Icon(
                   Icons.arrow_back_ios,
                   size: 16.r,
-                  color: Theme
-                      .of(context)
-                      .primaryColor,
+                  color: Theme.of(context).primaryColor,
                 ),
               ),
             ),
@@ -74,36 +82,54 @@ class _ProductDetailsState extends State<ProductDetails> {
             },
           ),
         ),
-        actions: const [
-          // Padding(
-          //   padding: EdgeInsetsDirectional.symmetric(
-          //     horizontal: 16.w,
-          //     vertical: 12.h,
-          //   ),
-          //   child: GestureDetector(
-          //     onTap: () {
-          //       if (widget.isFavorite == false) {
-          //         widget.isFavorite = !widget.isFavorite;
-          //       } else {
-          //         widget.isFavorite = !widget.isFavorite;
-          //       }
-          //     },
-          //     child: Container(
-          //       width: 32.w,
-          //       height: 32.h,
-          //       decoration: BoxDecoration(
-          //           color: widget.isFavorite
-          //               ? Colors.white
-          //               : Theme.of(context).primaryColor.withOpacity(0.13),
-          //           borderRadius: BorderRadius.circular(9.r)),
-          //       child: Icon(
-          //         Icons.favorite,
-          //         size: 20,
-          //         color: widget.isFavorite ? Theme.of(context).primaryColor.withOpacity(0.13,) : null,
-          //       ),
-          //     ),
-          //   ),
-          // ),
+        actions: [
+          BlocBuilder(
+            bloc: favouritesBloc,
+            builder: (context, state) {
+              return Padding(
+                padding: EdgeInsetsDirectional.symmetric(
+                  horizontal: 16.w,
+                  vertical: 12.h,
+                ),
+                child: GestureDetector(
+                  onTap: () {
+                    if (widget.isFavorite == false) {
+                      favouritesBloc.add(
+                        AddToFavouritesEvent(
+                          id: widget.id,
+                        ),
+                      );
+                      widget.isFavorite = !widget.isFavorite;
+                    } else {
+                      favouritesBloc.add(
+                        RemoveFromFavouritesEvent(
+                          id: widget.id,
+                        ),
+                      );
+                      widget.isFavorite = !widget.isFavorite;
+                    }
+                  },
+                  child: Container(
+                    width: 32.w,
+                    height: 32.h,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor.withOpacity(
+                        0.1,
+                      ),
+                      borderRadius: BorderRadius.circular(
+                        9.r,
+                      ),
+                    ),
+                    child: Icon(
+                      Icons.favorite,
+                      size: 20,
+                      color: widget.isFavorite ? Colors.red : null,
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
         ],
       ),
       body: BlocBuilder(
@@ -122,70 +148,64 @@ class _ProductDetailsState extends State<ProductDetails> {
             return ListView(
               children: [
                 StatefulBuilder(
-                  builder: (context, setState) =>
-                      Column(
-                        children: [
-                          CarouselSlider(
-                            items: List.generate(
-                              state.model.images.isNotEmpty
-                                  ? state.model.images.length
-                                  : 1,
-                                  (index) =>
-                                  Container(
-                                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadiusDirectional
-                                          .only(
-                                        bottomEnd: Radius.circular(40.r),
-                                        bottomStart: Radius.circular(40.r),
-                                      ),
-                                    ),
-                                    child: Image.network(
-                                      state.model.images.isNotEmpty
-                                          ? state.model.images[index].url
-                                          : state.model.mainImage,
-                                      height: 200.h,
-                                      width: double.infinity,
-                                      fit: BoxFit.fill,
-                                    ),
-                                  ),
-                            ),
-                            options: CarouselOptions(
-                              autoPlay:
-                              state.model.images.length > 1 ? true : false,
-                              viewportFraction: 1,
-                              onPageChanged: (index, reason) {
-                                currentIndex = index;
-                                setState(() {});
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5.h,
-                          ),
-                          if (state.model.images.length > 1)
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: List.generate(
-                                state.model.images.length,
-                                    (index) =>
-                                    Padding(
-                                      padding: EdgeInsetsDirectional.only(
-                                        end: 3.w,
-                                      ),
-                                      child: CircleAvatar(
-                                        radius: currentIndex == index ? 4 : 2,
-                                        backgroundColor: currentIndex == index
-                                            ? Theme
-                                            .of(context)
-                                            .primaryColor
-                                            : const Color(0xff707070),
-                                      ),
-                                    ),
+                  builder: (context, setState) => Column(
+                    children: [
+                      CarouselSlider(
+                        items: List.generate(
+                          state.model.images.isNotEmpty
+                              ? state.model.images.length
+                              : 1,
+                          (index) => Container(
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadiusDirectional.only(
+                                bottomEnd: Radius.circular(40.r),
+                                bottomStart: Radius.circular(40.r),
                               ),
                             ),
-                        ],
+                            child: Image.network(
+                              state.model.images.isNotEmpty
+                                  ? state.model.images[index].url
+                                  : state.model.mainImage,
+                              height: 200.h,
+                              width: double.infinity,
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                        ),
+                        options: CarouselOptions(
+                          autoPlay:
+                              state.model.images.length > 1 ? true : false,
+                          viewportFraction: 1,
+                          onPageChanged: (index, reason) {
+                            currentIndex = index;
+                            setState(() {});
+                          },
+                        ),
                       ),
+                      SizedBox(
+                        height: 5.h,
+                      ),
+                      if (state.model.images.length > 1)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: List.generate(
+                            state.model.images.length,
+                            (index) => Padding(
+                              padding: EdgeInsetsDirectional.only(
+                                end: 3.w,
+                              ),
+                              child: CircleAvatar(
+                                radius: currentIndex == index ? 4 : 2,
+                                backgroundColor: currentIndex == index
+                                    ? Theme.of(context).primaryColor
+                                    : const Color(0xff707070),
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
                 ),
                 Padding(
                   padding: EdgeInsetsDirectional.symmetric(horizontal: 16.w),
@@ -200,9 +220,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                               style: TextStyle(
                                 fontSize: 22.sp,
                                 fontWeight: FontWeight.bold,
-                                color: Theme
-                                    .of(context)
-                                    .primaryColor,
+                                color: Theme.of(context).primaryColor,
                               ),
                             ),
                             SizedBox(
@@ -244,9 +262,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 17.sp,
-                                  color: Theme
-                                      .of(context)
-                                      .primaryColor,
+                                  color: Theme.of(context).primaryColor,
                                 ),
                               ),
                               SizedBox(
@@ -257,9 +273,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                 style: TextStyle(
                                   fontWeight: FontWeight.w300,
                                   fontSize: 14.sp,
-                                  color: Theme
-                                      .of(context)
-                                      .primaryColor,
+                                  color: Theme.of(context).primaryColor,
                                   decoration: TextDecoration.lineThrough,
                                 ),
                               ),
@@ -275,7 +289,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                 horizontal: 5.w),
                             decoration: BoxDecoration(
                               borderRadius:
-                              BorderRadiusDirectional.circular(10.r),
+                                  BorderRadiusDirectional.circular(10.r),
                               color: const Color(
                                 0xff707070,
                               ).withOpacity(
@@ -287,14 +301,14 @@ class _ProductDetailsState extends State<ProductDetails> {
                               children: [
                                 _FloatingActionButton(
                                   onPress: () {
-                                    counter++;
-                                    setState(() {});
+                                    if (counter < state.model.amount) {
+                                      counter++;
+                                      setState(() {});
+                                    }
                                   },
                                   icon: Icon(
                                     Icons.add,
-                                    color: Theme
-                                        .of(context)
-                                        .primaryColor,
+                                    color: Theme.of(context).primaryColor,
                                     size: 16.r,
                                   ),
                                 ),
@@ -303,9 +317,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                   style: TextStyle(
                                     fontSize: 15.sp,
                                     fontWeight: FontWeight.w400,
-                                    color: Theme
-                                        .of(context)
-                                        .primaryColor,
+                                    color: Theme.of(context).primaryColor,
                                   ),
                                 ),
                                 _FloatingActionButton(
@@ -317,9 +329,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                   },
                                   icon: Icon(
                                     Icons.remove,
-                                    color: Theme
-                                        .of(context)
-                                        .primaryColor,
+                                    color: Theme.of(context).primaryColor,
                                     size: 16.r,
                                   ),
                                 ),
@@ -351,9 +361,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                         style: TextStyle(
                           fontSize: 17.sp,
                           fontWeight: FontWeight.bold,
-                          color: Theme
-                              .of(context)
-                              .primaryColor,
+                          color: Theme.of(context).primaryColor,
                         ),
                       ),
                       SizedBox(
@@ -392,9 +400,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                         style: TextStyle(
                           fontSize: 17.sp,
                           fontWeight: FontWeight.bold,
-                          color: Theme
-                              .of(context)
-                              .primaryColor,
+                          color: Theme.of(context).primaryColor,
                         ),
                       ),
                       SizedBox(
@@ -423,21 +429,23 @@ class _ProductDetailsState extends State<ProductDetails> {
                             style: TextStyle(
                               fontSize: 17.sp,
                               fontWeight: FontWeight.bold,
-                              color: Theme
-                                  .of(context)
-                                  .primaryColor,
+                              color: Theme.of(context).primaryColor,
                             ),
                           ),
                           TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              navigateTo(
+                                RatesView(
+                                  id: state.model.id,
+                                ),
+                              );
+                            },
                             child: Text(
                               "عرض الكل",
                               style: TextStyle(
                                 fontWeight: FontWeight.w300,
                                 fontSize: 15.sp,
-                                color: Theme
-                                    .of(context)
-                                    .primaryColor,
+                                color: Theme.of(context).primaryColor,
                               ),
                             ),
                           ),
@@ -464,90 +472,84 @@ class _ProductDetailsState extends State<ProductDetails> {
                                 scrollDirection: Axis.horizontal,
                                 children: List.generate(
                                   state.list.length,
-                                      (index) =>
-                                      Container(
-                                        padding: EdgeInsetsDirectional.only(
-                                          start: 13.w,
-                                          top: 6.h,
-                                        ),
-                                        width: 267.w,
-                                        height: 87.h,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
+                                  (index) => Container(
+                                    padding: EdgeInsetsDirectional.only(
+                                      start: 13.w,
+                                      top: 6.h,
+                                    ),
+                                    width: 267.w,
+                                    height: 87.h,
+                                    decoration: BoxDecoration(
+                                      borderRadius:
                                           BorderRadiusDirectional.circular(
                                               20.r),
-                                          color: const Color(
-                                            0xff707070,
-                                          ).withOpacity(0.008),
-                                        ),
-                                        child: Row(
+                                      color: const Color(
+                                        0xff707070,
+                                      ).withOpacity(0.008),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Column(
                                           children: [
-                                            Column(
+                                            Row(
                                               children: [
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                      state.list[index]
-                                                          .clientName,
-                                                      style: TextStyle(
-                                                        fontSize: 16.sp,
-                                                        fontWeight: FontWeight
-                                                            .bold,
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                      width: 7.w,
-                                                    ),
-                                                    RatingBar.builder(
-                                                      initialRating: state
-                                                          .list[index].value,
-                                                      minRating: state
-                                                          .list[index].value,
-                                                      maxRating: state
-                                                          .list[index].value,
-                                                      ignoreGestures: true,
-                                                      direction: Axis
-                                                          .horizontal,
-                                                      allowHalfRating: true,
-                                                      itemCount: 5,
-                                                      itemSize: 18,
-                                                      itemBuilder: (context,
-                                                          _) =>
-                                                      const Icon(
-                                                        Icons.star,
-                                                        color: Colors.amber,
-                                                      ),
-                                                      onRatingUpdate: (
-                                                          rating) {},
-                                                    ),
-                                                  ],
+                                                Text(
+                                                  state.list[index].clientName,
+                                                  style: TextStyle(
+                                                    fontSize: 16.sp,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
                                                 ),
                                                 SizedBox(
-                                                  height: 6.h,
+                                                  width: 7.w,
                                                 ),
-                                                Text(
-                                                  state.list[index].comment,
-                                                  style: TextStyle(
-                                                    fontSize: 12.sp,
-                                                    fontWeight: FontWeight.w400,
+                                                RatingBar.builder(
+                                                  initialRating:
+                                                      state.list[index].value,
+                                                  minRating:
+                                                      state.list[index].value,
+                                                  maxRating:
+                                                      state.list[index].value,
+                                                  ignoreGestures: true,
+                                                  direction: Axis.horizontal,
+                                                  allowHalfRating: true,
+                                                  itemCount: 5,
+                                                  itemSize: 18,
+                                                  itemBuilder: (context, _) =>
+                                                      const Icon(
+                                                    Icons.star,
+                                                    color: Colors.amber,
                                                   ),
-                                                  maxLines: 3,
-                                                  overflow: TextOverflow.fade,
+                                                  onRatingUpdate: (rating) {},
                                                 ),
                                               ],
                                             ),
                                             SizedBox(
-                                              width: 3.w,
+                                              height: 6.h,
                                             ),
-                                            Image.network(
-                                              state.list[index].clientImage,
-                                              width: 55.w,
-                                              height: 55.h,
-                                              fit: BoxFit.fill,
+                                            Text(
+                                              state.list[index].comment,
+                                              style: TextStyle(
+                                                fontSize: 12.sp,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                              maxLines: 3,
+                                              overflow: TextOverflow.fade,
                                             ),
                                           ],
                                         ),
-                                      ),
+                                        SizedBox(
+                                          width: 3.w,
+                                        ),
+                                        Image.network(
+                                          state.list[index].clientImage,
+                                          width: 55.w,
+                                          height: 55.h,
+                                          fit: BoxFit.fill,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
                               ),
                             );
@@ -564,9 +566,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                         style: TextStyle(
                           fontSize: 17.sp,
                           fontWeight: FontWeight.bold,
-                          color: Theme
-                              .of(context)
-                              .primaryColor,
+                          color: Theme.of(context).primaryColor,
                         ),
                       ),
                       SizedBox(
@@ -590,188 +590,175 @@ class _ProductDetailsState extends State<ProductDetails> {
                                 scrollDirection: Axis.horizontal,
                                 children: List.generate(
                                   state2.list.length,
-                                      (index) =>
-                                      Container(
-                                        height: 172.h,
-                                        width: 130.w,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
+                                  (index) => Container(
+                                    height: 172.h,
+                                    width: 130.w,
+                                    decoration: BoxDecoration(
+                                      borderRadius:
                                           BorderRadiusDirectional.circular(
                                               17.r),
+                                      color: const Color(
+                                        0xffffffff,
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          blurRadius: 5.r,
                                           color: const Color(
-                                            0xffffffff,
+                                            0xfff5f5f5,
                                           ),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              blurRadius: 5.r,
-                                              color: const Color(
-                                                0xfff5f5f5,
-                                              ),
-                                            ),
-                                          ],
                                         ),
-                                        child: Column(
-                                          children: [
-                                            Padding(
-                                              padding: EdgeInsetsDirectional
-                                                  .only(
-                                                top: 9.h,
-                                                end: 9.w,
-                                                start: 9.w,
-                                              ),
-                                              child: Stack(
-                                                children: [
-                                                  GestureDetector(
-                                                    onTap: () {
-                                                      navigateTo(
-                                                        ProductDetails(
-                                                          id: state2.list[index].id,
-                                                          isFavorite: state2.list[index].isFavorite,
-                                                        ),
-                                                      );
-                                                    },
-                                                    child: Image.network(
-                                                      state2.list[index]
-                                                          .mainImage,
-                                                      width: 116.w,
-                                                      height: 94.h,
-                                                      fit: BoxFit.cover,
+                                      ],
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsetsDirectional.only(
+                                            top: 9.h,
+                                            end: 9.w,
+                                            start: 9.w,
+                                          ),
+                                          child: Stack(
+                                            children: [
+                                              GestureDetector(
+                                                onTap: () {
+                                                  navigateTo(
+                                                    ProductDetails(
+                                                      id: state2.list[index].id,
+                                                      isFavorite: state2
+                                                          .list[index]
+                                                          .isFavorite,
+                                                      price: state2
+                                                          .list[index].price,
                                                     ),
-                                                  ),
-                                                  Align(
-                                                    alignment:
+                                                  );
+                                                },
+                                                child: Image.network(
+                                                  state2.list[index].mainImage,
+                                                  width: 116.w,
+                                                  height: 94.h,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                              Align(
+                                                alignment:
                                                     AlignmentDirectional.topEnd,
-                                                    child: Container(
-                                                      width: 43.w,
-                                                      height: 16.h,
-                                                      decoration: BoxDecoration(
-                                                        color: Theme
-                                                            .of(context)
-                                                            .primaryColor,
-                                                        borderRadius:
+                                                child: Container(
+                                                  width: 43.w,
+                                                  height: 16.h,
+                                                  decoration: BoxDecoration(
+                                                    color: Theme.of(context)
+                                                        .primaryColor,
+                                                    borderRadius:
                                                         BorderRadiusDirectional
                                                             .only(
-                                                          bottomStart:
-                                                          Radius.circular(
-                                                              25.r),
-                                                        ),
-                                                      ),
-                                                      child: Center(
-                                                        child: Text(
-                                                          "${state2
-                                                              .list[index]
-                                                              .discount *
-                                                              100} %",
-                                                          style: TextStyle(
-                                                            fontSize: 11.sp,
-                                                            fontWeight:
+                                                      bottomStart:
+                                                          Radius.circular(25.r),
+                                                    ),
+                                                  ),
+                                                  child: Center(
+                                                    child: Text(
+                                                      "${state2.list[index].discount * 100} %",
+                                                      style: TextStyle(
+                                                        fontSize: 11.sp,
+                                                        fontWeight:
                                                             FontWeight.bold,
-                                                            color: const Color(
-                                                              0xffFFFFFF,
-                                                            ),
-                                                          ),
+                                                        color: const Color(
+                                                          0xffFFFFFF,
                                                         ),
                                                       ),
                                                     ),
                                                   ),
-                                                ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 2.h,
+                                        ),
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional.topStart,
+                                          child: Padding(
+                                            padding: EdgeInsetsDirectional.only(
+                                              start: 9.w,
+                                            ),
+                                            child: Text(
+                                              state2.list[index].title,
+                                              style: TextStyle(
+                                                fontSize: 13.sp,
+                                                fontWeight: FontWeight.bold,
+                                                color: Theme.of(context)
+                                                    .primaryColor,
                                               ),
                                             ),
-                                            SizedBox(
-                                              height: 2.h,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 4.h,
+                                        ),
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional.topStart,
+                                          child: Padding(
+                                            padding: EdgeInsetsDirectional.only(
+                                              start: 10.w,
                                             ),
+                                            child: Text(
+                                              state2.list[index].unit.name,
+                                              style: TextStyle(
+                                                fontSize: 10.sp,
+                                                color: const Color(
+                                                  0xFF808080,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 3.h,
+                                        ),
+                                        Row(
+                                          children: [
                                             Align(
                                               alignment:
-                                              AlignmentDirectional.topStart,
+                                                  AlignmentDirectional.topStart,
                                               child: Padding(
-                                                padding: EdgeInsetsDirectional
-                                                    .only(
+                                                padding:
+                                                    EdgeInsetsDirectional.only(
                                                   start: 9.w,
                                                 ),
                                                 child: Text(
-                                                  state2.list[index].title,
+                                                  "${state2.list[index].price} ر.س",
                                                   style: TextStyle(
                                                     fontSize: 13.sp,
                                                     fontWeight: FontWeight.bold,
-                                                    color: Theme
-                                                        .of(context)
+                                                    color: Theme.of(context)
                                                         .primaryColor,
                                                   ),
                                                 ),
                                               ),
                                             ),
-                                            SizedBox(
-                                              height: 4.h,
-                                            ),
                                             Align(
-                                              alignment:
-                                              AlignmentDirectional.topStart,
-                                              child: Padding(
-                                                padding: EdgeInsetsDirectional
-                                                    .only(
-                                                  start: 10.w,
-                                                ),
-                                                child: Text(
-                                                  state2.list[index].unit.name,
-                                                  style: TextStyle(
-                                                    fontSize: 10.sp,
-                                                    color: const Color(
-                                                      0xFF808080,
-                                                    ),
-                                                  ),
+                                              alignment: AlignmentDirectional
+                                                  .bottomStart,
+                                              child: Text(
+                                                "${state2.list[index].priceBeforeDiscount} ر.س",
+                                                textAlign: TextAlign.justify,
+                                                style: TextStyle(
+                                                  fontSize: 10.sp,
+                                                  color: Theme.of(context)
+                                                      .primaryColor,
+                                                  decoration: TextDecoration
+                                                      .lineThrough,
                                                 ),
                                               ),
                                             ),
-                                            SizedBox(
-                                              height: 3.h,
-                                            ),
-                                            Row(
-                                              children: [
-                                                Align(
-                                                  alignment:
-                                                  AlignmentDirectional.topStart,
-                                                  child: Padding(
-                                                    padding:
-                                                    EdgeInsetsDirectional.only(
-                                                      start: 9.w,
-                                                    ),
-                                                    child: Text(
-                                                      "${state2.list[index]
-                                                          .price} ر.س",
-                                                      style: TextStyle(
-                                                        fontSize: 13.sp,
-                                                        fontWeight: FontWeight
-                                                            .bold,
-                                                        color: Theme
-                                                            .of(context)
-                                                            .primaryColor,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                Align(
-                                                  alignment: AlignmentDirectional
-                                                      .bottomStart,
-                                                  child: Text(
-                                                    "${state2.list[index]
-                                                        .priceBeforeDiscount} ر.س",
-                                                    textAlign: TextAlign
-                                                        .justify,
-                                                    style: TextStyle(
-                                                      fontSize: 10.sp,
-                                                      color: Theme
-                                                          .of(context)
-                                                          .primaryColor,
-                                                      decoration: TextDecoration
-                                                          .lineThrough,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
                                           ],
                                         ),
-                                      ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
                               ),
                             );
@@ -783,6 +770,78 @@ class _ProductDetailsState extends State<ProductDetails> {
                     ],
                   ),
                 ),
+                // state.model.amount > 0
+                //     ? Align(
+                //         alignment: AlignmentDirectional.bottomCenter,
+                //         child: Container(
+                //           height: 60.h,
+                //           color: Theme.of(context).primaryColor,
+                //           child: Row(
+                //             children: [
+                //               Expanded(
+                //                 child: Row(
+                //                   children: [
+                //                     Container(
+                //                       margin: EdgeInsetsDirectional.all(
+                //                         16.r,
+                //                       ),
+                //                       width: 35.w,
+                //                       height: 32.h,
+                //                       decoration: BoxDecoration(
+                //                         borderRadius:
+                //                             BorderRadiusDirectional.circular(
+                //                           10.r,
+                //                         ),
+                //                         color: Colors.grey.withOpacity(
+                //                           0.5,
+                //                         ),
+                //                       ),
+                //                       child: SvgPicture.asset(
+                //                         "assets/images/icons/cart2.svg",
+                //                         width: 19.w,
+                //                         height: 20.h,
+                //                         fit: BoxFit.scaleDown,
+                //                       ),
+                //                     ),
+                //                     SizedBox(
+                //                       width: 10.w,
+                //                     ),
+                //                     TextButton(
+                //                       onPressed: () {},
+                //                       child: Text(
+                //                         "إضافة إلي السلة",
+                //                         style: TextStyle(
+                //                           fontSize: 15.sp,
+                //                           fontWeight: FontWeight.bold,
+                //                           color: const Color(
+                //                             0xffFFFFFF,
+                //                           ),
+                //                         ),
+                //                       ),
+                //                     ),
+                //                   ],
+                //                 ),
+                //               ),
+                //               Padding(
+                //                 padding: EdgeInsetsDirectional.only(
+                //                   end: 20.w,
+                //                 ),
+                //                 child: Text(
+                //                   "${counter * widget.price} ر.س",
+                //                   style: TextStyle(
+                //                     fontSize: 15.sp,
+                //                     fontWeight: FontWeight.bold,
+                //                     color: const Color(
+                //                       0xffFFFFFF,
+                //                     ),
+                //                   ),
+                //                 ),
+                //               ),
+                //             ],
+                //           ),
+                //         ),
+                //       )
+                //     : const SizedBox.shrink(),
               ],
             );
           } else {
@@ -794,9 +853,7 @@ class _ProductDetailsState extends State<ProductDetails> {
       ),
       bottomNavigationBar: Container(
         height: 60.h,
-        color: Theme
-            .of(context)
-            .primaryColor,
+        color: Theme.of(context).primaryColor,
         child: Row(
           children: [
             Expanded(
@@ -847,7 +904,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                 end: 20.w,
               ),
               child: Text(
-                "225 ر.س",
+                "${counter * widget.price} ر.س",
                 style: TextStyle(
                   fontSize: 15.sp,
                   fontWeight: FontWeight.bold,
@@ -868,6 +925,8 @@ class _ProductDetailsState extends State<ProductDetails> {
     super.dispose();
     bloc.close();
     categoryProductBloc.close();
+    ratesBloc.close();
+    favouritesBloc.close();
   }
 }
 

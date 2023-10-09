@@ -12,9 +12,11 @@ import 'package:thimar_app/features/edit_profile/events.dart';
 import 'package:thimar_app/features/edit_profile/states.dart';
 import 'package:thimar_app/features/get_cities/states.dart';
 
+import '../../../core/logic/helper_methods.dart';
 import '../../../features/edit_profile/bloc.dart';
 import '../../../features/get_cities/bloc.dart';
 import '../../../features/get_cities/events.dart';
+import 'edit_password.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({super.key});
@@ -435,6 +437,12 @@ class _EditProfileState extends State<EditProfile> {
                     fit: BoxFit.scaleDown,
                   ),
                   isEnabled: false,
+                  onPress: ()
+                  {
+                    navigateTo(
+                      EditPassword(),
+                    );
+                  },
                   maxLines: 1,
                 ),
                 SizedBox(

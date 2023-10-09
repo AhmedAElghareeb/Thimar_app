@@ -6,7 +6,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:thimar_app/core/design/app_button.dart';
 import 'package:thimar_app/core/design/app_input.dart';
+import 'package:thimar_app/core/design/dot_button.dart';
+import 'package:thimar_app/core/logic/cache_helper.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
+import 'package:thimar_app/features/address/bloc.dart';
 import 'package:thimar_app/features/category/bloc.dart';
 import 'package:thimar_app/features/category/states.dart';
 import 'package:thimar_app/features/category_products/bloc.dart';
@@ -32,7 +35,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final searchController = TextEditingController();
 
-  final bloc = KiwiContainer().resolve<CategoryProductBloc>()..add(GetCategoryProductsDataEvent());
+  final bloc = KiwiContainer().resolve<CategoryProductBloc>()
+    ..add(GetCategoryProductsDataEvent());
 
   @override
   void dispose() {
@@ -163,6 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ProductDetails(
                                       id: state.list[index].id,
                                       isFavorite: state.list[index].isFavorite,
+                                      price: state.list[index].price,
                                     ),
                                   );
                                 },
@@ -289,20 +294,26 @@ class _HomeScreenState extends State<HomeScreen> {
                                 start: 24.w,
                                 bottom: 10.h,
                               ),
-                              child: AppButton(
-                                onTap: () {},
-                                text: state.list[index].amount == 0
-                                    ? "تم نفاذ الكمية"
-                                    : "أضف للسلة",
-                                width: 120.w,
-                                height: 30.h,
-                                radius: 9.r,
-                                backColor: state.list[index].amount == 0
-                                    ? Colors.grey
-                                    : const Color(
+                              child: state.list[index].amount != 0
+                                  ? AppButton(
+                                      onTap: () {},
+                                      text: "أضف للسلة",
+                                      width: 120.w,
+                                      height: 30.h,
+                                      radius: 9.r,
+                                      backColor: const Color(
                                         0xff61B80C,
                                       ),
-                              ),
+                                    )
+                                  : AppButton(
+                                      onTap: () {},
+                                      text: "تم نفاذ الكمية",
+                                      width: 120.w,
+                                      height: 30.h,
+                                      radius: 9.r,
+                                      backColor: Colors.white,
+                                      textColor: Colors.red,
+                                    ),
                             ),
                           ),
                         ],
@@ -335,6 +346,8 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final addressBloc = KiwiContainer().resolve<AddressBloc>();
+
     return SafeArea(
       child: Container(
         height: 60.h,
@@ -361,27 +374,186 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
             ),
             Expanded(
-              child: Text.rich(
-                textAlign: TextAlign.center,
-                TextSpan(
-                  text: "التوصيل إلى",
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    color: Theme.of(context).primaryColor,
-                    fontWeight: FontWeight.w900,
-                  ),
-                  children: [
-                    const TextSpan(
-                      text: "\n",
-                    ),
-                    TextSpan(
-                      text: "شارع الملك فهد - جدة",
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w400,
+              child: GestureDetector(
+                onTap: () {
+                  showModalBottomSheet(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadiusDirectional.only(
+                        topStart: Radius.circular(
+                          38.r,
+                        ),
+                        topEnd: Radius.circular(
+                          38.r,
+                        ),
                       ),
                     ),
-                  ],
+                    context: context,
+                    builder: (context) => ListView(
+                      scrollDirection: Axis.vertical,
+                      padding: EdgeInsetsDirectional.symmetric(
+                        vertical: 14.h,
+                        horizontal: 16.w,
+                      ),
+                      children: [
+                        Center(
+                          child: Text(
+                            "العناوين",
+                            style: TextStyle(
+                              fontSize: 15.sp,
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          ),
+                        ),
+                        ListView.builder(
+                          itemBuilder: (context, index) => Container(
+                            width: 343.w,
+                            height: 97.h,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15.r),
+                              color: const Color(
+                                0xffffffff,
+                              ),
+                              border: Border.all(
+                                color: Theme.of(context).primaryColor,
+                              ),
+                            ),
+                            margin:
+                                EdgeInsetsDirectional.symmetric(vertical: 12.h),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.only(
+                                        start: 16.w,
+                                      ),
+                                      child: Text(
+                                        "Home",
+                                        style: TextStyle(
+                                          fontSize: 15.sp,
+                                          fontWeight: FontWeight.bold,
+                                          color: Theme.of(context).primaryColor,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 217.w,
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.all(
+                                        5.r,
+                                      ),
+                                      child: GestureDetector(
+                                        onTap: () {},
+                                        child: SvgPicture.asset(
+                                          "assets/images/icons/addressIcons/delete.svg",
+                                          width: 24.w,
+                                          height: 24.h,
+                                          fit: BoxFit.scaleDown,
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.all(
+                                        5.r,
+                                      ),
+                                      child: GestureDetector(
+                                        onTap: () {},
+                                        child: SvgPicture.asset(
+                                          "assets/images/icons/addressIcons/edit.svg",
+                                          width: 24.w,
+                                          height: 24.h,
+                                          fit: BoxFit.scaleDown,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 3.h,
+                                ),
+                                Padding(
+                                  padding: EdgeInsetsDirectional.only(
+                                    start: 16.w,
+                                  ),
+                                  child: Text(
+                                    "العنوان : ",
+                                    style: TextStyle(
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w400,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsetsDirectional.only(
+                                    start: 16.w,
+                                  ),
+                                  child: Text(
+                                    "الوصف : ",
+                                    style: TextStyle(
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w300,
+                                      color: const Color(
+                                        0xff999797,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsetsDirectional.only(
+                                    start: 16.w,
+                                  ),
+                                  child: Text(
+                                    "رقم الجوال : ",
+                                    style: TextStyle(
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w300,
+                                      color: const Color(
+                                        0xff999797,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          itemCount: 5,
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                        ),
+                        DotButton(
+                          text: "إضافة عنوان جديد",
+                          onTap: () {},
+                        ),
+                      ],
+                    ),
+                  );
+                },
+                child: Text.rich(
+                  textAlign: TextAlign.center,
+                  TextSpan(
+                    text: "التوصيل إلى",
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      color: Theme.of(context).primaryColor,
+                      fontWeight: FontWeight.w900,
+                    ),
+                    children: [
+                      const TextSpan(
+                        text: "\n",
+                      ),
+                      TextSpan(
+                        text: CacheHelper.getCity(),
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -438,7 +610,6 @@ class SliderImages extends StatefulWidget {
 }
 
 class _SliderImagesState extends State<SliderImages> {
-
   final bloc = KiwiContainer().resolve<SliderBloc>()..add(GetSliderDataEvent());
 
   @override
@@ -466,7 +637,7 @@ class _SliderImagesState extends State<SliderImages> {
                 CarouselSlider(
                   items: List.generate(
                     state.list.length,
-                        (index) => Image.network(
+                    (index) => Image.network(
                       state.list[index].media,
                       height: 164.h,
                       width: double.infinity,
@@ -491,8 +662,8 @@ class _SliderImagesState extends State<SliderImages> {
                       7.r,
                     ),
                     color: Theme.of(context).primaryColor.withOpacity(
-                      0.8,
-                    ),
+                          0.8,
+                        ),
                   ),
                   margin: EdgeInsetsDirectional.only(
                     bottom: 5.h,
@@ -501,7 +672,7 @@ class _SliderImagesState extends State<SliderImages> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: List.generate(
                       state.list.length,
-                          (index) => Padding(
+                      (index) => Padding(
                         padding: EdgeInsetsDirectional.only(
                           end: 6.w,
                         ),
@@ -510,8 +681,8 @@ class _SliderImagesState extends State<SliderImages> {
                           backgroundColor: bloc.currentIndex == index
                               ? Theme.of(context).primaryColor
                               : const Color(0xffFFFFFF).withOpacity(
-                            0.8,
-                          ),
+                                  0.8,
+                                ),
                         ),
                       ),
                     ),
@@ -538,8 +709,8 @@ class SectionsSlider extends StatefulWidget {
 }
 
 class _SectionsSliderState extends State<SectionsSlider> {
-
-  final bloc = KiwiContainer().resolve<CategoriesBloc>()..add(GetCategoriesEvent());
+  final bloc = KiwiContainer().resolve<CategoriesBloc>()
+    ..add(GetCategoriesEvent());
 
   @override
   void dispose() {
@@ -621,4 +792,3 @@ class _SectionsSliderState extends State<SectionsSlider> {
     );
   }
 }
-
