@@ -1,8 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
-import 'package:thimar_app/views/main/account/address/add_address.dart';
-
 import '../../core/logic/dio_helper.dart';
 import '../../models/address.dart';
 import 'events.dart';
@@ -13,7 +10,7 @@ class AddressBloc extends Bloc<AddressesEvents, AddressesStates> {
     on<AddUserAddressEvent>(addAddress);
     on<GetUserAddressEvent>(getAddress);
     on<EditUserAddressEvent>(editAddress);
-    on<RemoveUserAddressEvent>(removeAddress);
+    // on<RemoveUserAddressEvent>(removeAddress);
   }
 
   bool withLoading = true;
@@ -24,9 +21,6 @@ class AddressBloc extends Bloc<AddressesEvents, AddressesStates> {
       AddUserAddressLoadingState(),
     );
 
-//   final location = await getLocationFromLatLong(LatLng(31.0224366,31.3875197));
-    // final location = await getLocationFromLatLong(LatLng(event.lat, event.long));
-    // print('-==-=- locations is $location');
     final response = await DioHelper().sendToServer(
         url:
             event.id == 0 ? "client/addresses" : "client/addresses/${event.id}",
@@ -111,35 +105,41 @@ class AddressBloc extends Bloc<AddressesEvents, AddressesStates> {
     }
   }
 
-  Future<void> removeAddress(
-      RemoveUserAddressEvent event, Emitter<AddressesStates> emit) async {
-    emit(
-      RemoveUserAddressLoadingState(),
-    );
-
-    final response = await DioHelper()
-        .removeFromServer(url: "client/addresses/${event.id}", body: {
-      "type": event.type,
-    });
-    if (response.success) {
-      showSnackBar(
-        response.msg,
-        typ: MessageType.success,
-      );
-      emit(
-        RemoveUserAddressSuccessState(),
-      );
-    } else {
-      emit(
-        RemoveUserAddressFailedState(),
-      );
-    }
-  }
+  // Future<void> removeAddress(
+  //     RemoveUserAddressEvent event, Emitter<AddressesStates> emit) async {
+  //   emit(
+  //     RemoveUserAddressLoadingState(),
+  //   );
+  //
+  //   final response = await DioHelper()
+  //       .removeFromServer(url: "client/addresses/${event.id}", body: {
+  //     "type": event.type,
+  //   });
+  //   if (response.success) {
+  //     showSnackBar(
+  //       response.msg,
+  //       typ: MessageType.success,
+  //     );
+  //     emit(
+  //       RemoveUserAddressSuccessState(),
+  //     );
+  //   } else {
+  //     emit(
+  //       RemoveUserAddressFailedState(),
+  //     );
+  //   }
+  // }
 
   deleteItem(AddressModel item) async {
     final response = await DioHelper()
         .removeFromServer(url: "client/addresses/${item.id}", body: {
       "type": item.type,
     });
+    if (response.success) {
+      showSnackBar(
+        response.msg,
+        typ: MessageType.success,
+      );
+    }
   }
 }

@@ -11,3 +11,9 @@ class ProductsRatesSuccessState extends GetProductsRatesStates {
 }
 
 class ProductsRatesFailedState extends GetProductsRatesStates {}
+
+class AddRateToProductLoadingState extends GetProductsRatesStates {}
+
+class AddRateToProductSuccessState extends GetProductsRatesStates {}
+
+class AddRateToProductFailedState extends GetProductsRatesStates {}

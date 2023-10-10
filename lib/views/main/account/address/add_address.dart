@@ -105,15 +105,12 @@ class _AddAddressState extends State<AddAddress> {
                   horizontal: 8.w,
                 ),
                 child: MyMap(
-                  onSuccess: (latLong,desc) {
+                  onSuccess: (latLong, desc) {
                     print('-==--== from view latlong is ${latLong.toJson()}');
-                     _event.lat = latLong.latitude;
+                    _event.lat = latLong.latitude;
                     _event.long = latLong.longitude;
-                    _event.location!.text=desc;
-                    setState(() {
-
-                    });
-
+                    _event.location!.text = desc;
+                    setState(() {});
                   },
                 ),
               ),
@@ -123,7 +120,6 @@ class _AddAddressState extends State<AddAddress> {
                 ),
                 child: Container(
                   width: 350.w,
-                 // height: 400.h,
                   margin: EdgeInsetsDirectional.symmetric(
                     horizontal: 16.w,
                   ),
@@ -167,7 +163,8 @@ class _AddAddressState extends State<AddAddress> {
                                 end: 10.w,
                               ),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     "نوع العنوان",
@@ -202,7 +199,8 @@ class _AddAddressState extends State<AddAddress> {
                                           style: TextStyle(
                                             color: _event.type == "المنزل"
                                                 ? Colors.white
-                                                : Theme.of(context).primaryColor,
+                                                : Theme.of(context)
+                                                    .primaryColor,
                                             fontSize: 15.sp,
                                             fontWeight: FontWeight.w300,
                                           ),
@@ -233,7 +231,8 @@ class _AddAddressState extends State<AddAddress> {
                                           style: TextStyle(
                                             color: _event.type == "العمل"
                                                 ? Colors.white
-                                                : Theme.of(context).primaryColor,
+                                                : Theme.of(context)
+                                                    .primaryColor,
                                             fontSize: 15.sp,
                                             fontWeight: FontWeight.w300,
                                           ),
@@ -264,22 +263,23 @@ class _AddAddressState extends State<AddAddress> {
                           height: 14.h,
                         ),
                         AppInput(
-                          controller: _event.discribtion,
-                          labelText: "الوصف",
-                          minLines: 3,
+                          controller: _event.location,
+                          labelText: "العنوان",
+                          minLines: 4,
                           validator: (value) {
                             if (value!.isEmpty) {
                               return "هذا الحقل مطلوب";
                             }
                             return null;
                           },
-                        ),          SizedBox(
+                        ),
+                        SizedBox(
                           height: 14.h,
                         ),
                         AppInput(
-                          controller: _event.location,
-                          labelText: "العنوان",
-                          minLines: 3,
+                          controller: _event.discribtion,
+                          labelText: "الوصف",
+                          minLines: 2,
                           validator: (value) {
                             if (value!.isEmpty) {
                               return "هذا الحقل مطلوب";
@@ -330,7 +330,7 @@ class _AddAddressState extends State<AddAddress> {
 }
 
 class MyMap extends StatefulWidget {
-  final Function(LatLng,String) onSuccess;
+  final Function(LatLng, String) onSuccess;
 
   const MyMap({
     Key? key,
@@ -444,11 +444,14 @@ class _MyMapState extends State<MyMap> {
           currentLocation!.longitude,
         ),
       );
-      String locationDesc =await getLocationFromLatLong(LatLng(currentLocation!.latitude, currentLocation!.longitude));
-      widget.onSuccess(LatLng(
-        currentLocation!.latitude,
-        currentLocation!.longitude,
-      ),locationDesc);
+      String locationDesc = await getLocationFromLatLong(
+          LatLng(currentLocation!.latitude, currentLocation!.longitude));
+      widget.onSuccess(
+          LatLng(
+            currentLocation!.latitude,
+            currentLocation!.longitude,
+          ),
+          locationDesc);
     }
   }
 

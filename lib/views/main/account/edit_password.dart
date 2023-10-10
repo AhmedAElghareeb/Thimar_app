@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:thimar_app/core/design/app_button.dart';
 import 'package:thimar_app/core/design/app_input.dart';
+import 'package:thimar_app/core/design/auth_header.dart';
+import 'package:thimar_app/core/logic/cache_helper.dart';
 import 'package:thimar_app/features/edit_profile/events.dart';
 import 'package:thimar_app/features/edit_profile/states.dart';
 
@@ -58,7 +60,9 @@ class _EditPasswordState extends State<EditPassword> {
                 child: Icon(
                   Icons.arrow_back_ios,
                   size: 16.r,
-                  color: Theme.of(context).primaryColor,
+                  color: Theme
+                      .of(context)
+                      .primaryColor,
                 ),
               ),
             ),
@@ -71,9 +75,18 @@ class _EditPasswordState extends State<EditPassword> {
       body: Form(
         key: _formKey,
         child: ListView(
-          padding:
-              EdgeInsetsDirectional.symmetric(horizontal: 16.w, vertical: 20.h),
+          padding: EdgeInsetsDirectional.symmetric(
+            horizontal: 16.w,
+            vertical: 20.h,
+          ),
           children: [
+            AuthHeader(
+              text1: "مرحبا ${CacheHelper.getFullName()}",
+              text2: "يمكنك تعديل كلمة المرور الآن",
+            ),
+            SizedBox(
+              height: 20.h,
+            ),
             AppInput(
               controller: oldPassword,
               labelText: "كلمة المرور القديمة",
@@ -89,7 +102,7 @@ class _EditPasswordState extends State<EditPassword> {
               maxLines: 1,
             ),
             SizedBox(
-              height: 10.h,
+              height: 20.h,
             ),
             AppInput(
               controller: newPassword,
@@ -106,7 +119,7 @@ class _EditPasswordState extends State<EditPassword> {
               maxLines: 1,
             ),
             SizedBox(
-              height: 10.h,
+              height: 20.h,
             ),
             AppInput(
               controller: confirmNewPassword,
@@ -125,14 +138,14 @@ class _EditPasswordState extends State<EditPassword> {
               maxLines: 1,
             ),
             SizedBox(
-              height: 10.h,
+              height: 20.h,
             ),
             BlocBuilder(
               bloc: bloc,
               builder: (context, state) {
                 return AppButton(
                   onTap: () {
-                    if(_formKey.currentState!.validate()){
+                    if (_formKey.currentState!.validate()) {
                       bloc.add(
                         EditUserPasswordEvent(
                           oldPass: oldPassword.text,

@@ -13,59 +13,55 @@ import '../../../../features/address/events.dart';
 
 class Address extends StatefulWidget {
   final bool withAppBar;
-  const Address({super.key,this.withAppBar =true});
+
+  const Address({super.key, this.withAppBar = true});
 
   @override
   State<Address> createState() => _AddressState();
 }
 
 class _AddressState extends State<Address> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "العناوين",
-        ),
-        leading: Padding(
-          padding: EdgeInsetsDirectional.all(
-            10.r,
+        appBar: AppBar(
+          title: const Text(
+            "العناوين",
           ),
-          child: GestureDetector(
-            child: Container(
-              width: 32.w,
-              height: 32.h,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(9.r),
-                color: const Color(
-                  0xff707070,
-                ).withOpacity(0.1),
-              ),
-              child: Padding(
-                padding: EdgeInsetsDirectional.only(
-                  start: 7.w,
-                ),
-                child: Icon(
-                  Icons.arrow_back_ios,
-                  size: 16.r,
-                  color: Theme.of(context).primaryColor,
-                ),
-              ),
+          leading: Padding(
+            padding: EdgeInsetsDirectional.all(
+              10.r,
             ),
-            onTap: () {
-              Navigator.pop(context);
-            },
+            child: GestureDetector(
+              child: Container(
+                width: 32.w,
+                height: 32.h,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(9.r),
+                  color: const Color(
+                    0xff707070,
+                  ).withOpacity(0.1),
+                ),
+                child: Padding(
+                  padding: EdgeInsetsDirectional.only(
+                    start: 7.w,
+                  ),
+                  child: Icon(
+                    Icons.arrow_back_ios,
+                    size: 16.r,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                ),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
           ),
         ),
-      ),
-      body:
-      const AddressesListView()
-    );
+        body: const AddressesListView());
   }
 }
-
-
 
 class AddressesListView extends StatefulWidget {
   const AddressesListView({super.key});
@@ -75,7 +71,6 @@ class AddressesListView extends StatefulWidget {
 }
 
 class _AddressesListViewState extends State<AddressesListView> {
-
   final addressBloc = KiwiContainer().resolve<AddressBloc>();
   final deleteBloc = KiwiContainer().resolve<AddressBloc>();
 
@@ -93,7 +88,7 @@ class _AddressesListViewState extends State<AddressesListView> {
 
   @override
   Widget build(BuildContext context) {
-    return  BlocBuilder(
+    return BlocBuilder(
       bloc: addressBloc,
       builder: (context, state) {
         if (state is GetUserAddressLoadingState) {
@@ -116,7 +111,7 @@ class _AddressesListViewState extends State<AddressesListView> {
                       shrinkWrap: true,
                       itemBuilder: (context, index) => Container(
                         width: 343.w,
-                        height: 97.h,
+                        height: 140.h,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15.r),
                           color: const Color(
@@ -153,19 +148,14 @@ class _AddressesListViewState extends State<AddressesListView> {
                                   ),
                                   child: GestureDetector(
                                     onTap: () {
-                                      // deleteBloc.add(
-                                      //   RemoveUserAddressEvent(
-                                      //     type: state.list[index].type,
-                                      //     id: state.list[index].id,
-                                      //   ),
-                                      // );
-                                      addressBloc.deleteItem(state.list[index]);
-                                      state.list.removeWhere((element) => element.id ==
-                                          state.list[index].id  );
-                                      setState(() {
-
-                                      });
-
+                                      addressBloc.deleteItem(
+                                        state.list[index],
+                                      );
+                                      state.list.removeWhere(
+                                        (element) =>
+                                            element.id == state.list[index].id,
+                                      );
+                                      setState(() {});
                                     },
                                     child: SvgPicture.asset(
                                       "assets/images/icons/addressIcons/delete.svg",
@@ -226,9 +216,7 @@ class _AddressesListViewState extends State<AddressesListView> {
                                 style: TextStyle(
                                   fontSize: 14.sp,
                                   fontWeight: FontWeight.w300,
-                                  color: const Color(
-                                    0xff999797,
-                                  ),
+                                  color: Theme.of(context).primaryColor,
                                 ),
                               ),
                             ),
@@ -241,9 +229,7 @@ class _AddressesListViewState extends State<AddressesListView> {
                                 style: TextStyle(
                                   fontSize: 14.sp,
                                   fontWeight: FontWeight.w300,
-                                  color: const Color(
-                                    0xff999797,
-                                  ),
+                                  color: Theme.of(context).primaryColor,
                                 ),
                               ),
                             ),

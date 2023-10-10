@@ -24,8 +24,8 @@ class EditUserAddressSuccessState extends AddressesStates {}
 
 class EditUserAddressFailedState extends AddressesStates {}
 
-class RemoveUserAddressLoadingState extends AddressesStates {}
-
-class RemoveUserAddressSuccessState extends AddressesStates {}
-
-class RemoveUserAddressFailedState extends AddressesStates {}
+// class RemoveUserAddressLoadingState extends AddressesStates {}
+//
+// class RemoveUserAddressSuccessState extends AddressesStates {}
+//
+// class RemoveUserAddressFailedState extends AddressesStates {}

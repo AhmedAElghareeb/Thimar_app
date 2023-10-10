@@ -1,12 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:thimar_app/features/login/bloc.dart';
-import 'package:thimar_app/features/login/events.dart';
-
 import '../../core/logic/dio_helper.dart';
 import '../../core/logic/helper_methods.dart';
 import 'events.dart';
 import 'states.dart';
+
 
 class EditProfileBloc extends Bloc<EditProfileEvents, EditProfileStates> {
   EditProfileBloc()

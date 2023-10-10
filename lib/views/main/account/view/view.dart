@@ -32,6 +32,7 @@ class AccountScreen extends StatefulWidget {
 }
 
 class _AccountScreenState extends State<AccountScreen> {
+
   final bloc = KiwiContainer().resolve<LogoutBloc>();
 
   @override
@@ -122,11 +123,19 @@ class _AccountScreenState extends State<AccountScreen> {
             ),
             Container(
               width: 342.w,
-              height: 160.h,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(
                   17.r,
                 ),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(
+                      0xff000000,
+                    ).withOpacity(0.16),
+                    blurStyle: BlurStyle.outer,
+                    blurRadius: 3.r,
+                  ),
+                ],
                 color: const Color(
                   0xffFFFFFF,
                 ),
@@ -143,6 +152,7 @@ class _AccountScreenState extends State<AccountScreen> {
                     imageName: "person.svg",
                     isLogout: true,
                   ),
+                  const Divider(),
                   AccountWidgets(
                     onPress: () {
                       navigateTo(
@@ -153,6 +163,7 @@ class _AccountScreenState extends State<AccountScreen> {
                     imageName: "wallet.svg",
                     isLogout: true,
                   ),
+                  const Divider(),
                   AccountWidgets(
                     onPress: () {
                       navigateTo(
@@ -171,11 +182,19 @@ class _AccountScreenState extends State<AccountScreen> {
             ),
             Container(
               width: 342.w,
-              height: 255.h,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(
                   17.r,
                 ),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(
+                      0xff000000,
+                    ).withOpacity(0.16),
+                    blurStyle: BlurStyle.outer,
+                    blurRadius: 3.r,
+                  ),
+                ],
                 color: const Color(
                   0xffFFFFFF,
                 ),
@@ -192,6 +211,7 @@ class _AccountScreenState extends State<AccountScreen> {
                     imageName: "question.svg",
                     isLogout: true,
                   ),
+                  const Divider(),
                   AccountWidgets(
                     onPress: () {
                       navigateTo(
@@ -202,6 +222,7 @@ class _AccountScreenState extends State<AccountScreen> {
                     imageName: "policy.svg",
                     isLogout: true,
                   ),
+                  const Divider(),
                   AccountWidgets(
                     onPress: () {
                       navigateTo(
@@ -212,6 +233,7 @@ class _AccountScreenState extends State<AccountScreen> {
                     imageName: "contact_us.svg",
                     isLogout: true,
                   ),
+                  const Divider(),
                   AccountWidgets(
                     onPress: () {
                       navigateTo(
@@ -222,6 +244,7 @@ class _AccountScreenState extends State<AccountScreen> {
                     imageName: "proposal.svg",
                     isLogout: true,
                   ),
+                  const Divider(),
                   AccountWidgets(
                     onPress: () {
                       Share.share(
@@ -240,11 +263,19 @@ class _AccountScreenState extends State<AccountScreen> {
             ),
             Container(
               width: 342.w,
-              height: 205.h,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(
                   17.r,
                 ),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(
+                      0xff000000,
+                    ).withOpacity(0.16),
+                    blurStyle: BlurStyle.outer,
+                    blurRadius: 3.r,
+                  ),
+                ],
                 color: const Color(
                   0xffFFFFFF,
                 ),
@@ -261,6 +292,7 @@ class _AccountScreenState extends State<AccountScreen> {
                     imageName: "about_us.svg",
                     isLogout: true,
                   ),
+                  const Divider(),
                   AccountWidgets(
                     onPress: () {
                       String code =
@@ -279,6 +311,7 @@ class _AccountScreenState extends State<AccountScreen> {
                     imageName: "lang.svg",
                     isLogout: true,
                   ),
+                  const Divider(),
                   AccountWidgets(
                     onPress: () {
                       navigateTo(
@@ -289,6 +322,7 @@ class _AccountScreenState extends State<AccountScreen> {
                     imageName: "conditions.svg",
                     isLogout: true,
                   ),
+                  const Divider(),
                   AccountWidgets(
                     onPress: () {
                       launchUrlString(

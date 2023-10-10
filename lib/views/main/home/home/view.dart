@@ -6,7 +6,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:thimar_app/core/design/app_button.dart';
 import 'package:thimar_app/core/design/app_input.dart';
-import 'package:thimar_app/core/design/dot_button.dart';
 import 'package:thimar_app/core/logic/cache_helper.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
 import 'package:thimar_app/features/address/bloc.dart';
@@ -27,7 +26,6 @@ import '../../../../features/cart/bloc.dart';
 import '../../../../features/cart/events.dart';
 import '../../../../features/category/events.dart';
 import '../../../../features/category_products/events.dart';
-import '../../account/address/add_address.dart';
 import '../../account/address/address.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -306,24 +304,25 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               child: state.list[index].amount != 0
                                   ? AppButton(
-                                    isLoading: state is AddToCartDataLoadingState,
-                                    onTap: ()
-                                    {
-                                      cartBloc.add(
+                                      isLoading:
+                                          state is AddToCartDataLoadingState,
+                                      onTap: () {
+                                        cartBloc.add(
                                           AddToCartDataEvent(
                                             productId: state.list[index].id,
-                                            amount: state.list[index].amount.toInt(),
+                                            amount: state.list[index].amount
+                                                .toInt(),
                                           ),
-                                      );
-                                    },
-                                    text: "أضف للسلة",
-                                    width: 120.w,
-                                    height: 30.h,
-                                    radius: 9.r,
-                                    backColor: const Color(
-                                      0xff61B80C,
-                                    ),
-                                  )
+                                        );
+                                      },
+                                      text: "أضف للسلة",
+                                      width: 120.w,
+                                      height: 30.h,
+                                      radius: 9.r,
+                                      backColor: const Color(
+                                        0xff61B80C,
+                                      ),
+                                    )
                                   : AppButton(
                                       onTap: () {},
                                       text: "تم نفاذ الكمية",
@@ -419,9 +418,9 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
                           );
                         } else if (state is GetUserAddressSuccessState) {
                           return Column(
-
                             children: [
-                              SizedBox(height: 20,
+                              SizedBox(
+                                height: 20.h,
                               ),
                               Center(
                                 child: Text(
@@ -433,18 +432,12 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
                                   ),
                                 ),
                               ),
-
-                              Expanded(child: AddressesListView()),
-
-                              SizedBox(height: 20,)
-                              // DotButton(
-                              //   text: "إضافة عنوان جديد",
-                              //   onTap: () {
-                              //     navigateTo(
-                              //       const AddAddress(),
-                              //     );
-                              //   },
-                              // ),
+                              const Expanded(
+                                child: AddressesListView(),
+                              ),
+                              SizedBox(
+                                height: 20.h,
+                              ),
                             ],
                           );
                         } else {

@@ -37,25 +37,25 @@ class AddToCartDataFailedState extends CartStates {
   }
 }
 
-class RemoveFromCartDataLoadingState extends CartStates {}
-
-class RemoveFromCartDataSuccessState extends CartStates {
-  final String msg;
-
-  RemoveFromCartDataSuccessState({required this.msg}) {
-    showSnackBar(
-      msg,
-      typ: MessageType.success,
-    );
-  }
-}
-
-class RemoveFromCartDataFailedState extends CartStates {
-  final String msg;
-
-  RemoveFromCartDataFailedState({required this.msg}) {
-    showSnackBar(
-      msg,
-    );
-  }
-}
+// class RemoveFromCartDataLoadingState extends CartStates {}
+//
+// class RemoveFromCartDataSuccessState extends CartStates {
+//   final String msg;
+//
+//   RemoveFromCartDataSuccessState({required this.msg}) {
+//     showSnackBar(
+//       msg,
+//       typ: MessageType.success,
+//     );
+//   }
+// }
+//
+// class RemoveFromCartDataFailedState extends CartStates {
+//   final String msg;
+//
+//   RemoveFromCartDataFailedState({required this.msg}) {
+//     showSnackBar(
+//       msg,
+//     );
+//   }
+// }

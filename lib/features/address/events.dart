@@ -1,4 +1,5 @@
-import 'package:flutter/cupertino.dart';
+
+import 'package:flutter/material.dart';
 
 import '../../core/logic/cache_helper.dart';
 
@@ -32,9 +33,9 @@ class EditUserAddressEvent extends AddressesEvents {
   EditUserAddressEvent({required this.type, required this.id});
 }
 
-class RemoveUserAddressEvent extends AddressesEvents {
-  final String type;
-  final int id;
-
-  RemoveUserAddressEvent({required this.type, required this.id});
-}
+// class RemoveUserAddressEvent extends AddressesEvents {
+//   final String type;
+//   final int id;
+//
+//   RemoveUserAddressEvent({required this.type, required this.id});
+// }

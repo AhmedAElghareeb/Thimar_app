@@ -9,7 +9,7 @@ class CartBloc extends Bloc<CartEvents, CartStates> {
   CartBloc() : super(CartStates()) {
     on<GetCartDataEvent>(getData);
     on<AddToCartDataEvent>(addData);
-    on<RemoveFromCartDataEvent>(removeData);
+    // on<RemoveFromCartDataEvent>(removeData);
   }
 
   Future<void> getData(GetCartDataEvent event, Emitter<CartStates> emit) async {
@@ -67,27 +67,39 @@ class CartBloc extends Bloc<CartEvents, CartStates> {
     }
   }
 
-  Future<void> removeData(
-      RemoveFromCartDataEvent event, Emitter<CartStates> emit) async {
-    emit(
-      RemoveFromCartDataLoadingState(),
-    );
+  // Future<void> removeData(
+  //     RemoveFromCartDataEvent event, Emitter<CartStates> emit) async {
+  //   emit(
+  //     RemoveFromCartDataLoadingState(),
+  //   );
+  //
+  //   final response = await DioHelper().removeFromServer(
+  //     url: "client/cart/delete_item/${event.id}",
+  //   );
+  //
+  //   if (response.success) {
+  //     emit(
+  //       RemoveFromCartDataSuccessState(
+  //         msg: response.msg,
+  //       ),
+  //     );
+  //   } else {
+  //     emit(
+  //       RemoveFromCartDataFailedState(
+  //         msg: response.msg,
+  //       ),
+  //     );
+  //   }
+  // }
 
+  deleteItem(CartModel item) async {
     final response = await DioHelper().removeFromServer(
-      url: "client/cart/delete_item/${event.id}",
+      url: "client/cart/delete_item/${item.id}",
     );
-
     if (response.success) {
-      emit(
-        RemoveFromCartDataSuccessState(
-          msg: response.msg,
-        ),
-      );
-    } else {
-      emit(
-        RemoveFromCartDataFailedState(
-          msg: response.msg,
-        ),
+      showSnackBar(
+        response.msg,
+        typ: MessageType.success,
       );
     }
   }
