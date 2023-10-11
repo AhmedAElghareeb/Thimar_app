@@ -21,7 +21,7 @@ class LoginBloc extends Bloc<LoginEvents, LoginStates> {
   }
 
   final phoneNumberController = TextEditingController(
-    text: "966123456789000000",
+    text: "966123456789009",
   );
 
   final passwordController = TextEditingController(

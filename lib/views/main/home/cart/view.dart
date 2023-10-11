@@ -8,10 +8,11 @@ import 'package:thimar_app/core/design/app_input.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
 import 'package:thimar_app/features/cart/events.dart';
 import 'package:thimar_app/features/cart/states.dart';
-import 'package:thimar_app/views/main/home/cart/finish_order.dart';
+import 'package:thimar_app/views/main/order/finish_order.dart';
 import '../../../../features/cart/bloc.dart';
 
 class Cart extends StatefulWidget {
+  // final num price;
   const Cart({super.key});
 
   @override
@@ -23,13 +24,18 @@ class _CartState extends State<Cart> {
 
   final couponController = TextEditingController();
 
-  final bloc = KiwiContainer().resolve<CartBloc>();
+  final bloc = KiwiContainer().resolve<CartBloc>()
+    ..add(
+      GetCartDataEvent(),
+    );
+  final updateBloc = KiwiContainer().resolve<CartBloc>();
 
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
     bloc.close();
+    updateBloc.close();
   }
 
   @override
@@ -72,10 +78,7 @@ class _CartState extends State<Cart> {
       ),
       body: SafeArea(
         child: BlocBuilder(
-          bloc: bloc
-            ..add(
-              GetCartDataEvent(),
-            ),
+          bloc: bloc,
           builder: (context, state) {
             if (state is GetCartDataLoadingState) {
               return const Center(
@@ -88,11 +91,9 @@ class _CartState extends State<Cart> {
                   vertical: 16.h,
                 ),
                 children: [
-                  ListView.separated(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) => Container(
+                  ...List.generate(
+                    state.list.length,
+                    (index) => Container(
                       width: 342.w,
                       height: 94.h,
                       padding: EdgeInsetsDirectional.only(
@@ -116,7 +117,6 @@ class _CartState extends State<Cart> {
                         ],
                       ),
                       child: Row(
-                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Expanded(
                             child: Row(
@@ -178,8 +178,16 @@ class _CartState extends State<Cart> {
                                             height: 23.h,
                                             child: FloatingActionButton(
                                               onPressed: () {
-                                                counter++;
-                                                setState(() {});
+                                                if (counter <
+                                                    state.list[index].amount) {
+                                                  counter++;
+                                                  updateBloc.add(
+                                                    UpdateCartDataEvent(
+                                                      id: state.list[index].id,
+                                                      amount: counter,
+                                                    ),
+                                                  );
+                                                }
                                               },
                                               mini: true,
                                               heroTag: null,
@@ -221,7 +229,12 @@ class _CartState extends State<Cart> {
                                               onPressed: () {
                                                 if (counter > 1) {
                                                   counter--;
-                                                  setState(() {});
+                                                  updateBloc.add(
+                                                    UpdateCartDataEvent(
+                                                      id: state.list[index].id,
+                                                      amount: counter,
+                                                    ),
+                                                  );
                                                 }
                                               },
                                               mini: true,
@@ -258,13 +271,63 @@ class _CartState extends State<Cart> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              bloc.deleteItem(
-                                state.list[index],
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadiusDirectional.circular(
+                                      20.r,
+                                    ),
+                                  ),
+                                  backgroundColor: Colors.white,
+                                  title: Center(
+                                    child: Text(
+                                      "هل تريد الحذف؟",
+                                      style: TextStyle(
+                                        fontSize: 20.sp,
+                                        fontWeight: FontWeight.bold,
+                                        color: Theme.of(context).primaryColor,
+                                      ),
+                                    ),
+                                  ),
+                                  content: Row(
+                                    children: [
+                                      AppButton(
+                                        onTap: () {
+                                          bloc.deleteItem(
+                                            state.list[index],
+                                          );
+                                          state.list.removeWhere(
+                                            (element) =>
+                                                element.id ==
+                                                state.list[index].id,
+                                          );
+                                          Navigator.pop(context);
+                                          setState(() {});
+                                        },
+                                        text: "نعم",
+                                        backColor: Colors.red,
+                                        height: 50.h,
+                                        radius: 7.r,
+                                        width: 100.w,
+                                      ),
+                                      SizedBox(
+                                        width: 10.w,
+                                      ),
+                                      AppButton(
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                        },
+                                        text: "لأ",
+                                        height: 50.h,
+                                        radius: 7.r,
+                                        width: 100.w,
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               );
-                              state.list.removeWhere(
-                                (element) => element.id == state.list[index].id,
-                              );
-                              setState(() {});
                             },
                             child: SvgPicture.asset(
                               "assets/images/delete.svg",
@@ -273,10 +336,6 @@ class _CartState extends State<Cart> {
                           ),
                         ],
                       ),
-                    ),
-                    itemCount: state.list.length,
-                    separatorBuilder: (context, index) => SizedBox(
-                      height: 10.h,
                     ),
                   ),
                   SizedBox(
@@ -414,9 +473,9 @@ class _CartState extends State<Cart> {
                   ),
                   AppButton(
                     onTap: () {
-                      navigateTo(
-                        FinishOrder(),
-                      );
+                      // navigateTo(
+                      //   FinishOrder(),
+                      // );
                     },
                     text: "الانتقال لإتمام الطلب",
                     height: 60.h,

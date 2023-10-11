@@ -9,6 +9,7 @@ class CartBloc extends Bloc<CartEvents, CartStates> {
   CartBloc() : super(CartStates()) {
     on<GetCartDataEvent>(getData);
     on<AddToCartDataEvent>(addData);
+    on<UpdateCartDataEvent>(update);
     // on<RemoveFromCartDataEvent>(removeData);
   }
 
@@ -100,6 +101,30 @@ class CartBloc extends Bloc<CartEvents, CartStates> {
       showSnackBar(
         response.msg,
         typ: MessageType.success,
+      );
+    }
+  }
+
+  Future<void> update(
+      UpdateCartDataEvent event, Emitter<CartStates> emit) async {
+    emit(
+      UpdateCartDataStateLoading(),
+    );
+
+    final response =
+        await DioHelper().putToServer(url: "client/cart/${event.id}", body: {
+      "amount": event.amount,
+    });
+
+    if (response.success) {
+      emit(
+        UpdateCartDataStateSuccess(
+          msg: response.msg,
+        ),
+      );
+    } else {
+      emit(
+        UpdateCartDataStateFailed(),
       );
     }
   }

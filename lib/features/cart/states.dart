@@ -59,3 +59,18 @@ class AddToCartDataFailedState extends CartStates {
 //     );
 //   }
 // }
+
+class UpdateCartDataStateLoading extends CartStates {}
+
+class UpdateCartDataStateSuccess extends CartStates {
+  final String msg;
+
+  UpdateCartDataStateSuccess({required this.msg}) {
+    showSnackBar(
+      msg,
+      typ: MessageType.success,
+    );
+  }
+}
+
+class UpdateCartDataStateFailed extends CartStates {}

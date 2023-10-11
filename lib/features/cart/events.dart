@@ -13,3 +13,12 @@ class AddToCartDataEvent extends CartEvents {
 //
 //   RemoveFromCartDataEvent({required this.id});
 // }
+
+class UpdateCartDataEvent extends CartEvents {
+  final int id, amount;
+
+  UpdateCartDataEvent({
+    required this.id,
+    required this.amount,
+  });
+}

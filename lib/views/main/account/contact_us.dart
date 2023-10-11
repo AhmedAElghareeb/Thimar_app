@@ -145,8 +145,9 @@ class _ContactUsState extends State<ContactUs> {
                                       Text(
                                         state1.model.location,
                                         style: TextStyle(
-                                          fontSize: 13.sp,
+                                          fontSize: 15.sp,
                                           fontWeight: FontWeight.w300,
+                                          color: Theme.of(context).primaryColor
                                         ),
                                       ),
                                     ],
@@ -167,8 +168,9 @@ class _ContactUsState extends State<ContactUs> {
                                       Text(
                                         state1.model.phone,
                                         style: TextStyle(
-                                          fontSize: 14.sp,
+                                          fontSize: 15.sp,
                                           fontWeight: FontWeight.w300,
+                                          color: Theme.of(context).primaryColor
                                         ),
                                       ),
                                     ],
@@ -189,8 +191,9 @@ class _ContactUsState extends State<ContactUs> {
                                       Text(
                                         state1.model.email,
                                         style: TextStyle(
-                                          fontSize: 14.sp,
+                                          fontSize: 15.sp,
                                           fontWeight: FontWeight.w300,
+                                          color: Theme.of(context).primaryColor
                                         ),
                                       ),
                                     ],
@@ -218,7 +221,8 @@ class _ContactUsState extends State<ContactUs> {
                   style: TextStyle(
                       fontSize: 13.sp,
                       fontWeight: FontWeight.bold,
-                      color: Theme.of(context).primaryColor),
+                      color: Theme.of(context).primaryColor
+                  ),
                 ),
               ),
               SizedBox(
