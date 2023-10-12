@@ -34,7 +34,7 @@ class CartModel {
   late final int id;
   late final String title;
   late final String image;
-  late final int amount;
+  late   int amount;
   late final num priceBeforeDiscount;
   late final num discount;
   late final num price;

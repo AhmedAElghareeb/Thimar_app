@@ -14,6 +14,7 @@ import '../../features/get_faqs/bloc.dart';
 import '../../features/login/bloc.dart';
 import '../../features/logout/bloc.dart';
 import '../../features/notifications/bloc.dart';
+import '../../features/orders/bloc.dart';
 import '../../features/policy/bloc.dart';
 import '../../features/products/bloc.dart';
 import '../../features/products_details/bloc.dart';
@@ -56,6 +57,7 @@ void initKiwi() {
   container.registerFactory((c) => ProductDetailsBloc());
   container.registerFactory((c) => ProductsRatesBloc());
   container.registerFactory((c) => CartBloc());
+  container.registerFactory((c) => OrdersBloc());
 
   container.registerFactory((c) => NotificationsBloc());
 

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
 import 'package:thimar_app/models/cart.dart';
@@ -6,17 +7,23 @@ import 'events.dart';
 import 'states.dart';
 
 class CartBloc extends Bloc<CartEvents, CartStates> {
+  final couponController = TextEditingController();
+
   CartBloc() : super(CartStates()) {
     on<GetCartDataEvent>(getData);
     on<AddToCartDataEvent>(addData);
     on<UpdateCartDataEvent>(update);
+    on<AddCouponEvent>(coupon);
     // on<RemoveFromCartDataEvent>(removeData);
   }
 
+  bool isInit = true;
   Future<void> getData(GetCartDataEvent event, Emitter<CartStates> emit) async {
-    emit(
-      GetCartDataLoadingState(),
-    );
+    if (isInit) {
+      emit(
+        GetCartDataLoadingState(),
+      );
+    }
 
     final response = await DioHelper().getFromServer(
       url: "client/cart",
@@ -24,15 +31,17 @@ class CartBloc extends Bloc<CartEvents, CartStates> {
 
     if (response.success) {
       final list = CartData.fromJson(response.response!.data).data;
-      if (list.isEmpty) {
-        showSnackBar(
-          response.msg,
-          typ: MessageType.warning,
-        );
-      }
+      isInit = false;
       emit(
         GetCartDataSuccessState(
           list: list,
+          taxMsg: response.response!.data["vip_message"] ?? "",
+          priceBefore:
+              response.response!.data["total_price_before_discount"] ?? 0,
+          discount: response.response!.data["total_discount"] ?? 0,
+          deliveryCost: response.response!.data["delivery_cost"] ?? 0,
+          priceWithVat: response.response!.data["total_price_with_vat"] ?? 0,
+          vat: response.response!.data["vat"] ?? 0,
         ),
       );
     } else {
@@ -50,7 +59,7 @@ class CartBloc extends Bloc<CartEvents, CartStates> {
 
     final response = await DioHelper().sendToServer(url: "client/cart", body: {
       "product_id": event.productId,
-      "amount": event.amount,
+      "amount": 1,
     });
 
     if (response.success) {
@@ -68,36 +77,12 @@ class CartBloc extends Bloc<CartEvents, CartStates> {
     }
   }
 
-  // Future<void> removeData(
-  //     RemoveFromCartDataEvent event, Emitter<CartStates> emit) async {
-  //   emit(
-  //     RemoveFromCartDataLoadingState(),
-  //   );
-  //
-  //   final response = await DioHelper().removeFromServer(
-  //     url: "client/cart/delete_item/${event.id}",
-  //   );
-  //
-  //   if (response.success) {
-  //     emit(
-  //       RemoveFromCartDataSuccessState(
-  //         msg: response.msg,
-  //       ),
-  //     );
-  //   } else {
-  //     emit(
-  //       RemoveFromCartDataFailedState(
-  //         msg: response.msg,
-  //       ),
-  //     );
-  //   }
-  // }
-
-  deleteItem(CartModel item) async {
+  deleteItem(CartModel item ,Function(bool)onSuccess) async {
     final response = await DioHelper().removeFromServer(
       url: "client/cart/delete_item/${item.id}",
     );
     if (response.success) {
+      onSuccess(true);
       showSnackBar(
         response.msg,
         typ: MessageType.success,
@@ -110,11 +95,9 @@ class CartBloc extends Bloc<CartEvents, CartStates> {
     emit(
       UpdateCartDataStateLoading(),
     );
-
-    final response =
-        await DioHelper().putToServer(url: "client/cart/${event.id}", body: {
-      "amount": event.amount,
-    });
+    final response = await DioHelper().sendToServer(
+        url: "client/cart/${event.id}",
+        body: {"amount": event.amount, "_method": "PUT"});
 
     if (response.success) {
       emit(
@@ -125,6 +108,32 @@ class CartBloc extends Bloc<CartEvents, CartStates> {
     } else {
       emit(
         UpdateCartDataStateFailed(),
+      );
+    }
+  }
+
+  Future<void> coupon(AddCouponEvent event, Emitter<CartStates> emit) async {
+    emit(
+      AddCouponLoadingState(),
+    );
+
+    final response =
+        await DioHelper().sendToServer(url: "client/cart/apply_coupon", body: {
+      "code": couponController.text,
+    });
+
+    if (response.success) {
+      emit(
+        AddCouponSuccessState(
+          msg: response.msg,
+        ),
+      );
+    } else {
+      showSnackBar(
+        response.msg,
+      );
+      emit(
+        AddCouponFailedState(),
       );
     }
   }

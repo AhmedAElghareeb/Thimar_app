@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../core/logic/cache_helper.dart';
 import '../../core/logic/dio_helper.dart';
 import '../../core/logic/helper_methods.dart';
+import '../../models/login.dart';
 import 'events.dart';
 import 'states.dart';
 
@@ -33,6 +35,8 @@ class EditProfileBloc extends Bloc<EditProfileEvents, EditProfileStates> {
       "city_id": event.cityId,
     });
     if (response.success) {
+      await CacheHelper.saveLoginData(
+          UserModel.fromJson(response.response!.data['data']));
       emit(
         EditProfileSuccessState(),
       );

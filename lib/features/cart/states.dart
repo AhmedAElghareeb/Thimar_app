@@ -8,8 +8,18 @@ class GetCartDataLoadingState extends CartStates {}
 
 class GetCartDataSuccessState extends CartStates {
   final List<CartModel> list;
+  final String taxMsg;
+  final num priceBefore, discount, priceWithVat, deliveryCost, vat;
 
-  GetCartDataSuccessState({required this.list});
+  GetCartDataSuccessState({
+    required this.priceBefore,
+    required this.discount,
+    required this.priceWithVat,
+    required this.deliveryCost,
+    required this.vat,
+    required this.list,
+    required this.taxMsg,
+  });
 }
 
 class GetCartDataFailedState extends CartStates {}
@@ -74,3 +84,18 @@ class UpdateCartDataStateSuccess extends CartStates {
 }
 
 class UpdateCartDataStateFailed extends CartStates {}
+
+class AddCouponLoadingState extends CartStates {}
+
+class AddCouponSuccessState extends CartStates {
+  final String msg;
+
+  AddCouponSuccessState({required this.msg}) {
+    showSnackBar(
+      msg,
+      typ: MessageType.success,
+    );
+  }
+}
+
+class AddCouponFailedState extends CartStates {}

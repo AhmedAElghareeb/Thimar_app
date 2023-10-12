@@ -58,6 +58,7 @@ dependencies:
   geocoding: ^2.1.0
   share: ^2.0.4
   url_launcher: ^6.1.11
+  lottie:
   flutter_rating_bar: ^4.0.1
 
 dev_dependencies:
@@ -93,6 +94,7 @@ flutter:
     - assets/images/icons/addressIcons/
     - assets/images/icons/homeNavBarIcons/
     - assets/translations/
+    - assets/lottie/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

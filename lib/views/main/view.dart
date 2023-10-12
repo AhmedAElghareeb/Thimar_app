@@ -8,7 +8,8 @@ import 'package:thimar_app/views/main/notifications/view.dart';
 import 'package:thimar_app/views/main/order/view.dart';
 
 class HomeView extends StatefulWidget {
-  const HomeView({super.key});
+  final int index;
+  const HomeView({super.key,this.index =0});
 
   @override
   State<HomeView> createState() => _HomeViewState();
@@ -40,7 +41,16 @@ class _HomeViewState extends State<HomeView> {
     "favs",
     "my_account",
   ];
-
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if(widget.index!=0){
+      setState(() {
+        currentIndex=widget.index;
+      });
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -8,12 +8,6 @@ class AddToCartDataEvent extends CartEvents {
   AddToCartDataEvent({required this.productId, required this.amount});
 }
 
-// class RemoveFromCartDataEvent extends CartEvents {
-//   final int id;
-//
-//   RemoveFromCartDataEvent({required this.id});
-// }
-
 class UpdateCartDataEvent extends CartEvents {
   final int id, amount;
 
@@ -22,3 +16,5 @@ class UpdateCartDataEvent extends CartEvents {
     required this.amount,
   });
 }
+
+class AddCouponEvent extends CartEvents {}

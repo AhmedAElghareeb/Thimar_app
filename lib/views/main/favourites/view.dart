@@ -21,6 +21,14 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
   final bloc = KiwiContainer().resolve<FavouritesBloc>();
 
   @override
+  void initState() {
+    super.initState();
+    bloc.add(
+    GetFavouritesDataEvent()
+    );
+  }
+
+  @override
   void dispose() {
     super.dispose();
     bloc.close();
@@ -35,29 +43,38 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
         ),
       ),
       body: BlocBuilder(
-        bloc: bloc
-          ..add(
-            GetFavouritesDataEvent(),
-          ),
+        bloc: bloc,
         builder: (context, state) {
           if (state is GetFavouritesDataLoadingState) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           } else if (state is GetFavouritesDataSuccessState) {
-            return GridView.builder(
-              itemBuilder: (context, index) => _Item(
-                model: state.list[index],
-              ),
-              itemCount: state.list.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 11.w,
-                mainAxisSpacing: 2.h,
-                childAspectRatio: 0.70,
-              ),
-              shrinkWrap: true,
-            );
+            if (state.list.isEmpty) {
+              return Center(
+                child: Text(
+                  "لا يوجد بيانات",
+                  style: TextStyle(
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).primaryColor),
+                ),
+              );
+            } else {
+              return GridView.builder(
+                itemBuilder: (context, index) => _Item(
+                  model: state.list[index],
+                ),
+                itemCount: state.list.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 11.w,
+                  mainAxisSpacing: 2.h,
+                  childAspectRatio: 0.70,
+                ),
+                shrinkWrap: true,
+              );
+            }
           } else {
             return const SizedBox.shrink();
           }

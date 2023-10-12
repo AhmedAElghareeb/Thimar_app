@@ -38,19 +38,34 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       body: BlocBuilder(
         bloc: bloc,
         builder: (context, state) {
-          if(state is GetNotificationsLoadingState) {
-            return const Center(child: CircularProgressIndicator(),);
-          } else if (state is GetNotificationsSuccessState) {
-            return ListView.builder(
-              padding: EdgeInsetsDirectional.symmetric(
-                horizontal: 16.w,
-                vertical: 16.h,
-              ),
-              itemBuilder: (context, index) => _Item(
-                model: state.list[index],
-              ),
-              itemCount: state.list.length,
+          if (state is GetNotificationsLoadingState) {
+            return const Center(
+              child: CircularProgressIndicator(),
             );
+          } else if (state is GetNotificationsSuccessState) {
+            if (state.list.isEmpty) {
+              return Center(
+                child: Text(
+                  "لا يوجد بيانات",
+                  style: TextStyle(
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).primaryColor
+                  ),
+                ),
+              );
+            } else {
+              return ListView.builder(
+                padding: EdgeInsetsDirectional.symmetric(
+                  horizontal: 16.w,
+                  vertical: 16.h,
+                ),
+                itemBuilder: (context, index) => _Item(
+                  model: state.list[index],
+                ),
+                itemCount: state.list.length,
+              );
+            }
           } else {
             return const SizedBox.shrink();
           }

@@ -24,12 +24,6 @@ class FavouritesBloc extends Bloc<FavouritesEvents, FavouritesStates> {
 
     if (response.success) {
       final list = FavouritesData.fromJson(response.response!.data).list;
-      if (list.isEmpty) {
-        showSnackBar(
-          response.msg,
-          typ: MessageType.success,
-        );
-      }
       emit(
         GetFavouritesDataSuccessState(
           list: list,

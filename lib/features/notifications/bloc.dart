@@ -24,12 +24,6 @@ class NotificationsBloc extends Bloc<NotificationsEvents, NotificationsStates> {
     if (response.success) {
       final list =
           NotificationData.fromJson(response.response!.data).list.notifications;
-      if (list.isEmpty) {
-        showSnackBar(
-          response.msg,
-          typ: MessageType.success,
-        );
-      }
       emit(
         GetNotificationsSuccessState(
           list: list,

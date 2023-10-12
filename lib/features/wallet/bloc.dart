@@ -6,7 +6,6 @@ import 'events.dart';
 import 'states.dart';
 
 class WalletBloc extends Bloc<WalletEvents, WalletStates> {
-
   final amountController = TextEditingController();
 
   WalletBloc() : super(WalletStates()) {
@@ -79,6 +78,7 @@ class WalletBloc extends Bloc<WalletEvents, WalletStates> {
       "amount": event.amount,
       "transaction_id": "1111",
     });
+
     if (response.success) {
       emit(
         PostWalletChargeSuccessState(

@@ -1,13 +1,51 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:kiwi/kiwi.dart';
 import 'package:thimar_app/core/design/app_button.dart';
 import 'package:thimar_app/core/design/app_input.dart';
+import 'package:thimar_app/core/logic/cache_helper.dart';
+import 'package:thimar_app/core/logic/helper_methods.dart';
+import 'package:thimar_app/features/orders/events.dart';
+import 'package:thimar_app/views/main/account/address/address.dart';
+import 'package:thimar_app/views/main/order/view.dart';
+import 'package:thimar_app/views/main/order/widgets/address_item.dart';
+import 'package:thimar_app/views/main/view.dart';
 
-class FinishOrder extends StatelessWidget {
-  FinishOrder({super.key});
+import '../../../features/address/bloc.dart';
+import '../../../features/address/events.dart';
+import '../../../features/address/states.dart';
+import '../../../features/cart/states.dart';
+import '../../../features/orders/bloc.dart';
+import '../../../features/orders/states.dart';
 
-  final notesController = TextEditingController();
+class FinishOrder extends StatefulWidget {
+  final GetCartDataSuccessState data;
+
+  const FinishOrder({super.key, required this.data});
+
+  @override
+  State<FinishOrder> createState() => _FinishOrderState();
+}
+
+class _FinishOrderState extends State<FinishOrder> {
+  final _formKey = GlobalKey<FormState>();
+
+  final addressBloc = KiwiContainer().resolve<AddressBloc>();
+
+  final completeBloc = KiwiContainer().resolve<OrdersBloc>();
+
+  final _event = PostOrderDataEvent();
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    addressBloc.close();
+    completeBloc.close();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +93,7 @@ class FinishOrder extends StatelessWidget {
           ),
           children: [
             Text(
-              "الإسم : محمد",
+              "الإسم : ${CacheHelper.getFullName()}",
               style: TextStyle(
                   fontSize: 17.sp,
                   fontWeight: FontWeight.bold,
@@ -65,7 +103,7 @@ class FinishOrder extends StatelessWidget {
               height: 11.h,
             ),
             Text(
-              "الجوال : 05068285914",
+              "الجوال : ${CacheHelper.getPhone()}",
               style: TextStyle(
                 fontSize: 17.sp,
                 fontWeight: FontWeight.bold,
@@ -92,7 +130,66 @@ class FinishOrder extends StatelessWidget {
                       width: 26.w,
                       height: 26.h,
                       child: FloatingActionButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          showModalBottomSheet(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadiusDirectional.only(
+                                topStart: Radius.circular(
+                                  38.r,
+                                ),
+                                topEnd: Radius.circular(
+                                  38.r,
+                                ),
+                              ),
+                            ),
+                            context: context,
+                            builder: (context) => BlocBuilder(
+                              bloc: addressBloc
+                                ..add(
+                                  GetUserAddressEvent(),
+                                ),
+                              builder: (context, state) {
+                                if (state is GetUserAddressLoadingState) {
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                } else if (state
+                                    is GetUserAddressSuccessState) {
+                                  return Column(
+                                    children: [
+                                      SizedBox(
+                                        height: 20.h,
+                                      ),
+                                      Center(
+                                        child: Text(
+                                          "العناوين",
+                                          style: TextStyle(
+                                            fontSize: 15.sp,
+                                            fontWeight: FontWeight.bold,
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: AddressesListView(onSubmit: (x) {
+                                          _event.addressModel = x;
+                                          Navigator.of(context).pop();
+                                          setState(() {});
+                                        }),
+                                      ),
+                                      SizedBox(
+                                        height: 20.h,
+                                      ),
+                                    ],
+                                  );
+                                } else {
+                                  return const SizedBox.shrink();
+                                }
+                              },
+                            ),
+                          );
+                        },
                         mini: true,
                         backgroundColor: const Color(0xff4C8613).withOpacity(
                           0.13,
@@ -109,7 +206,7 @@ class FinishOrder extends StatelessWidget {
                           ),
                         ),
                         child: Icon(
-                          Icons.add,
+                          _event.addressModel == null ? Icons.add : Icons.edit,
                           color: Theme.of(context).primaryColor,
                           size: 22.r,
                         ),
@@ -120,40 +217,8 @@ class FinishOrder extends StatelessWidget {
                 SizedBox(
                   height: 18.h,
                 ),
-                Container(
-                  width: 339.w,
-                  height: 33.h,
-                  padding: EdgeInsetsDirectional.symmetric(
-                    horizontal: 13.w,
-                    vertical: 8.h,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadiusDirectional.circular(
-                      17.r,
-                    ),
-                    border: Border.all(
-                      color: Theme.of(context).primaryColor,
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "المنزل : 119 طريق الملك عبدالعزيز",
-                        style: TextStyle(
-                          fontSize: 15.sp,
-                          fontWeight: FontWeight.w400,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                      ),
-                      Icon(
-                        Icons.keyboard_arrow_down_sharp,
-                        color: Theme.of(context).primaryColor,
-                        size: 20.r,
-                      ),
-                    ],
-                  ),
-                ),
+                if (_event.addressModel != null)
+                  OrderConfirmationAddressItem(_event.addressModel!),
               ],
             ),
             SizedBox(
@@ -181,15 +246,22 @@ class FinishOrder extends StatelessWidget {
                         final day = await showDatePicker(
                           context: context,
                           initialDate: DateTime.now(),
-                          firstDate: DateTime(
-                            1900,
-                          ),
-                          lastDate: DateTime(
-                            2050,
+                          firstDate: DateTime.now(),
+                          lastDate: DateTime.now().add(
+                            const Duration(
+                              days: 360,
+                            ),
                           ),
                         );
                         if (day != null) {
-                          print(day);
+                          _event.date = DateFormat('y-M-d').format(day);
+
+                          setState(() {});
+                        } else {
+                          showSnackBar(
+                            "يجب اختيار تاريخ",
+                            typ: MessageType.warning,
+                          );
                         }
                       },
                       child: Container(
@@ -219,7 +291,7 @@ class FinishOrder extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "اختر اليوم والتاريخ",
+                              _event.date ?? "اختر اليوم والتاريخ",
                               style: TextStyle(
                                 fontSize: 15.sp,
                                 fontWeight: FontWeight.w400,
@@ -238,12 +310,23 @@ class FinishOrder extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () async {
-                        final time = await showTimePicker(
+                        final time1 = await showTimePicker(
                           context: context,
                           initialTime: TimeOfDay.now(),
                         );
-                        if (time != null) {
-                          print(time);
+                        if (time1 != null) {
+                          print('=--=-=-=-=-=  ${time1.toString()}');
+                          _event.time = time1
+                              .toString()
+                              .replaceAll(')', '')
+                              .replaceAll('TimeOfDay(', '');
+
+                          setState(() {});
+                        } else {
+                          showSnackBar(
+                            "يجب تحديد وقت",
+                            typ: MessageType.warning,
+                          );
                         }
                       },
                       child: Container(
@@ -276,7 +359,7 @@ class FinishOrder extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "اختر الوقت",
+                              _event.time ?? "اختر الوقت",
                               style: TextStyle(
                                 fontSize: 15.sp,
                                 fontWeight: FontWeight.w400,
@@ -300,25 +383,34 @@ class FinishOrder extends StatelessWidget {
             SizedBox(
               height: 22.h,
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "ملاحظات وتعليمات",
-                  style: TextStyle(
-                    fontSize: 17.sp,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).primaryColor,
+            Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "ملاحظات وتعليمات",
+                    style: TextStyle(
+                      fontSize: 17.sp,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).primaryColor,
+                    ),
                   ),
-                ),
-                SizedBox(
-                  height: 7.h,
-                ),
-                AppInput(
-                  controller: notesController,
-                  minLines: 5,
-                ),
-              ],
+                  SizedBox(
+                    height: 7.h,
+                  ),
+                  AppInput(
+                    controller: _event.noteController,
+                    minLines: 5,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "هذا الحقل مطلوب";
+                      }
+                      return null;
+                    },
+                  ),
+                ],
+              ),
             ),
             SizedBox(
               height: 26.h,
@@ -340,86 +432,133 @@ class FinishOrder extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                      width: 104.w,
-                      height: 50.h,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadiusDirectional.circular(
-                          11.r,
-                        ),
-                        border: Border.all(
-                          color: Theme.of(context).primaryColor,
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SvgPicture.asset(
-                            "assets/images/money.svg",
-                            width: 29.w,
-                            height: 23.h,
-                            fit: BoxFit.scaleDown,
+                    GestureDetector(
+                      onTap: () {
+                        _event.payType = "cash";
+                        setState(() {});
+                      },
+                      child: Container(
+                        width: 104.w,
+                        height: 50.h,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadiusDirectional.circular(
+                            11.r,
                           ),
-                          SizedBox(
-                            width: 6.w,
-                          ),
-                          Text(
-                            "كاش",
-                            style: TextStyle(
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).primaryColor,
+                          border: Border.all(
+                              color: _event.payType == "cash"
+                                  ? Theme.of(context).primaryColor
+                                  : const Color(
+                                      0xffE9E9E9,
+                                    )),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset(
+                              "assets/images/money.svg",
+                              width: 29.w,
+                              height: 23.h,
+                              fit: BoxFit.scaleDown,
                             ),
-                          )
-                        ],
+                            SizedBox(
+                              width: 6.w,
+                            ),
+                            Text(
+                              "كاش",
+                              style: TextStyle(
+                                  fontSize: 18.sp,
+                                  fontWeight: FontWeight.bold,
+                                  color: _event.payType == "cash"
+                                      ? Theme.of(context).primaryColor
+                                      : const Color(
+                                          0xffE9E9E9,
+                                        )),
+                            )
+                          ],
+                        ),
                       ),
                     ),
-                    Container(
-                      width: 104.w,
-                      height: 50.h,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadiusDirectional.circular(
-                          11.r,
-                        ),
-                        border: Border.all(
-                          color: const Color(
-                            0xffE9E9E9,
+                    GestureDetector(
+                      onTap: () {
+                        _event.payType = "visa";
+                        setState(() {});
+                      },
+                      child: Container(
+                        width: 104.w,
+                        height: 50.h,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadiusDirectional.circular(
+                            11.r,
+                          ),
+                          border: Border.all(
+                            color: _event.payType == "visa"
+                                ? Theme.of(context).primaryColor
+                                : const Color(
+                                    0xffE9E9E9,
+                                  ),
                           ),
                         ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SvgPicture.asset(
+                        child: Center(
+                          child: SvgPicture.asset(
                             "assets/images/visa.svg",
                             width: 63.w,
                             height: 19.h,
+                            color: _event.payType == "visa"
+                                ? Theme.of(context).primaryColor
+                                : const Color(
+                                    0xffE9E9E9,
+                                  ),
                           ),
-                        ],
+                        ),
                       ),
                     ),
-                    Container(
-                      width: 104.w,
-                      height: 50.h,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadiusDirectional.circular(
-                          11.r,
-                        ),
-                        border: Border.all(
-                          color: const Color(
-                            0xffE9E9E9,
+                    GestureDetector(
+                      onTap: () {
+                        _event.payType = "wallet";
+                        setState(() {});
+                      },
+                      child: Container(
+                        width: 104.w,
+                        height: 50.h,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadiusDirectional.circular(
+                            11.r,
+                          ),
+                          border: Border.all(
+                            color: _event.payType == "wallet"
+                                ? Theme.of(context).primaryColor
+                                : const Color(
+                                    0xffE9E9E9,
+                                  ),
                           ),
                         ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SvgPicture.asset(
-                            "assets/images/master.svg",
-                            width: 43.w,
-                            height: 33.h,
-                          ),
-                        ],
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              "assets/images/icons/wallet.png",
+                              width: 29.w,
+                              height: 23.h,
+                              fit: BoxFit.scaleDown,
+                              color: _event.payType == "wallet"
+                                  ? Theme.of(context).primaryColor
+                                  : const Color(
+                                      0xffE9E9E9,
+                                    ),
+                            ),
+                            Text(
+                              "المحفظة",
+                              style: TextStyle(
+                                  fontSize: 18.sp,
+                                  fontWeight: FontWeight.bold,
+                                  color: _event.payType == "wallet"
+                                      ? Theme.of(context).primaryColor
+                                      : const Color(
+                                          0xffE9E9E9,
+                                        )),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -444,7 +583,7 @@ class FinishOrder extends StatelessWidget {
                   height: 13.h,
                 ),
                 Container(
-                  width: 342.w,
+                  width: 343.w,
                   height: 139.h,
                   padding: EdgeInsetsDirectional.symmetric(
                     horizontal: 16.w,
@@ -472,31 +611,7 @@ class FinishOrder extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "180 ر.س",
-                            style: TextStyle(
-                              fontSize: 15.sp,
-                              fontWeight: FontWeight.w400,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 11.h,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "سعر التوصيل",
-                            style: TextStyle(
-                              fontSize: 15.sp,
-                              fontWeight: FontWeight.w400,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          ),
-                          Text(
-                            "40 ر.س",
+                            "${(widget.data.priceBefore)} ر.س",
                             style: TextStyle(
                               fontSize: 15.sp,
                               fontWeight: FontWeight.w400,
@@ -520,7 +635,31 @@ class FinishOrder extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "-40 ر.س",
+                            "${(widget.data.discount)} ر.س",
+                            style: TextStyle(
+                              fontSize: 15.sp,
+                              fontWeight: FontWeight.w400,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 11.h,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "سعر التوصيل",
+                            style: TextStyle(
+                              fontSize: 15.sp,
+                              fontWeight: FontWeight.w400,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          ),
+                          Text(
+                            "${(widget.data.deliveryCost)} ر.س",
                             style: TextStyle(
                               fontSize: 15.sp,
                               fontWeight: FontWeight.w400,
@@ -542,7 +681,7 @@ class FinishOrder extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "180 ر.س",
+                            "${(widget.data.priceWithVat + widget.data.deliveryCost)} ر.س",
                             style: TextStyle(
                               fontSize: 15.sp,
                               fontWeight: FontWeight.w400,
@@ -559,12 +698,46 @@ class FinishOrder extends StatelessWidget {
             SizedBox(
               height: 16.h,
             ),
-            AppButton(
-              onTap: () {},
-              text: "إنهاء الطلب",
-              radius: 15.r,
-              width: 343.w,
-              height: 60.h,
+            BlocConsumer(
+              bloc: completeBloc,
+              listener: (context, state) {
+                if (state is PostOrdersDataSuccessState) {
+                  navigateTo(
+                    const HomeView(
+                      index: 1,
+                    ),
+                  );
+                }
+              },
+              builder: (context, state) {
+                return AppButton(
+                  onTap: () {
+                    if (_event.date == null) {
+                      showSnackBar(
+                        "يجب تحديد اليوم",
+                        typ: MessageType.warning,
+                      );
+                    } else if (_event.addressModel == null) {
+                      showSnackBar(
+                        "يجب تحديد العنوان",
+                        typ: MessageType.warning,
+                      );
+                    } else if (_event.time == null) {
+                      showSnackBar(
+                        "يجب تحديد وقت",
+                        typ: MessageType.warning,
+                      );
+                    } else {
+                      completeBloc.add(_event);
+                    }
+                  },
+                  text: "إتمام الطلب",
+                  isLoading: state is PostOrdersDataLoadingState,
+                  radius: 15.r,
+                  width: 343.w,
+                  height: 60.h,
+                );
+              },
             ),
           ],
         ),

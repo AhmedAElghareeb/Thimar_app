@@ -21,15 +21,20 @@ class WalletView extends StatefulWidget {
 }
 
 class _WalletViewState extends State<WalletView> {
-
   final _formKey = GlobalKey<FormState>();
 
-  final getBloc = KiwiContainer().resolve<WalletBloc>()
-    ..add(
-      GetWalletDataEvent(),
-    );
+  final getBloc = KiwiContainer().resolve<WalletBloc>();
+  void _init() {
+    getBloc.add(GetWalletDataEvent());
+  }
 
   final chargeBloc = KiwiContainer().resolve<WalletBloc>();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _init();
+  }
 
   @override
   void dispose() {
@@ -162,16 +167,17 @@ class _WalletViewState extends State<WalletView> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment
-                                        .spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       SizedBox(
                                         width: 250.w,
                                         child: AppInput(
-                                          controller: chargeBloc.amountController,
+                                          controller:
+                                              chargeBloc.amountController,
                                           labelText: "ادخل المبلغ المطلوب",
                                           validator: (value) {
-                                            if(value!.isEmpty) {
+                                            if (value!.isEmpty) {
                                               return "هذا الحقل مطلوب";
                                             }
                                             return null;
@@ -183,9 +189,7 @@ class _WalletViewState extends State<WalletView> {
                                         style: TextStyle(
                                           fontSize: 15.sp,
                                           fontWeight: FontWeight.bold,
-                                          color: Theme
-                                              .of(context)
-                                              .primaryColor,
+                                          color: Theme.of(context).primaryColor,
                                         ),
                                       ),
                                     ],
@@ -194,25 +198,34 @@ class _WalletViewState extends State<WalletView> {
                                     height: 20.h,
                                   ),
                                   Center(
-                                    child: BlocBuilder(
+                                    child: BlocConsumer(
                                       bloc: chargeBloc,
+                                      listener: (c, s) {
+
+                                        if (s is PostWalletChargeSuccessState) {
+                                           Navigator.pop(context);
+                                          _init();
+                                        }
+                                      },
                                       builder: (context, state) {
                                         return AppButton(
                                           onTap: () {
-                                            if(_formKey.currentState!.validate()) {
+                                            if (_formKey.currentState!
+                                                .validate()) {
                                               chargeBloc.add(
                                                 PostChargeWalletEvent(
-                                                  amount: chargeBloc.amountController.text,
+                                                  amount: chargeBloc
+                                                      .amountController.text,
                                                 ),
                                               );
-                                              Navigator.pop(context);
                                             }
                                           },
                                           text: "تطبيق",
                                           width: 300.w,
                                           height: 50.h,
                                           radius: 15.r,
-                                          isLoading: state is PostWalletChargeLoadingState,
+                                          isLoading: state
+                                              is PostWalletChargeLoadingState,
                                         );
                                       },
                                     ),

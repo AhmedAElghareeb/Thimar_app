@@ -432,8 +432,8 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
                                   ),
                                 ),
                               ),
-                              const Expanded(
-                                child: AddressesListView(),
+                              Expanded(
+                                child: AddressesListView(onSubmit: (x) {}),
                               ),
                               SizedBox(
                                 height: 20.h,
@@ -649,7 +649,7 @@ class _SectionsSliderState extends State<SectionsSlider> {
             var model = state.list;
             return ListView.builder(
               padding: EdgeInsetsDirectional.symmetric(
-                horizontal: 16.w,
+                horizontal: 14.w,
               ),
               scrollDirection: Axis.horizontal,
               itemCount: model.length,
@@ -665,21 +665,26 @@ class _SectionsSliderState extends State<SectionsSlider> {
                 child: Column(
                   children: [
                     Container(
+                      margin: EdgeInsetsDirectional.only(
+                        end: 18.w,
+                      ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadiusDirectional.circular(
                           30.r,
                         ),
                       ),
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
                       child: Container(
-                        clipBehavior: Clip.antiAlias,
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadiusDirectional.circular(15.r),
+                          borderRadius: BorderRadiusDirectional.circular(
+                            15.r,
+                          ),
                         ),
                         child: Image.network(
                           model[index].media,
                           width: 73.w,
                           height: 73.h,
+                          fit: BoxFit.fill,
                         ),
                       ),
                     ),
