@@ -23,6 +23,7 @@ import 'package:thimar_app/views/main/account/wallet/view.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../../../features/logout/events.dart';
+import '../../../../generated/locale_keys.g.dart';
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});
@@ -148,7 +149,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         const EditProfile(),
                       );
                     },
-                    title: "البيانات الشخصية",
+                    title: LocaleKeys.Personal_Data.tr(),
                     imageName: "person.svg",
                     isLogout: true,
                   ),
@@ -159,7 +160,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         const WalletView(),
                       );
                     },
-                    title: "المحفظة",
+                    title: LocaleKeys.Wallet.tr(),
                     imageName: "wallet.svg",
                     isLogout: true,
                   ),
@@ -170,7 +171,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         const Address(),
                       );
                     },
-                    title: "العناوين",
+                    title: LocaleKeys.Addresses.tr(),
                     imageName: "address.svg",
                     isLogout: true,
                   ),
@@ -207,7 +208,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         const Faqs(),
                       );
                     },
-                    title: "أسئلة متكررة",
+                    title: LocaleKeys.Repeated_Questions.tr(),
                     imageName: "question.svg",
                     isLogout: true,
                   ),
@@ -218,7 +219,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         const PolicyView(),
                       );
                     },
-                    title: "سياسة الخصوصية",
+                    title: LocaleKeys.Privacy_Policy.tr(),
                     imageName: "policy.svg",
                     isLogout: true,
                   ),
@@ -229,7 +230,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         const ContactUs(),
                       );
                     },
-                    title: "تواصل معنا",
+                    title: LocaleKeys.Contact_Us.tr(),
                     imageName: "contact_us.svg",
                     isLogout: true,
                   ),
@@ -240,7 +241,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         const SugestionsAndComplaints(),
                       );
                     },
-                    title: "الشكاوي والأقتراحات",
+                    title: LocaleKeys.Suggestions_And_Complaints.tr(),
                     imageName: "proposal.svg",
                     isLogout: true,
                   ),
@@ -251,7 +252,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         "https://play.google.com/store/apps/details?id=com.alalmiya.thamra&hl=ar&gl=US&pli=1",
                       );
                     },
-                    title: "مشاركة التطبيق",
+                    title: LocaleKeys.Share_App.tr(),
                     imageName: "sharing.svg",
                     isLogout: true,
                   ),
@@ -288,7 +289,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         const AboutUs(),
                       );
                     },
-                    title: "عن التطبيق",
+                    title: LocaleKeys.About_App.tr(),
                     imageName: "about_us.svg",
                     isLogout: true,
                   ),
@@ -302,12 +303,8 @@ class _AccountScreenState extends State<AccountScreen> {
                           code,
                         ),
                       );
-                      showSnackBar(
-                        "تم تغيير اللغة",
-                        typ: MessageType.success,
-                      );
                     },
-                    title: "تغيير اللغة",
+                    title: LocaleKeys.Language_Changed.tr(),
                     imageName: "lang.svg",
                     isLogout: true,
                   ),
@@ -318,7 +315,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         const TermsAndConditions(),
                       );
                     },
-                    title: "الشروط والأحكام",
+                    title: LocaleKeys.Terms_and_Conditions.tr(),
                     imageName: "conditions.svg",
                     isLogout: true,
                   ),
@@ -329,7 +326,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         "https://play.google.com/store/apps/details?id=com.alalmiya.thamra&hl=ar&gl=US&pli=1",
                       );
                     },
-                    title: "تقييم التطبيق",
+                    title: LocaleKeys.Rate_App.tr(),
                     imageName: "app_rate.svg",
                     isLogout: true,
                   ),
@@ -369,7 +366,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "تسجيل الخروج",
+                            LocaleKeys.LogOut.tr(),
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 15.sp,

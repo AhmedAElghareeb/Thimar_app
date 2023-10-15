@@ -1,8 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:thimar_app/core/design/app_empty.dart';
 import 'package:thimar_app/core/design/app_input.dart';
+import 'package:thimar_app/core/design/app_loading.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
 import 'package:thimar_app/features/products/states.dart';
 import 'package:thimar_app/views/main/home/product_details/view.dart';
@@ -10,6 +13,8 @@ import 'package:thimar_app/views/main/home/product_details/view.dart';
 import '../../../../core/design/app_button.dart';
 import '../../../../features/products/bloc.dart';
 import '../../../../features/products/events.dart';
+import '../../../../generated/locale_keys.g.dart';
+import '../search/view.dart';
 
 class CategoryProducts extends StatefulWidget {
   final String nameCategory;
@@ -23,7 +28,6 @@ class CategoryProducts extends StatefulWidget {
 }
 
 class _CategoryProductsState extends State<CategoryProducts> {
-  final searchController = TextEditingController();
 
   final bloc = KiwiContainer().resolve<ProductsDataBloc>();
 
@@ -75,16 +79,19 @@ class _CategoryProductsState extends State<CategoryProducts> {
         child: ListView(
           children: [
             Padding(
-              padding: EdgeInsetsDirectional.only(
-                start: 16.w,
-                end: 16.w,
-                top: 29.h,
+              padding: EdgeInsetsDirectional.symmetric(
+                horizontal: 16.w,
+                vertical: 29.h,
               ),
               child: AppInput(
-                controller: searchController,
-                keyboardType: TextInputType.text,
                 isFilled: true,
-                labelText: "ابحث عن ما تريد؟",
+                isEnabled: false,
+                onPress: () {
+                  navigateTo(
+                    SearchView(),
+                  );
+                },
+                labelText: LocaleKeys.Search_about_You_Want.tr(),
                 prefixIcon: "assets/images/icons/Search.svg",
               ),
             ),
@@ -97,228 +104,231 @@ class _CategoryProductsState extends State<CategoryProducts> {
                   id: widget.id,
                 )),
               builder: (context, state) {
-                if (state is GetProductsFailedState) {
-                  return const Center(
-                    child: Text("FAILEd!!!"),
-                  );
+                if (state is GetProductsLoadingState) {
+                  return const AppLoading();
                 } else if (state is GetProductsSuccessState) {
-                  return GridView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    padding: EdgeInsetsDirectional.symmetric(
-                      horizontal: 16.w,
-                    ),
-                    itemCount: state.list.length,
-                    itemBuilder: (context, index) => Container(
-                      height: 250.h,
-                      width: 163.w,
-                      decoration: BoxDecoration(
-                        borderRadius:
-                        BorderRadiusDirectional.circular(17.r),
-                        color: const Color(
-                          0xffffffff,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            blurRadius: 5.r,
-                            color: const Color(
-                              0xfff5f5f5,
-                            ),
+                  return state.list.isEmpty
+                      ? const AppEmpty(
+                          assetsPath: "empty.json",
+                          text: "لا توجد بيانات",
+                        )
+                      : GridView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          padding: EdgeInsetsDirectional.symmetric(
+                            horizontal: 16.w,
                           ),
-                        ],
-                      ),
-                      child: Column(
-                        children: [
-                          Stack(
-                            children: [
-                              GestureDetector(
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius:
-                                    BorderRadiusDirectional.circular(
-                                      11.r,
-                                    ),
-                                  ),
-                                  margin: EdgeInsetsDirectional.only(
-                                    top: 9.h,
-                                    start: 9.w,
-                                    end: 9.w,
-                                  ),
-                                  clipBehavior:
-                                  Clip.antiAliasWithSaveLayer,
-                                  child: Image.network(
-                                    state.list[index].mainImage,
-                                    fit: BoxFit.cover,
-                                    width: 145.w,
-                                    height: 117.h,
+                          itemCount: state.list.length,
+                          itemBuilder: (context, index) => Container(
+                            height: 250.h,
+                            width: 163.w,
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadiusDirectional.circular(17.r),
+                              color: const Color(
+                                0xffffffff,
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  blurRadius: 5.r,
+                                  color: const Color(
+                                    0xfff5f5f5,
                                   ),
                                 ),
-                                onTap: () {
-                                  navigateTo(
-                                    ProductDetails(
-                                      id: state.list[index].id,
-                                      isFavorite:
-                                      state.list[index].isFavorite,
-                                      price: state.list[index].price,
-                                    ),
-                                  );
-                                },
-                              ),
-                              Align(
-                                alignment: AlignmentDirectional.topEnd,
-                                child: Container(
-                                  margin: EdgeInsetsDirectional.only(
-                                      top: 9.h, end: 12.5.w),
-                                  width: 54.w,
-                                  height: 20.h,
-                                  decoration: BoxDecoration(
-                                    color: Theme.of(context).primaryColor,
-                                    borderRadius:
-                                    BorderRadiusDirectional.only(
-                                      bottomStart: Radius.circular(25.r),
-                                      topEnd: Radius.circular(11.r),
-                                    ),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      "${state.list[index].discount * 100} %",
-                                      style: TextStyle(
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.bold,
-                                        color: const Color(
-                                          0xffFFFFFF,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding: EdgeInsetsDirectional.only(
-                              start: 10.w,
+                              ],
                             ),
-                            child: Align(
-                              alignment: AlignmentDirectional.topStart,
-                              child: Text(
-                                state.list[index].title,
-                                style: TextStyle(
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color: Theme.of(context).primaryColor,
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 4.h,
-                          ),
-                          Padding(
-                            padding: EdgeInsetsDirectional.only(
-                              start: 11.w,
-                            ),
-                            child: Align(
-                              alignment: AlignmentDirectional.topStart,
-                              child: Text(
-                                "السعر / ${state.list[index].unit.name}",
-                                style: TextStyle(
-                                  fontSize: 12.sp,
-                                  color: const Color(0xFF808080),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 3.h,
-                          ),
-                          Row(
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
-                            children: [
-                              Padding(
-                                padding: EdgeInsetsDirectional.only(
-                                    start: 9.w),
-                                child: Row(
+                            child: Column(
+                              children: [
+                                Stack(
                                   children: [
-                                    Align(
-                                      alignment:
-                                      AlignmentDirectional.topStart,
-                                      child: Text(
-                                        "${state.list[index].price} ر.س",
-                                        style: TextStyle(
-                                          fontSize: 16.sp,
-                                          fontWeight: FontWeight.bold,
-                                          color: Theme.of(context)
-                                              .primaryColor,
+                                    GestureDetector(
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadiusDirectional.circular(
+                                            11.r,
+                                          ),
+                                        ),
+                                        margin: EdgeInsetsDirectional.only(
+                                          top: 9.h,
+                                          start: 9.w,
+                                          end: 9.w,
+                                        ),
+                                        clipBehavior:
+                                            Clip.antiAliasWithSaveLayer,
+                                        child: Image.network(
+                                          state.list[index].mainImage,
+                                          fit: BoxFit.cover,
+                                          width: 145.w,
+                                          height: 117.h,
                                         ),
                                       ),
+                                      onTap: () {
+                                        navigateTo(
+                                          ProductDetails(
+                                            id: state.list[index].id,
+                                            isFavorite:
+                                                state.list[index].isFavorite,
+                                            price: state.list[index].price,
+                                          ),
+                                        );
+                                      },
                                     ),
                                     Align(
-                                      alignment: AlignmentDirectional
-                                          .bottomStart,
-                                      child: Text(
-                                        "${state.list[index].priceBeforeDiscount} ر.س",
-                                        textAlign: TextAlign.justify,
-                                        style: TextStyle(
-                                          fontSize: 13.sp,
-                                          color: Theme.of(context)
-                                              .primaryColor,
-                                          decoration:
-                                          TextDecoration.lineThrough,
+                                      alignment: AlignmentDirectional.topEnd,
+                                      child: Container(
+                                        margin: EdgeInsetsDirectional.only(
+                                            top: 9.h, end: 12.5.w),
+                                        width: 54.w,
+                                        height: 20.h,
+                                        decoration: BoxDecoration(
+                                          color: Theme.of(context).primaryColor,
+                                          borderRadius:
+                                              BorderRadiusDirectional.only(
+                                            bottomStart: Radius.circular(25.r),
+                                            topEnd: Radius.circular(11.r),
+                                          ),
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            "${state.list[index].discount * 100} %",
+                                            style: TextStyle(
+                                              fontSize: 14.sp,
+                                              fontWeight: FontWeight.bold,
+                                              color: const Color(
+                                                0xffFFFFFF,
+                                              ),
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ],
                                 ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 19.h,
-                          ),
-                          Align(
-                            alignment: AlignmentDirectional.center,
-                            child: Padding(
-                              padding: EdgeInsetsDirectional.only(
-                                end: 24.w,
-                                start: 24.w,
-                                bottom: 10.h,
-                              ),
-                              child: state.list[index].amount != 0 ? AppButton(
-                                onTap: () {},
-                                text: "أضف للسلة",
-                                width: 120.w,
-                                height: 30.h,
-                                radius: 9.r,
-                                backColor: const Color(
-                                  0xff61B80C,
+                                Padding(
+                                  padding: EdgeInsetsDirectional.only(
+                                    start: 10.w,
+                                  ),
+                                  child: Align(
+                                    alignment: AlignmentDirectional.topStart,
+                                    child: Text(
+                                      state.list[index].title,
+                                      style: TextStyle(
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.bold,
+                                        color: Theme.of(context).primaryColor,
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ) : AppButton(
-                                onTap: () {},
-                                text: "تم نفاذ الكمية",
-                                width: 120.w,
-                                height: 30.h,
-                                radius: 9.r,
-                                backColor: Colors.white,
-                                textColor: Colors.red,
-                              )
+                                SizedBox(
+                                  height: 4.h,
+                                ),
+                                Padding(
+                                  padding: EdgeInsetsDirectional.only(
+                                    start: 11.w,
+                                  ),
+                                  child: Align(
+                                    alignment: AlignmentDirectional.topStart,
+                                    child: Text(
+                                      "السعر / ${state.list[index].unit.name}",
+                                      style: TextStyle(
+                                        fontSize: 12.sp,
+                                        color: const Color(0xFF808080),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 3.h,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.only(
+                                          start: 9.w),
+                                      child: Row(
+                                        children: [
+                                          Align(
+                                            alignment:
+                                                AlignmentDirectional.topStart,
+                                            child: Text(
+                                              "${state.list[index].price} ر.س",
+                                              style: TextStyle(
+                                                fontSize: 16.sp,
+                                                fontWeight: FontWeight.bold,
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                              ),
+                                            ),
+                                          ),
+                                          Align(
+                                            alignment: AlignmentDirectional
+                                                .bottomStart,
+                                            child: Text(
+                                              "${state.list[index].priceBeforeDiscount} ر.س",
+                                              textAlign: TextAlign.justify,
+                                              style: TextStyle(
+                                                fontSize: 13.sp,
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                                decoration:
+                                                    TextDecoration.lineThrough,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 19.h,
+                                ),
+                                Align(
+                                  alignment: AlignmentDirectional.center,
+                                  child: Padding(
+                                      padding: EdgeInsetsDirectional.only(
+                                        end: 24.w,
+                                        start: 24.w,
+                                        bottom: 10.h,
+                                      ),
+                                      child: state.list[index].amount != 0
+                                          ? AppButton(
+                                              onTap: () {},
+                                              text: "أضف للسلة",
+                                              width: 120.w,
+                                              height: 30.h,
+                                              radius: 9.r,
+                                              backColor: const Color(
+                                                0xff61B80C,
+                                              ),
+                                            )
+                                          : AppButton(
+                                              onTap: () {},
+                                              text: "تم نفاذ الكمية",
+                                              width: 120.w,
+                                              height: 30.h,
+                                              radius: 9.r,
+                                              backColor: Colors.white,
+                                              textColor: Colors.red,
+                                            )),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 11.w,
-                      mainAxisSpacing: 11.h,
-                      childAspectRatio: 0.652,
-                    ),
-                    shrinkWrap: true,
-                  );
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 11.w,
+                            mainAxisSpacing: 11.h,
+                            childAspectRatio: 0.652,
+                          ),
+                          shrinkWrap: true,
+                        );
                 } else {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
+                  return const SizedBox.shrink();
                 }
               },
             ),

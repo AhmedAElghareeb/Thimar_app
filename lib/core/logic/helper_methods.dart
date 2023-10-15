@@ -60,13 +60,68 @@ void showSnackBar(String message, {MessageType typ = MessageType.fail}) {
 
 Future<String> getLocationFromLatLong(LatLng latLng) async {
   List<Placemark> placemarks =
-      await placemarkFromCoordinates(
-          latLng.latitude, latLng.longitude);
+      await placemarkFromCoordinates(latLng.latitude, latLng.longitude);
 
-  String _x = '';
+  String x = '';
   if (placemarks.isNotEmpty) {
     print('-==-=-=-=-=-=-- ${placemarks.first.toJson()}');
-    _x = '${placemarks.first.street ?? ''} - ${placemarks.first.subAdministrativeArea ?? ''}';
+    x =
+        '${placemarks.first.street ?? ''} - ${placemarks.first.subAdministrativeArea ?? ''}';
   }
-  return _x;
+  return x;
+}
+
+String getOrderStatus(
+  String status,
+) {
+  switch (status) {
+    case 'pending':
+      return "بإنتظار الموافقة";
+    case 'preparation':
+      return "جاري التحضير";
+    case 'on_the_way':
+      return "فى الطريق";
+    case 'finished':
+      return "منتهي";
+    case 'canceled':
+      return "طلب ملغي";
+    default:
+      return "";
+  }
+}
+
+Color getOrderStatusColor(String status) {
+  switch (status) {
+    case 'pending':
+      return const Color(0xffE8F2DF);
+    case 'preparation':
+      return const Color(0xffC7F697);
+    case 'on_the_way':
+      return const Color(0xff96A9F6);
+    case 'finished':
+      return const Color(0xff707070);
+    case 'canceled':
+      return const Color(0xffFFCFCF);
+
+    default:
+      return Theme.of(navigatorKey.currentState!.context).primaryColor.withOpacity(0.5,);
+  }
+}
+
+Color getOrderStatusTextColor(String status) {
+  switch (status) {
+    case 'pending':
+      return const Color(0xff4C8613);
+    case 'preparation':
+      return const Color(0xff72C720);
+    case 'on_the_way':
+      return const Color(0xff2D9E78);
+    case 'finished':
+      return const Color(0xffA1A1A1);
+    case 'canceled':
+      return const Color(0xffFF0000);
+
+    default:
+      return Theme.of(navigatorKey.currentState!.context).primaryColor.withOpacity(0.5,);
+  }
 }

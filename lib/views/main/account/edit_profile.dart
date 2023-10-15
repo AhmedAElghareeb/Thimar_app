@@ -315,7 +315,6 @@ class _EditProfileState extends State<EditProfile> {
                   keyboardType: TextInputType.phone,
                   prefixIcon: "assets/images/icons/appInputIcons/call.svg",
                   labelText: "رقم الجوال",
-                  isPhone: true,
                 ),
                 SizedBox(
                   height: 16.h,

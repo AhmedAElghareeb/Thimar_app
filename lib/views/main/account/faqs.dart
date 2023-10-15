@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:thimar_app/core/design/app_loading.dart';
 import 'package:thimar_app/features/get_faqs/bloc.dart';
 import 'package:thimar_app/features/get_faqs/events.dart';
 import 'package:thimar_app/features/get_faqs/states.dart';
+
+import '../../../core/design/app_empty.dart';
 
 class Faqs extends StatefulWidget {
   const Faqs({super.key});
@@ -63,11 +66,14 @@ class _FaqsState extends State<Faqs> {
           bloc: bloc,
           builder: (context, state) {
             if (state is GetFaqsLoadingState) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
+              return const AppLoading();
             } else if (state is GetFaqsSuccessState) {
-              return ListView.builder(
+              return state.list.isEmpty
+                  ? const AppEmpty(
+                assetsPath: "empty_cart.json",
+                text: "لا توجد بيانات",
+              )
+                  : ListView.builder(
                 padding: EdgeInsetsDirectional.symmetric(
                   horizontal: 16.w,
                   vertical: 44.h,
@@ -164,9 +170,7 @@ class _FaqsState extends State<Faqs> {
                 ),
               );
             } else {
-              return const Center(
-                child: Text("FAILED"),
-              );
+              return const SizedBox.shrink();
             }
           },
         ),

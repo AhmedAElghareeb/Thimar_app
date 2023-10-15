@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:thimar_app/core/design/app_loading.dart';
 import 'package:thimar_app/features/favourites/events.dart';
 import 'package:thimar_app/features/favourites/states.dart';
 import 'package:thimar_app/models/favourites.dart';
 
+import '../../../core/design/app_empty.dart';
 import '../../../core/logic/helper_methods.dart';
 import '../../../features/favourites/bloc.dart';
 import '../home/product_details/view.dart';
@@ -46,35 +48,25 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
         bloc: bloc,
         builder: (context, state) {
           if (state is GetFavouritesDataLoadingState) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const AppLoading();
           } else if (state is GetFavouritesDataSuccessState) {
-            if (state.list.isEmpty) {
-              return Center(
-                child: Text(
-                  "لا يوجد بيانات",
-                  style: TextStyle(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).primaryColor),
-                ),
-              );
-            } else {
-              return GridView.builder(
-                itemBuilder: (context, index) => _Item(
-                  model: state.list[index],
-                ),
-                itemCount: state.list.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 11.w,
-                  mainAxisSpacing: 2.h,
-                  childAspectRatio: 0.70,
-                ),
-                shrinkWrap: true,
-              );
-            }
+            return state.list.isEmpty ? const AppEmpty(
+              assetsPath: "empty_favourites.json",
+              text: "لا توجد بيانات",
+            ) :
+            GridView.builder(
+              itemBuilder: (context, index) => _Item(
+                model: state.list[index],
+              ),
+              itemCount: state.list.length,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 11.w,
+                mainAxisSpacing: 2.h,
+                childAspectRatio: 0.70,
+              ),
+              shrinkWrap: true,
+            );
           } else {
             return const SizedBox.shrink();
           }

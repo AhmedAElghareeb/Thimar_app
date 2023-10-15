@@ -10,7 +10,6 @@ import 'package:thimar_app/core/logic/cache_helper.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
 import 'package:thimar_app/features/orders/events.dart';
 import 'package:thimar_app/views/main/account/address/address.dart';
-import 'package:thimar_app/views/main/order/view.dart';
 import 'package:thimar_app/views/main/order/widgets/address_item.dart';
 import 'package:thimar_app/views/main/view.dart';
 
@@ -254,8 +253,8 @@ class _FinishOrderState extends State<FinishOrder> {
                           ),
                         );
                         if (day != null) {
-                          _event.date = DateFormat('y-M-d').format(day);
-
+                          _event.date = DateFormat('y-M-d', 'en').format(day);
+                          print("_____=====____$day");
                           setState(() {});
                         } else {
                           showSnackBar(

@@ -52,9 +52,7 @@ class WalletBloc extends Bloc<WalletEvents, WalletStates> {
     );
 
     if (response.success) {
-      final list = List.from(response.response!.data['data'] ?? [])
-          .map((e) => WalletModel.fromJson(e))
-          .toList();
+      final list = WalletData.fromJson(response.response!.data).data;
       emit(
         GetWalletTransactionsDataSuccessState(
           list: list,

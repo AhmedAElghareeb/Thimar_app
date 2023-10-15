@@ -6,10 +6,8 @@ import 'package:kiwi/kiwi.dart';
 import 'package:thimar_app/core/design/app_button.dart';
 import 'package:thimar_app/core/design/app_input.dart';
 import 'package:thimar_app/core/design/auth_header.dart';
-import 'package:thimar_app/core/logic/dio_helper.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
 import 'package:thimar_app/views/auth/login.dart';
-import 'package:thimar_app/views/auth/confirm_code.dart';
 
 import '../../features/forget_password/bloc.dart';
 import '../../features/forget_password/events.dart';
@@ -79,7 +77,6 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                           },
                           prefixIcon:
                               "assets/images/icons/appInputIcons/call.svg",
-                          isPhone: true,
                           keyboardType: TextInputType.phone,
                         ),
                       ),

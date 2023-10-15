@@ -24,3 +24,15 @@ class PostOrderDataEvent extends OrdersEvents {
     couponCodeController = TextEditingController();
   }
 }
+
+class GetOrderDetailsDataEvent extends OrdersEvents {
+  final int num;
+
+  GetOrderDetailsDataEvent({required this.num});
+}
+
+class CancelOrderDataEvent extends OrdersEvents {
+  final num orderNum;
+
+  CancelOrderDataEvent({required this.orderNum});
+}

@@ -3,12 +3,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:thimar_app/core/design/app_empty.dart';
+import 'package:thimar_app/core/design/app_loading.dart';
 import 'package:thimar_app/features/wallet/states.dart';
 
 import '../../../../features/wallet/bloc.dart';
 import '../../../../features/wallet/events.dart';
 
 class AllTransactions extends StatefulWidget {
+  // final OrderDetailsModel? data;
+
   const AllTransactions({super.key});
 
   @override
@@ -70,108 +74,204 @@ class _AllTransactionsState extends State<AllTransactions> {
         bloc: getTransactionsBloc,
         builder: (context, state) {
           if (state is GetWalletTransactionsDataLoadingState) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const AppLoading();
           } else if (state is GetWalletTransactionsDataSuccessState) {
-            return SafeArea(
-              child: ListView.builder(
-                itemBuilder: (context, index) => Container(
-                  width: 343.w,
-                  height: 83.h,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(
-                      17.r,
-                    ),
-                    color: const Color(
-                      0xffffffff,
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        blurRadius: 5.r,
-                        color: const Color(
-                          0xfff6f6f6,
-                        ),
-                      ),
-                    ],
-                  ),
-                  padding: EdgeInsetsDirectional.symmetric(
-                    horizontal: 5.w,
-                    vertical: 5.h,
-                  ),
-                  margin: EdgeInsetsDirectional.symmetric(
-                    horizontal: 16.w,
-                    vertical: 16.h,
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: EdgeInsetsDirectional.all(
-                              8.r,
-                            ),
-                            child: SvgPicture.asset(
-                              state.list[index].transactionType == "charge"
-                                  ? "assets/images/icons/walletIcons/incoming.svg"
-                                  : "assets/images/icons/walletIcons/paidTo.svg",
-                              width: 18.w,
-                              height: 18.h,
-                              fit: BoxFit.scaleDown,
-                            ),
+            return state.list.isEmpty
+                ? const AppEmpty(
+                    assetsPath: "empty.json",
+                    text: "لا توجد بيانات",
+                  )
+                : SafeArea(
+                    child: ListView.builder(
+                      itemBuilder: (context, index) => Container(
+                        width: 343.w,
+                        height: state.list[index].transactionType == "charge"
+                            ? 95.h
+                            : 185.h,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(
+                            17.r,
                           ),
-                          Text(
-                            state.list[index].statusTrans == "شحن المحفظة"
-                                ? "شحن المحفظة"
-                                : "دفعت مقابل هذا الطلب",
-                            style: TextStyle(
-                              fontSize: 15.sp,
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).primaryColor,
-                            ),
+                          color: const Color(
+                            0xffffffff,
                           ),
-                          SizedBox(
-                            width: 120.w,
-                          ),
-                          Text(
-                            state.list[index].date,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w300,
-                              fontSize: 14.sp,
+                          boxShadow: [
+                            BoxShadow(
+                              blurRadius: 5.r,
                               color: const Color(
-                                0xff9C9C9C,
+                                0xfff6f6f6,
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 8.h,
-                      ),
-                      Padding(
+                          ],
+                        ),
                         padding: EdgeInsetsDirectional.symmetric(
-                          horizontal: 49.w,
+                          horizontal: 10.w,
+                          vertical: 10.h,
                         ),
-                        child: Align(
-                          alignment: AlignmentDirectional.centerStart,
-                          child: Text(
-                            "${state.list[index].amount} ر.س",
-                            style: TextStyle(
-                              fontSize: 24.sp,
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).primaryColor,
+                        margin: EdgeInsetsDirectional.symmetric(
+                          horizontal: 10.w,
+                          vertical: 10.h,
+                        ),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsetsDirectional.all(
+                                    5.r,
+                                  ),
+                                  child: SvgPicture.asset(
+                                    state.list[index].transactionType ==
+                                            "charge"
+                                        ? "assets/images/icons/walletIcons/incoming.svg"
+                                        : "assets/images/icons/walletIcons/paidTo.svg",
+                                    width: 18.w,
+                                    height: 18.h,
+                                    fit: BoxFit.scaleDown,
+                                  ),
+                                ),
+                                Text(
+                                  state.list[index].transactionType == "charge"
+                                      ? "شحن المحفظة"
+                                      : "دفعت مقابل هذا الطلب",
+                                  style: TextStyle(
+                                    fontSize: 15.sp,
+                                    fontWeight: FontWeight.bold,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 50.w,
+                                ),
+                                Text(
+                                  state.list[index].date,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w300,
+                                    fontSize: 14.sp,
+                                    color: const Color(
+                                      0xff9C9C9C,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
+                            SizedBox(
+                              height: 8.h,
+                            ),
+                            state.list[index].transactionType == "charge"
+                                ? Padding(
+                                    padding: EdgeInsetsDirectional.symmetric(
+                                      horizontal: 49.w,
+                                    ),
+                                    child: Align(
+                                      alignment:
+                                          AlignmentDirectional.centerStart,
+                                      child: Text(
+                                        "${state.list[index].amount} ر.س",
+                                        style: TextStyle(
+                                          fontSize: 24.sp,
+                                          fontWeight: FontWeight.bold,
+                                          color: Theme.of(context).primaryColor,
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                : state.list[index].transactionType ==
+                                        "withdraw"
+                                    ? Container(
+                                        height: 105.h,
+                                        padding:
+                                            EdgeInsetsDirectional.symmetric(
+                                          vertical: 10.h,
+                                          horizontal: 14.w,
+                                        ),
+                                        margin: EdgeInsetsDirectional.symmetric(
+                                          vertical: 10.h,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadiusDirectional.circular(
+                                            15.r,
+                                          ),
+                                          color: Colors.black.withOpacity(
+                                            0.005,
+                                          ),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.black
+                                                  .withOpacity(0.02),
+                                              blurRadius: 2.r,
+                                              blurStyle: BlurStyle.inner,
+                                            )
+                                          ],
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      "طلب رقم : ${state.list[index].modelId}#",
+                                                      style: TextStyle(
+                                                        fontSize: 17.sp,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Theme.of(context)
+                                                            .primaryColor,
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 8.h,
+                                                    ),
+                                                    Text(
+                                                      state.list[index].date,
+                                                      style: TextStyle(
+                                                        fontSize: 14.sp,
+                                                        fontWeight:
+                                                            FontWeight.w300,
+                                                        color: const Color(
+                                                          0xff9C9C9C,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                            const Divider(
+                                              thickness: 1.5,
+                                            ),
+                                            Align(
+                                              alignment: AlignmentDirectional
+                                                  .centerEnd,
+                                              child: Text(
+                                                "${state.list[index].amount} ر.س",
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w900,
+                                                  fontSize: 15.sp,
+                                                  color: Theme.of(context)
+                                                      .primaryColor,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    : const SizedBox.shrink(),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
-                ),
-                itemCount: state.list.length,
-                scrollDirection: Axis.vertical,
-              ),
-            );
+                      itemCount: state.list.length,
+                      scrollDirection: Axis.vertical,
+                    ),
+                  );
           } else {
             return const SizedBox.shrink();
           }

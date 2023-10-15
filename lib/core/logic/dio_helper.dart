@@ -77,9 +77,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:quick_log/quick_log.dart';
 
-import '../../views/auth/splash.dart';
 import 'cache_helper.dart';
-import 'helper_methods.dart';
 
 const log = Logger("");
 

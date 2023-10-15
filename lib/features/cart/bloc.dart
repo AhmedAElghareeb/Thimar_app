@@ -14,7 +14,6 @@ class CartBloc extends Bloc<CartEvents, CartStates> {
     on<AddToCartDataEvent>(addData);
     on<UpdateCartDataEvent>(update);
     on<AddCouponEvent>(coupon);
-    // on<RemoveFromCartDataEvent>(removeData);
   }
 
   bool isInit = true;

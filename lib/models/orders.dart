@@ -15,13 +15,13 @@ class OrdersData {
 }
 
 class OrdersModel {
-  late final num id;
+  late final int id;
   late final String status;
   late final String date;
   late final String time;
   late final num? orderPrice;
   late final num deliveryPrice;
-  late final double totalPrice;
+  late final num totalPrice;
   late final String clientName;
   late final String phone;
   late final String location;

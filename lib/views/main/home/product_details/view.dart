@@ -5,12 +5,16 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:thimar_app/core/design/app_loading.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
+import 'package:thimar_app/features/cart/states.dart';
 import 'package:thimar_app/features/favourites/events.dart';
 import 'package:thimar_app/features/products/states.dart';
 import 'package:thimar_app/features/products_details/states.dart';
 import 'package:thimar_app/features/products_rates/states.dart';
 
+import '../../../../features/cart/bloc.dart';
+import '../../../../features/cart/events.dart';
 import '../../../../features/favourites/bloc.dart';
 import '../../../../features/products/bloc.dart';
 import '../../../../features/products/events.dart';
@@ -44,6 +48,7 @@ class _ProductDetailsState extends State<ProductDetails> {
   final categoryProductBloc = KiwiContainer().resolve<ProductsDataBloc>();
   final ratesBloc = KiwiContainer().resolve<ProductsRatesBloc>();
   final favouritesBloc = KiwiContainer().resolve<FavouritesBloc>();
+  final addToCartBloc = KiwiContainer().resolve<CartBloc>();
 
   @override
   Widget build(BuildContext context) {
@@ -114,8 +119,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                     height: 32.h,
                     decoration: BoxDecoration(
                       color: Theme.of(context).primaryColor.withOpacity(
-                        0.1,
-                      ),
+                            0.1,
+                          ),
                       borderRadius: BorderRadius.circular(
                         9.r,
                       ),
@@ -140,10 +145,8 @@ class _ProductDetailsState extends State<ProductDetails> {
             ),
           ),
         builder: (context, state) {
-          if (state is ShowProductsDetailsFailedState) {
-            return const Center(
-              child: Text("FAILED!!!!!"),
-            );
+          if (state is ShowProductsDetailsLoadingState) {
+            return const AppLoading();
           } else if (state is ShowProductsDetailsSuccessState) {
             return ListView(
               children: [
@@ -303,8 +306,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                                   onPress: () {
                                     if (counter < state.model.amount) {
                                       counter++;
-                                      setState(() {});
                                     }
+                                    setState(() {});
                                   },
                                   icon: Icon(
                                     Icons.add,
@@ -324,8 +327,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                                   onPress: () {
                                     if (counter > 1) {
                                       counter--;
-                                      setState(() {});
                                     }
+                                    setState(() {});
                                   },
                                   icon: Icon(
                                     Icons.remove,
@@ -770,152 +773,93 @@ class _ProductDetailsState extends State<ProductDetails> {
                     ],
                   ),
                 ),
-                // state.model.amount > 0
-                //     ? Align(
-                //         alignment: AlignmentDirectional.bottomCenter,
-                //         child: Container(
-                //           height: 60.h,
-                //           color: Theme.of(context).primaryColor,
-                //           child: Row(
-                //             children: [
-                //               Expanded(
-                //                 child: Row(
-                //                   children: [
-                //                     Container(
-                //                       margin: EdgeInsetsDirectional.all(
-                //                         16.r,
-                //                       ),
-                //                       width: 35.w,
-                //                       height: 32.h,
-                //                       decoration: BoxDecoration(
-                //                         borderRadius:
-                //                             BorderRadiusDirectional.circular(
-                //                           10.r,
-                //                         ),
-                //                         color: Colors.grey.withOpacity(
-                //                           0.5,
-                //                         ),
-                //                       ),
-                //                       child: SvgPicture.asset(
-                //                         "assets/images/icons/cart2.svg",
-                //                         width: 19.w,
-                //                         height: 20.h,
-                //                         fit: BoxFit.scaleDown,
-                //                       ),
-                //                     ),
-                //                     SizedBox(
-                //                       width: 10.w,
-                //                     ),
-                //                     TextButton(
-                //                       onPressed: () {},
-                //                       child: Text(
-                //                         "إضافة إلي السلة",
-                //                         style: TextStyle(
-                //                           fontSize: 15.sp,
-                //                           fontWeight: FontWeight.bold,
-                //                           color: const Color(
-                //                             0xffFFFFFF,
-                //                           ),
-                //                         ),
-                //                       ),
-                //                     ),
-                //                   ],
-                //                 ),
-                //               ),
-                //               Padding(
-                //                 padding: EdgeInsetsDirectional.only(
-                //                   end: 20.w,
-                //                 ),
-                //                 child: Text(
-                //                   "${counter * widget.price} ر.س",
-                //                   style: TextStyle(
-                //                     fontSize: 15.sp,
-                //                     fontWeight: FontWeight.bold,
-                //                     color: const Color(
-                //                       0xffFFFFFF,
-                //                     ),
-                //                   ),
-                //                 ),
-                //               ),
-                //             ],
-                //           ),
-                //         ),
-                //       )
-                //     : const SizedBox.shrink(),
               ],
             );
           } else {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const SizedBox.shrink();
           }
         },
       ),
-      bottomNavigationBar: Container(
-        height: 60.h,
-        color: Theme.of(context).primaryColor,
-        child: Row(
-          children: [
-            Expanded(
-              child: Row(
-                children: [
-                  Container(
-                    margin: EdgeInsetsDirectional.all(
-                      16.r,
-                    ),
-                    width: 35.w,
-                    height: 32.h,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadiusDirectional.circular(
-                        10.r,
+      bottomNavigationBar: BlocBuilder(
+        bloc: addToCartBloc,
+        builder: (context, ss) {
+          if(ss is AddToCartDataLoadingState) {
+            return const AppLoading();
+          } else {
+            return GestureDetector(
+              onTap: ()
+              {
+                addToCartBloc.add(AddToCartDataEvent(
+                  productId: widget.id,
+                  amount: counter.toInt(),
+                ));
+              },
+              child: Container(
+                height: 60.h,
+                color: Theme.of(context).primaryColor,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Row(
+                        children: [
+                          Container(
+                            margin: EdgeInsetsDirectional.all(
+                              16.r,
+                            ),
+                            width: 35.w,
+                            height: 32.h,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadiusDirectional.circular(
+                                10.r,
+                              ),
+                              color: Colors.grey.withOpacity(
+                                0.5,
+                              ),
+                            ),
+                            child: SvgPicture.asset(
+                              "assets/images/icons/cart2.svg",
+                              width: 19.w,
+                              height: 20.h,
+                              fit: BoxFit.scaleDown,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 10.w,
+                          ),
+                          Text(
+                            "إضافة إلي السلة",
+                            style: TextStyle(
+                              fontSize: 15.sp,
+                              fontWeight: FontWeight.bold,
+                              color: const Color(
+                                0xffFFFFFF,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      color: Colors.grey.withOpacity(
-                        0.5,
+                    ),
+                    Padding(
+                      padding: EdgeInsetsDirectional.only(
+                        end: 20.w,
                       ),
-                    ),
-                    child: SvgPicture.asset(
-                      "assets/images/icons/cart2.svg",
-                      width: 19.w,
-                      height: 20.h,
-                      fit: BoxFit.scaleDown,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 10.w,
-                  ),
-                  TextButton(
-                    onPressed: () {},
-                    child: Text(
-                      "إضافة إلي السلة",
-                      style: TextStyle(
-                        fontSize: 15.sp,
-                        fontWeight: FontWeight.bold,
-                        color: const Color(
-                          0xffFFFFFF,
+                      child: Text(
+                        "${counter * widget.price} ر.س",
+                        style: TextStyle(
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.bold,
+                          color: const Color(
+                            0xffFFFFFF,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsetsDirectional.only(
-                end: 20.w,
-              ),
-              child: Text(
-                "${counter * widget.price} ر.س",
-                style: TextStyle(
-                  fontSize: 15.sp,
-                  fontWeight: FontWeight.bold,
-                  color: const Color(
-                    0xffFFFFFF,
-                  ),
+                  ],
                 ),
               ),
-            ),
-          ],
-        ),
+            );
+          }
+        },
       ),
     );
   }
@@ -927,6 +871,7 @@ class _ProductDetailsState extends State<ProductDetails> {
     categoryProductBloc.close();
     ratesBloc.close();
     favouritesBloc.close();
+    addToCartBloc.close();
   }
 }
 

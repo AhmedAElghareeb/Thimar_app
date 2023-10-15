@@ -1,5 +1,6 @@
 import 'package:thimar_app/core/logic/helper_methods.dart';
 
+import '../../models/order_details.dart';
 import '../../models/orders.dart';
 
 class OrdersStates {}
@@ -28,3 +29,28 @@ class PostOrdersDataSuccessState extends OrdersStates {
 }
 
 class PostOrdersDataFailedState extends OrdersStates {}
+
+class GetOrderDetailsDataLoadingState extends OrdersStates {}
+
+class GetOrderDetailsDataSuccessState extends OrdersStates {
+  final OrderDetailsModel data;
+
+  GetOrderDetailsDataSuccessState({required this.data});
+}
+
+class GetOrderDetailsDataFailedState extends OrdersStates {}
+
+class CancelOrdersDataLoadingState extends OrdersStates {}
+
+class CancelOrdersDataSuccessState extends OrdersStates {
+  final String msg;
+
+  CancelOrdersDataSuccessState({required this.msg}) {
+    showSnackBar(
+      msg,
+      typ: MessageType.success,
+    );
+  }
+}
+
+class CancelOrdersDataFailedState extends OrdersStates {}

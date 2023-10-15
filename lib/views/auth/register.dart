@@ -95,7 +95,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         },
                         prefixIcon:
                             "assets/images/icons/appInputIcons/call.svg",
-                        isPhone: true,
                         keyboardType: TextInputType.phone,
                       ),
                       SizedBox(

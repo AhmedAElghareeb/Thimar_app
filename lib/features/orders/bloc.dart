@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:thimar_app/core/logic/dio_helper.dart';
 import 'package:thimar_app/models/orders.dart';
+import '../../models/order_details.dart';
 import 'events.dart';
 import 'states.dart';
 
@@ -8,6 +9,8 @@ class OrdersBloc extends Bloc<OrdersEvents, OrdersStates> {
   OrdersBloc() : super(OrdersStates()) {
     on<GetOrdersDataEvent>(getData);
     on<PostOrderDataEvent>(storeOrder);
+    on<GetOrderDetailsDataEvent>(getDetails);
+    on<CancelOrderDataEvent>(cancelOrder);
   }
 
   Future<void> getData(
@@ -60,6 +63,43 @@ class OrdersBloc extends Bloc<OrdersEvents, OrdersStates> {
       emit(
         PostOrdersDataFailedState(),
       );
+    }
+  }
+
+  Future<void> getDetails(
+      GetOrderDetailsDataEvent event, Emitter<OrdersStates> emit) async {
+    emit(
+      GetOrderDetailsDataLoadingState(),
+    );
+
+    final response = await DioHelper().getFromServer(
+      url: "client/orders/${event.num}",
+    );
+    if (response.success) {
+      final data = OrderDetailsData.fromJson(response.response!.data).data;
+      emit(
+        GetOrderDetailsDataSuccessState(
+          data: data,
+        ),
+      );
+    } else {
+      emit(
+        GetOrderDetailsDataFailedState(),
+      );
+    }
+  }
+
+  Future<void> cancelOrder(CancelOrderDataEvent event, Emitter<OrdersStates> emit) async {
+    emit(CancelOrdersDataLoadingState());
+
+    final response = await DioHelper().sendToServer(
+      url: "client/orders/${event.orderNum}/cancel",
+    );
+
+    if(response.success){
+      emit(CancelOrdersDataSuccessState(msg: response.msg),);
+    } else {
+      emit(CancelOrdersDataFailedState(),);
     }
   }
 }

@@ -1,9 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:kiwi/kiwi.dart';
+import 'package:thimar_app/core/design/app_loading.dart';
+import 'package:thimar_app/features/orders/bloc.dart';
+import 'package:thimar_app/features/orders/events.dart';
+import 'package:thimar_app/features/orders/states.dart';
 
-class OrderDetails extends StatelessWidget {
-  const OrderDetails({super.key});
+import '../../../core/logic/helper_methods.dart';
+
+class OrderDetails extends StatefulWidget {
+  final int id;
+
+  const OrderDetails({super.key, required this.id});
+
+  @override
+  State<OrderDetails> createState() => _OrderDetailsState();
+}
+
+class _OrderDetailsState extends State<OrderDetails> {
+  final bloc = KiwiContainer().resolve<OrdersBloc>();
+
+  final cancelBloc = KiwiContainer().resolve<OrdersBloc>();
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    bloc.close();
+    cancelBloc.close();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,429 +70,497 @@ class OrderDetails extends StatelessWidget {
           ),
         ),
       ),
-      body: SafeArea(
-        child: ListView(
-          padding: EdgeInsetsDirectional.symmetric(
-            horizontal: 16.w,
-            vertical: 21.h,
+      body: BlocBuilder(
+        bloc: bloc
+          ..add(
+            GetOrderDetailsDataEvent(
+              num: widget.id,
+            ),
           ),
-          children: [
-            Container(
-              height: 109.h,
-              padding: EdgeInsetsDirectional.symmetric(
-                horizontal: 14.w,
-                vertical: 10.h,
-              ),
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.02),
-                    blurRadius: 17.r,
-                    blurStyle: BlurStyle.outer,
-                    offset: Offset(0.w, 6.h),
-                  ),
-                ],
-              ),
-              child: Column(
+        builder: (context, state) {
+          if (state is GetOrderDetailsDataLoadingState) {
+            return const AppLoading();
+          } else if (state is GetOrderDetailsDataSuccessState) {
+            return SafeArea(
+              child: ListView(
+                padding: EdgeInsetsDirectional.symmetric(
+                  horizontal: 16.w,
+                  vertical: 21.h,
+                ),
                 children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                  Container(
+                    height: 120.h,
+                    padding: EdgeInsetsDirectional.symmetric(
+                      horizontal: 14.w,
+                      vertical: 10.h,
+                    ),
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.02),
+                          blurRadius: 17.r,
+                          blurStyle: BlurStyle.outer,
+                          offset: Offset(0.w, 6.h),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      children: [
+                        Row(
                           children: [
-                            Text(
-                              "طلب #4587",
-                              style: TextStyle(
-                                fontSize: 17.sp,
-                                fontWeight: FontWeight.bold,
-                                color: Theme.of(context).primaryColor,
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "طلب رقم : #${state.data.id}",
+                                    style: TextStyle(
+                                      fontSize: 17.sp,
+                                      fontWeight: FontWeight.bold,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 8.h,
+                                  ),
+                                  Text(
+                                    state.data.date,
+                                    style: TextStyle(
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w300,
+                                      color: const Color(
+                                        0xff9C9C9C,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            SizedBox(
-                              height: 8.h,
-                            ),
-                            Text(
-                              "27,يونيو,2021",
-                              style: TextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w300,
-                                color: const Color(
-                                  0xff9C9C9C,
+                            Container(
+                              padding: EdgeInsetsDirectional.symmetric(
+                                horizontal: 11.w,
+                                vertical: 5.h,
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadiusDirectional.circular(7.r),
+                                color: getOrderStatusColor(
+                                  state.data.status,
+                                ),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  getOrderStatus(
+                                    state.data.status,
+                                  ),
+                                  style: TextStyle(
+                                    fontSize: 11.sp,
+                                    fontWeight: FontWeight.bold,
+                                    color: getOrderStatusTextColor(
+                                        state.data.status
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
                           ],
                         ),
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Container(
-                            padding: EdgeInsetsDirectional.symmetric(
-                              horizontal: 11.w,
-                              vertical: 5.h,
-                            ),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadiusDirectional.circular(7.r),
-                              color: Theme.of(context)
-                                  .primaryColor
-                                  .withOpacity(0.13),
-                            ),
-                            child: Center(
-                              child: Text(
-                                "بإنتظار الموافقة",
-                                style: TextStyle(
-                                  fontSize: 11.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color: Theme.of(context).primaryColor,
+                        const Divider(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                ...List.generate(
+                                  state.data.products.length,
+                                  (index) => Container(
+                                    width: 25.w,
+                                    height: 25.h,
+                                    clipBehavior: Clip.antiAlias,
+                                    margin: EdgeInsetsDirectional.only(
+                                      end: 3.w,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadiusDirectional.circular(7.r),
+                                      border: Border.all(
+                                        color: const Color(
+                                          0xff61B80C,
+                                        ).withOpacity(0.06),
+                                      ),
+                                    ),
+                                    child: Image.network(
+                                      state.data.products[index].url,
+                                      width: 25.w,
+                                      height: 25.h,
+                                      fit: BoxFit.fill,
+                                    ),
+                                  ),
                                 ),
+                                if (state.data.products.length > 3)
+                                  Container(
+                                    width: 25.w,
+                                    height: 25.h,
+                                    clipBehavior: Clip.antiAlias,
+                                    margin: EdgeInsetsDirectional.only(
+                                      end: 3.w,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadiusDirectional.circular(7.r),
+                                      color: Theme.of(context)
+                                          .primaryColor
+                                          .withOpacity(0.13),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        "+${state.data.products.length - 3}",
+                                        style: TextStyle(
+                                          fontSize: 11.sp,
+                                          fontWeight: FontWeight.bold,
+                                          color: Theme.of(context).primaryColor,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 16.h,
+                  ),
+                  Column(
+                    children: [
+                      Text(
+                        "عنوان التوصيل",
+                        style: TextStyle(
+                          fontSize: 17.sp,
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 19.h,
+                      ),
+                      Container(
+                        width: 343.w,
+                        height: 100.h,
+                        padding: EdgeInsetsDirectional.symmetric(
+                          horizontal: 15.w,
+                          vertical: 10.h,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadiusDirectional.circular(
+                            15.r,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.02),
+                              blurRadius: 17.r,
+                              blurStyle: BlurStyle.outer,
+                              offset: Offset(
+                                0.w,
+                                6.h,
                               ),
                             ),
-                          ),
-                          SizedBox(
-                            height: 4.h,
-                          ),
-                          Text(
-                            "180ر.س",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w900,
-                              fontSize: 15.sp,
-                              color: Theme.of(context).primaryColor,
+                          ],
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    state.data.address.type,
+                                    style: TextStyle(
+                                      fontSize: 15.sp,
+                                      fontWeight: FontWeight.w400,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 5.h,
+                                  ),
+                                  Text(
+                                    "العنوان : ${state.data.address.location}",
+                                    style: TextStyle(
+                                      fontSize: 12.sp,
+                                      fontWeight: FontWeight.w300,
+                                      color: const Color(
+                                        0xff000000,
+                                      ).withOpacity(0.2),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 5.h,
+                                  ),
+                                  Text(
+                                    "الوصف : ${state.data.address.description}",
+                                    style: TextStyle(
+                                      fontSize: 12.sp,
+                                      fontWeight: FontWeight.w300,
+                                      color: const Color(
+                                        0xff000000,
+                                      ).withOpacity(0.2),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ],
                   ),
-                  const Divider(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  SizedBox(
+                    height: 16.h,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          ...List.generate(
-                            3,
-                            (index) => Container(
-                              width: 25.w,
-                              height: 25.h,
-                              clipBehavior: Clip.antiAlias,
-                              margin: EdgeInsetsDirectional.only(
-                                end: 3.w,
-                              ),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadiusDirectional.circular(7.r),
-                                border: Border.all(
-                                  color: const Color(
-                                    0xff61B80C,
-                                  ).withOpacity(0.06),
-                                ),
-                              ),
-                              child: Image.network(
-                                "https://avatars.mds.yandex.net/i?id=1cf01f05034f49faab8c420bdbb317165b831aee-4841096-images-thumbs&ref=rim&n=33&w=236&h=200",
-                                width: 25.w,
-                                height: 25.h,
-                                fit: BoxFit.fill,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            width: 25.w,
-                            height: 25.h,
-                            clipBehavior: Clip.antiAlias,
-                            margin: EdgeInsetsDirectional.only(
-                              end: 3.w,
-                            ),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadiusDirectional.circular(7.r),
-                              color: Theme.of(context)
-                                  .primaryColor
-                                  .withOpacity(0.13),
-                            ),
-                            child: Center(
-                              child: Text(
-                                "+2",
-                                style: TextStyle(
-                                  fontSize: 11.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color: Theme.of(context).primaryColor,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
+                      Text(
+                        "ملخص الطلب",
+                        style: TextStyle(
+                          fontSize: 17.sp,
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 19.h,
                       ),
                       Container(
-                        width: 25.w,
-                        height: 25.h,
-                        clipBehavior: Clip.antiAlias,
-                        margin: EdgeInsetsDirectional.only(
-                          end: 3.w,
+                        width: 342.w,
+                        height: 240.h,
+                        padding: EdgeInsetsDirectional.symmetric(
+                          horizontal: 16.w,
+                          vertical: 9.h,
                         ),
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadiusDirectional.circular(7),
-                          color:
-                              Theme.of(context).primaryColor.withOpacity(0.13),
-                        ),
-                        child: Center(
-                          child: Icon(
-                            Icons.arrow_forward_ios_sharp,
-                            size: 14.r,
-                            color: Theme.of(context).primaryColor,
+                          borderRadius: BorderRadiusDirectional.circular(
+                            13.r,
+                          ),
+                          color: const Color(
+                            0xffF3F8EE,
                           ),
                         ),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "إجمالي المنتجات",
+                                  style: TextStyle(
+                                    fontSize: 15.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                ),
+                                Text(
+                                  "${state.data.priceBeforeDiscount} ر.س",
+                                  style: TextStyle(
+                                    fontSize: 15.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 11.h,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "الخصم",
+                                  style: TextStyle(
+                                    fontSize: 15.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                ),
+                                Text(
+                                  "${state.data.discount} ر.س",
+                                  style: TextStyle(
+                                    fontSize: 15.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const Divider(),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "الإجمالى بعد خصم المنتجات",
+                                  style: TextStyle(
+                                    fontSize: 15.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                ),
+                                Text(
+                                  "${state.data.orderPrice} ر.س",
+                                  style: TextStyle(
+                                    fontSize: 15.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 11.h,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "سعر التوصيل",
+                                  style: TextStyle(
+                                    fontSize: 15.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                ),
+                                Text(
+                                  "${state.data.deliveryPrice} ر.س",
+                                  style: TextStyle(
+                                    fontSize: 15.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 11.h,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "خصم عميل مميز",
+                                  style: TextStyle(
+                                    fontSize: 15.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.orangeAccent,
+                                  ),
+                                ),
+                                Text(
+                                  "- ${state.data.vipDiscount} ر.س",
+                                  style: TextStyle(
+                                    fontSize: 15.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.orangeAccent,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const Divider(),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "المجموع",
+                                  style: TextStyle(
+                                    fontSize: 15.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                ),
+                                Text(
+                                  "${state.data.totalPrice} ر.س",
+                                  style: TextStyle(
+                                    fontSize: 15.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const Divider(),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "تم الدفع بواسطة",
+                                  style: TextStyle(
+                                    fontSize: 15.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 16.w,
+                                ),
+                                Text(
+                                  state.data.payType,
+                                  style: TextStyle(
+                                    fontSize: 20.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
+                      SizedBox(
+                        height: 30.h,
+                      ),
+                      state.data.status == "pending" ? BlocBuilder(
+                        bloc: cancelBloc,
+                        builder: (context, sC) {
+                          if (sC is CancelOrdersDataLoadingState) {
+                            return const AppLoading();
+                          } else {
+                            return SizedBox(
+                              width: double.infinity,
+                              height: 60.h,
+                              child: FilledButton(
+                                onPressed: () {
+                                  cancelBloc.add(
+                                    CancelOrderDataEvent(
+                                      orderNum: state.data.id,
+                                    ),
+                                  );
+                                },
+                                child: Text(
+                                  "إلغاء الطلب",
+                                  style: TextStyle(
+                                    fontSize: 15.sp,
+                                    fontWeight: FontWeight.bold,
+                                    color: const Color(
+                                      0xffFF0000,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                      ) : const SizedBox.shrink(),
                     ],
                   ),
                 ],
               ),
-            ),
-            SizedBox(
-              height: 16.h,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "عنوان التوصيل",
-                  style: TextStyle(
-                    fontSize: 17.sp,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                ),
-                SizedBox(
-                  height: 19.h,
-                ),
-                Container(
-                  width: 343.w,
-                  height: 83.h,
-                  padding: EdgeInsetsDirectional.symmetric(
-                    horizontal: 15.w,
-                    vertical: 10.h,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadiusDirectional.circular(
-                      15.r,
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.02),
-                        blurRadius: 17.r,
-                        blurStyle: BlurStyle.outer,
-                        offset: Offset(
-                          0.w,
-                          6.h,
-                        ),
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "المنزل",
-                            style: TextStyle(
-                              fontSize: 15.sp,
-                              fontWeight: FontWeight.w400,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5.h,
-                          ),
-                          Text(
-                            "شقة 40",
-                            style: TextStyle(
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w300,
-                              color: const Color(
-                                0xff999797,
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 4.h,
-                          ),
-                          Text(
-                            "شارع العليا الرياض 12521 السعودية",
-                            style: TextStyle(
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w300,
-                              color: const Color(
-                                0xff000000,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Image.network(
-                        "https://avatars.mds.yandex.net/get-images-cbir/1355359/FinMwbTflOGvNBLnYfRHOg1684/ocr",
-                        width: 72.w,
-                        height: 62.h,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 16.h,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "ملخص الطلب",
-                  style: TextStyle(
-                    fontSize: 17.sp,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                ),
-                SizedBox(
-                  height: 19.h,
-                ),
-                Container(
-                  width: 342.w,
-                  height: 148.h,
-                  padding: EdgeInsetsDirectional.symmetric(
-                    horizontal: 16.w,
-                    vertical: 9.h,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadiusDirectional.circular(
-                      13.r,
-                    ),
-                    color: const Color(
-                      0xffF3F8EE,
-                    ),
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "إجمالي المنتجات",
-                            style: TextStyle(
-                              fontSize: 15.sp,
-                              fontWeight: FontWeight.w400,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          ),
-                          Text(
-                            "180 ر.س",
-                            style: TextStyle(
-                              fontSize: 15.sp,
-                              fontWeight: FontWeight.w400,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 11.h,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "سعر التوصيل",
-                            style: TextStyle(
-                              fontSize: 15.sp,
-                              fontWeight: FontWeight.w400,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          ),
-                          Text(
-                            "40 ر.س",
-                            style: TextStyle(
-                              fontSize: 15.sp,
-                              fontWeight: FontWeight.w400,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 11.h,
-                      ),
-                      const Divider(),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "المجموع",
-                            style: TextStyle(
-                              fontSize: 15.sp,
-                              fontWeight: FontWeight.w400,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          ),
-                          Text(
-                            "180 ر.س",
-                            style: TextStyle(
-                              fontSize: 15.sp,
-                              fontWeight: FontWeight.w400,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const Divider(),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "تم الدفع بواسطة",
-                            style: TextStyle(
-                              fontSize: 15.sp,
-                              fontWeight: FontWeight.w400,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 16.w,
-                          ),
-                          SvgPicture.asset(
-                            "assets/images/visa_colored.svg",
-                            width: 50.w,
-                            height: 15.h,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: Container(
-        margin: EdgeInsetsDirectional.only(
-          start: 16.w,
-          end: 16.w,
-          bottom: 16.h,
-        ),
-        height: 60.h,
-        child: FilledButton(
-          onPressed: () {},
-          child: Text(
-            "إلغاء الطلب",
-            style: TextStyle(
-              fontSize: 15.sp,
-              fontWeight: FontWeight.bold,
-              color: const Color(
-                0xffFF0000,
-              ),
-            ),
-          ),
-        ),
+            );
+          } else {
+            return const SizedBox.shrink();
+          }
+        },
       ),
     );
   }

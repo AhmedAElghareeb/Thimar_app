@@ -1,13 +1,23 @@
 import 'package:thimar_app/models/category_products.dart';
 
-class CategoryProductsStates{}
+import '../../models/search.dart';
 
-class CategoryProductsLoadingState extends CategoryProductsStates{}
+class CategoryProductsStates {}
 
-class CategoryProductsSuccessState extends CategoryProductsStates{
+class CategoryProductsLoadingState extends CategoryProductsStates {}
+
+class CategoryProductsSuccessState extends CategoryProductsStates {
   final List<ProductsData> list;
 
   CategoryProductsSuccessState({required this.list});
 }
 
-class CategoryProductsFailedState extends CategoryProductsStates{}
+class CategoryProductsFailedState extends CategoryProductsStates {}
+
+class GetSearchDataSuccessState extends CategoryProductsStates {
+  final List<SearchResult> data;
+
+  GetSearchDataSuccessState({required this.data});
+}
+
+class GetSearchDataFailedState extends CategoryProductsStates {}

@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:thimar_app/core/design/app_button.dart';
 import 'package:thimar_app/core/design/app_input.dart';
+import 'package:thimar_app/core/design/app_loading.dart';
 import 'package:thimar_app/core/logic/cache_helper.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
 import 'package:thimar_app/features/address/bloc.dart';
@@ -26,7 +28,9 @@ import '../../../../features/cart/bloc.dart';
 import '../../../../features/cart/events.dart';
 import '../../../../features/category/events.dart';
 import '../../../../features/category_products/events.dart';
+import '../../../../generated/locale_keys.g.dart';
 import '../../account/address/address.dart';
+import '../search/view.dart';
 
 class HomeScreen extends StatefulWidget {
   final int? id;
@@ -38,10 +42,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final searchController = TextEditingController();
-
   final bloc = KiwiContainer().resolve<CategoryProductBloc>()
     ..add(GetCategoryProductsDataEvent());
+
+  final searchBloc = KiwiContainer().resolve<CategoryProductBloc>();
 
   final cartBloc = KiwiContainer().resolve<CartBloc>();
 
@@ -65,10 +69,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 vertical: 15.h,
               ),
               child: AppInput(
-                controller: searchController,
-                keyboardType: TextInputType.text,
                 isFilled: true,
-                labelText: "ابحث عن ما تريد؟",
+                isEnabled: false,
+                onPress: () {
+                  navigateTo(
+                    SearchView(),
+                  );
+                },
+                labelText: LocaleKeys.Search_about_You_Want.tr(),
                 prefixIcon: "assets/images/icons/Search.svg",
               ),
             ),
@@ -86,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Align(
                 alignment: AlignmentDirectional.centerStart,
                 child: Text(
-                  "الأقسام",
+                  LocaleKeys.Sections.tr(),
                   style:
                       TextStyle(fontWeight: FontWeight.w900, fontSize: 15.sp),
                 ),
@@ -106,7 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Align(
                 alignment: AlignmentDirectional.centerStart,
                 child: Text(
-                  "الأصناف",
+                  LocaleKeys.Categories.tr(),
                   style:
                       TextStyle(fontWeight: FontWeight.w900, fontSize: 15.sp),
                 ),
@@ -119,9 +127,7 @@ class _HomeScreenState extends State<HomeScreen> {
               bloc: bloc,
               builder: (context, state) {
                 if (state is CategoryProductsFailedState) {
-                  return const Center(
-                    child: Text("فشل فى الاتصال"),
-                  );
+                  return const AppLoading();
                 } else if (state is CategoryProductsSuccessState) {
                   return GridView.builder(
                     physics: const NeverScrollableScrollPhysics(),
@@ -238,7 +244,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Align(
                               alignment: AlignmentDirectional.topStart,
                               child: Text(
-                                "السعر / ${state.list[index].unit.name}",
+                                LocaleKeys.Price_1_Kilogram.tr(),
                                 style: TextStyle(
                                   fontSize: 12.sp,
                                   color: const Color(0xFF808080),
@@ -261,7 +267,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     Align(
                                       alignment: AlignmentDirectional.topStart,
                                       child: Text(
-                                        "${state.list[index].price} ر.س",
+                                        "${state.list[index].price} ${LocaleKeys.SAR.tr()}",
                                         style: TextStyle(
                                           fontSize: 16.sp,
                                           fontWeight: FontWeight.bold,
@@ -276,7 +282,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       alignment:
                                           AlignmentDirectional.bottomStart,
                                       child: Text(
-                                        "${state.list[index].priceBeforeDiscount} ر.س",
+                                        "${state.list[index].priceBeforeDiscount} ${LocaleKeys.SAR.tr()}",
                                         textAlign: TextAlign.justify,
                                         style: TextStyle(
                                           fontSize: 13.sp,
@@ -315,7 +321,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           ),
                                         );
                                       },
-                                      text: "أضف للسلة",
+                                      text: LocaleKeys.Add_To_Cart.tr(),
                                       width: 120.w,
                                       height: 30.h,
                                       radius: 9.r,
@@ -325,7 +331,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     )
                                   : AppButton(
                                       onTap: () {},
-                                      text: "تم نفاذ الكمية",
+                                      text: LocaleKeys.No_Amount_Available.tr(),
                                       width: 120.w,
                                       height: 30.h,
                                       radius: 9.r,
@@ -346,9 +352,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     shrinkWrap: true,
                   );
                 } else {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
+                  return const SizedBox.shrink();
                 }
               },
             ),
@@ -384,7 +388,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
               width: 3.w,
             ),
             Text(
-              "سلة ثمار",
+              LocaleKeys.Thimar_Basket.tr(),
               style: TextStyle(
                 fontSize: 14.sp,
                 color: Theme.of(context).primaryColor,
@@ -413,9 +417,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
                         ),
                       builder: (context, state) {
                         if (state is GetUserAddressLoadingState) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
+                          return const AppLoading();
                         } else if (state is GetUserAddressSuccessState) {
                           return Column(
                             children: [
@@ -424,7 +426,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
                               ),
                               Center(
                                 child: Text(
-                                  "العناوين",
+                                  LocaleKeys.Addresses.tr(),
                                   style: TextStyle(
                                     fontSize: 15.sp,
                                     fontWeight: FontWeight.bold,
@@ -433,7 +435,12 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
                                 ),
                               ),
                               Expanded(
-                                child: AddressesListView(onSubmit: (x) {}),
+                                child: AddressesListView(
+                                  onSubmit: (addressLocation) {
+                                    Navigator.pop(
+                                        context, addressLocation.location);
+                                  },
+                                ),
                               ),
                               SizedBox(
                                 height: 20.h,
@@ -450,7 +457,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
                 child: Text.rich(
                   textAlign: TextAlign.center,
                   TextSpan(
-                    text: "التوصيل إلى",
+                    text: LocaleKeys.Delivery_To.tr(),
                     style: TextStyle(
                       fontSize: 12.sp,
                       color: Theme.of(context).primaryColor,
@@ -503,7 +510,9 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
                       9.r,
                     ),
                   ),
-                  child: SvgPicture.asset("assets/images/icons/cart.svg"),
+                  child: SvgPicture.asset(
+                    "assets/images/icons/cart.svg",
+                  ),
                 ),
               ),
             )
@@ -539,11 +548,7 @@ class _SliderImagesState extends State<SliderImages> {
       bloc: bloc,
       builder: (context, state) {
         if (state is GetSliderImagesLoadingState) {
-          return Center(
-            child: CircularProgressIndicator(
-              color: Theme.of(context).primaryColor,
-            ),
-          );
+          return const AppLoading();
         } else if (state is GetSliderImagesSuccessState) {
           return StatefulBuilder(
             builder: (context, setState2) => Stack(
@@ -607,9 +612,7 @@ class _SliderImagesState extends State<SliderImages> {
             ),
           );
         } else {
-          return const Center(
-            child: Text("فشل فى الاتصال"),
-          );
+          return const SizedBox.shrink();
         }
       },
     );
@@ -641,10 +644,8 @@ class _SectionsSliderState extends State<SectionsSlider> {
       child: BlocBuilder(
         bloc: bloc,
         builder: (context, state) {
-          if (state is CategoryFailedState) {
-            return const Center(
-              child: Text("فشل فى الاتصال"),
-            );
+          if (state is CategoryLoadingState) {
+            return const AppLoading();
           } else if (state is CategorySuccessState) {
             var model = state.list;
             return ListView.builder(
@@ -703,9 +704,7 @@ class _SectionsSliderState extends State<SectionsSlider> {
               ),
             );
           } else {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const SizedBox.shrink();
           }
         },
       ),

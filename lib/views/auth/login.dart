@@ -68,7 +68,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           AppInput(
                             controller: bloc.phoneNumberController,
                             labelText: "رقم الجوال",
-                            isPhone: true,
                             validator: (value) {
                               if (value!.isEmpty) {
                                 return "حقل رقم الجوال مطلوب";

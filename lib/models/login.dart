@@ -4,7 +4,7 @@ class UserModel {
   late final String phone;
   late final String email;
   late final String image;
-  late final int isBan;
+  late final num isBan;
   late final bool isActive;
   late final int unreadNotifications;
   late final String userType;
@@ -13,17 +13,17 @@ class UserModel {
   late final City city;
 
   UserModel.fromJson(Map<String, dynamic> json){
-    id = json['id'];
-    fullname = json['fullname'];
-    phone = json['phone'];
-    email = json['email'];
-    image = json['image'];
-    isBan = json['is_ban'];
-    isActive = json['is_active'];
-    unreadNotifications = json['unread_notifications'];
-    userType = json['user_type'];
-    token = json['token'];
-    userCartCount = json['user_cart_count'];
+    id = json['id'] ?? 0;
+    fullname = json['fullname'] ?? "";
+    phone = json['phone'] ?? "";
+    email = json['email'] ?? "";
+    image = json['image'] ?? "";
+    isBan = json['is_ban'] ?? 0;
+    isActive = json['is_active'] ?? false;
+    unreadNotifications = json['unread_notifications'] ?? 0;
+    userType = json['user_type'] ?? "";
+    token = json['token'] ?? "";
+    userCartCount = json['user_cart_count'] ?? 0;
     city = City.fromJson(json["city"]);
   }
 }
@@ -33,7 +33,7 @@ class City {
   late final String name;
 
   City.fromJson(Map<String, dynamic> json){
-    id = json['id'] ?? "";
+    id = json['id'].toString();
     name = json['name'] ?? "";
   }
 }

@@ -4,6 +4,8 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:thimar_app/core/design/app_empty.dart';
+import 'package:thimar_app/core/design/app_loading.dart';
 import 'package:thimar_app/features/about_us/states.dart';
 
 import '../../../features/about_us/bloc.dart';
@@ -17,7 +19,6 @@ class AboutUs extends StatefulWidget {
 }
 
 class _AboutUsState extends State<AboutUs> {
-
   final bloc = KiwiContainer().resolve<AboutUsBloc>()..add(GetAboutUsEvent());
 
   @override
@@ -67,34 +68,35 @@ class _AboutUsState extends State<AboutUs> {
           bloc: bloc,
           builder: (context, state) {
             if (state is GetAboutUsLoadingState) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
+              return const AppLoading();
             } else if (state is GetAboutUsSuccessState) {
               return Padding(
                 padding: EdgeInsetsDirectional.symmetric(
                   vertical: 26.h,
                 ),
-                child: Column(
-                  children: [
-                    SvgPicture.asset(
-                      "assets/images/logo/logo1.svg",
-                      width: 160.w,
-                      height: 157.h,
-                    ),
-                    SizedBox(
-                      height: 25.h,
-                    ),
-                    Html(
-                      data: bloc.data,
-                    ),
-                  ],
-                ),
+                child: bloc.data == null
+                    ? const AppEmpty(
+                        assetsPath: "empty_cart.json",
+                        text: "لا توجد بيانات",
+                      )
+                    : Column(
+                        children: [
+                          SvgPicture.asset(
+                            "assets/images/logo/logo1.svg",
+                            width: 160.w,
+                            height: 157.h,
+                          ),
+                          SizedBox(
+                            height: 25.h,
+                          ),
+                          Html(
+                            data: bloc.data,
+                          ),
+                        ],
+                      ),
               );
             } else {
-              return const Center(
-                child: Text("FAILED"),
-              );
+              return const SizedBox.shrink();
             }
           },
         ),

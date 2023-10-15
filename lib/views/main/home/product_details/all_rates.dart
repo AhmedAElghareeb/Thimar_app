@@ -7,6 +7,8 @@ import 'package:thimar_app/features/products_rates/bloc.dart';
 import 'package:thimar_app/features/products_rates/events.dart';
 import 'package:thimar_app/features/products_rates/states.dart';
 
+import '../../../../core/design/app_loading.dart';
+
 class RatesView extends StatefulWidget {
   final int id;
 
@@ -63,7 +65,7 @@ class _RatesViewState extends State<RatesView> {
         ),),
         builder: (context, state) {
           if(state is ProductsRatesLoadingState){
-            return const Center(child: CircularProgressIndicator(),);
+            return const AppLoading();
           } else if (state is ProductsRatesSuccessState) {
             return ListView.separated(
               padding: EdgeInsetsDirectional.symmetric(

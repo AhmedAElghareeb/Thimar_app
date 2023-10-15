@@ -6,6 +6,8 @@ import 'package:thimar_app/features/notifications/events.dart';
 import 'package:thimar_app/features/notifications/states.dart';
 import 'package:thimar_app/models/notifications.dart';
 
+import '../../../core/design/app_empty.dart';
+import '../../../core/design/app_loading.dart';
 import '../../../features/notifications/bloc.dart';
 
 class NotificationsScreen extends StatefulWidget {
@@ -39,33 +41,21 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         bloc: bloc,
         builder: (context, state) {
           if (state is GetNotificationsLoadingState) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const AppLoading();
           } else if (state is GetNotificationsSuccessState) {
-            if (state.list.isEmpty) {
-              return Center(
-                child: Text(
-                  "لا يوجد بيانات",
-                  style: TextStyle(
-                    fontSize: 20.sp,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).primaryColor
-                  ),
-                ),
-              );
-            } else {
-              return ListView.builder(
-                padding: EdgeInsetsDirectional.symmetric(
-                  horizontal: 16.w,
-                  vertical: 16.h,
-                ),
-                itemBuilder: (context, index) => _Item(
-                  model: state.list[index],
-                ),
-                itemCount: state.list.length,
-              );
-            }
+            return state.list.isEmpty ? const AppEmpty(
+              assetsPath: "empty_notifications.json",
+              text: "لا توجد بيانات",
+            ) : ListView.builder(
+              padding: EdgeInsetsDirectional.symmetric(
+                horizontal: 16.w,
+                vertical: 16.h,
+              ),
+              itemBuilder: (context, index) => _Item(
+                model: state.list[index],
+              ),
+              itemCount: state.list.length,
+            );
           } else {
             return const SizedBox.shrink();
           }

@@ -109,7 +109,7 @@ class _AddAddressState extends State<AddAddress> {
                     print('-==--== from view latlong is ${latLong.toJson()}');
                     _event.lat = latLong.latitude;
                     _event.long = latLong.longitude;
-                    _event.location!.text = desc;
+                    _event.location!.text = desc!;
                     setState(() {});
                   },
                 ),
@@ -330,7 +330,7 @@ class _AddAddressState extends State<AddAddress> {
 }
 
 class MyMap extends StatefulWidget {
-  final Function(LatLng, String) onSuccess;
+  final Function(LatLng, String?) onSuccess;
 
   const MyMap({
     Key? key,
