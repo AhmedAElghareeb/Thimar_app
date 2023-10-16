@@ -49,126 +49,163 @@ class _ProductDetailsState extends State<ProductDetails> {
   final ratesBloc = KiwiContainer().resolve<ProductsRatesBloc>();
   final favouritesBloc = KiwiContainer().resolve<FavouritesBloc>();
   final addToCartBloc = KiwiContainer().resolve<CartBloc>();
-void _init(){
-  bloc
-    .add(
+
+  void _init() {
+    bloc.add(
       GetProductsDetailsEvent(
         id: widget.id,
       ),
     );
-  ratesBloc
-    .add(GetProductsRatesEvent(
+    ratesBloc.add(GetProductsRatesEvent(
       id: widget.id,
     ));
-}
-@override
+  }
+
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _init();
   }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "تفاصيل المنتج",
-        ),
-        leading: Padding(
-          padding: EdgeInsetsDirectional.all(
-            10.r,
-          ),
-          child: GestureDetector(
-            child: Container(
-              width: 32.w,
-              height: 32.h,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(9.r),
-                color: const Color(
-                  0xff707070,
-                ).withOpacity(0.1),
+    return BlocConsumer(
+      bloc: bloc,
+      listener: (c, s) {
+        if (s is ShowProductsDetailsSuccessState) {
+          categoryProductBloc.add(GetProductsDataEvent(
+            id: s.model.categoryId.toInt(),
+          ));
+        }
+      },
+      builder: (context, state) {
+        if (state is ShowProductsDetailsLoadingState) {
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text(
+                "تفاصيل المنتج",
               ),
-              child: Padding(
-                padding: EdgeInsetsDirectional.only(
-                  start: 7.w,
-                ),
-                child: Icon(
-                  Icons.arrow_back_ios,
-                  size: 16.r,
-                  color: Theme.of(context).primaryColor,
-                ),
-              ),
-            ),
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
-        ),
-        actions: [
-          BlocBuilder(
-            bloc: favouritesBloc,
-            builder: (context, state) {
-              return Padding(
-                padding: EdgeInsetsDirectional.symmetric(
-                  horizontal: 16.w,
-                  vertical: 12.h,
+              leading: Padding(
+                padding: EdgeInsetsDirectional.all(
+                  10.r,
                 ),
                 child: GestureDetector(
-                  onTap: () {
-                    if (widget.isFavorite == false) {
-                      favouritesBloc.add(
-                        AddToFavouritesEvent(
-                          id: widget.id,
-                        ),
-                      );
-                      widget.isFavorite = !widget.isFavorite;
-                    } else {
-                      favouritesBloc.add(
-                        RemoveFromFavouritesEvent(
-                          id: widget.id,
-                        ),
-                      );
-                      widget.isFavorite = !widget.isFavorite;
-                    }
-                  },
                   child: Container(
                     width: 32.w,
                     height: 32.h,
                     decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor.withOpacity(
-                            0.1,
-                          ),
-                      borderRadius: BorderRadius.circular(
-                        9.r,
+                      borderRadius: BorderRadius.circular(9.r),
+                      color: const Color(
+                        0xff707070,
+                      ).withOpacity(0.1),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsetsDirectional.only(
+                        start: 7.w,
+                      ),
+                      child: Icon(
+                        Icons.arrow_back_ios,
+                        size: 16.r,
+                        color: Theme.of(context).primaryColor,
                       ),
                     ),
-                    child: Icon(
-                      Icons.favorite,
-                      size: 20,
-                      color: widget.isFavorite ? Colors.red : null,
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+            ),
+            body: const AppLoading(),
+          );
+        } else if (state is ShowProductsDetailsSuccessState) {
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text(
+                "تفاصيل المنتج",
+              ),
+              leading: Padding(
+                padding: EdgeInsetsDirectional.all(
+                  10.r,
+                ),
+                child: GestureDetector(
+                  child: Container(
+                    width: 32.w,
+                    height: 32.h,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(9.r),
+                      color: const Color(
+                        0xff707070,
+                      ).withOpacity(0.1),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsetsDirectional.only(
+                        start: 7.w,
+                      ),
+                      child: Icon(
+                        Icons.arrow_back_ios,
+                        size: 16.r,
+                        color: Theme.of(context).primaryColor,
+                      ),
                     ),
                   ),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
                 ),
-              );
-            },
-          ),
-        ],
-      ),
-      body: BlocConsumer(
-        bloc: bloc
-         ,
-        listener: (c, s) {
-          if (s is ShowProductsDetailsSuccessState) {
-            categoryProductBloc.add(GetProductsDataEvent(
-              id: s.model.categoryId.toInt(),
-            ));
-          }
-        },
-        builder: (context, state) {
-          if (state is ShowProductsDetailsLoadingState) {
-            return const AppLoading();
-          } else if (state is ShowProductsDetailsSuccessState) {
-            return ListView(
+              ),
+              actions: [
+                BlocBuilder(
+                  bloc: favouritesBloc,
+                  builder: (context, state) {
+                    return Padding(
+                      padding: EdgeInsetsDirectional.symmetric(
+                        horizontal: 16.w,
+                        vertical: 12.h,
+                      ),
+                      child: GestureDetector(
+                        onTap: () {
+                          if (widget.isFavorite == false) {
+                            favouritesBloc.add(
+                              AddToFavouritesEvent(
+                                id: widget.id,
+                              ),
+                            );
+                            widget.isFavorite = !widget.isFavorite;
+                          } else {
+                            favouritesBloc.add(
+                              RemoveFromFavouritesEvent(
+                                id: widget.id,
+                              ),
+                            );
+                            widget.isFavorite = !widget.isFavorite;
+                          }
+                        },
+                        child: Container(
+                          width: 32.w,
+                          height: 32.h,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColor.withOpacity(
+                                  0.1,
+                                ),
+                            borderRadius: BorderRadius.circular(
+                              9.r,
+                            ),
+                          ),
+                          child: Icon(
+                            Icons.favorite,
+                            size: 20,
+                            color: widget.isFavorite ? Colors.red : null,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+            body: ListView(
               children: [
                 StatefulBuilder(
                   builder: (context, setState) => Column(
@@ -324,12 +361,12 @@ void _init(){
                               children: [
                                 _FloatingActionButton(
                                   onPress: () {
-                                    if (counter < state.model.amount) {
-                                      if(state.model.amount < 1) {
-                                        showSnackBar("لا توجد كمية كافية");
-                                      }
-                                    } else {
+                                    if (state.model.amount > counter) {
                                       counter++;
+                                    } else {
+                                      showSnackBar(
+                                        "عفوا الكمية المطلوبة غير متوفرة",
+                                      );
                                     }
                                     setState(() {});
                                   },
@@ -352,7 +389,9 @@ void _init(){
                                     if (counter > 1) {
                                       counter--;
                                     } else {
-                                      showSnackBar("يجب ان تكون الكمية = 1 على الأقل");
+                                      showSnackBar(
+                                        "يجب ان تكون الكمية = 1 على الأقل",
+                                      );
                                     }
                                     setState(() {});
                                   },
@@ -794,92 +833,97 @@ void _init(){
                   ),
                 ),
               ],
-            );
-          } else {
-            return const SizedBox.shrink();
-          }
-        },
-      ),
-      bottomNavigationBar: BlocBuilder(
-        bloc: addToCartBloc,
-        builder: (context, ss) {
-          if (ss is AddToCartDataLoadingState) {
-            return const AppLoading();
-          } else {
-            return GestureDetector(
-              onTap: () {
-                addToCartBloc.add(AddToCartDataEvent(
-                  productId: widget.id,
-                  amount: counter.toInt(),
-                ));
-              },
-              child: Container(
-                height: 60.h,
-                color: Theme.of(context).primaryColor,
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Row(
-                        children: [
-                          Container(
-                            margin: EdgeInsetsDirectional.all(
-                              16.r,
-                            ),
-                            width: 35.w,
-                            height: 32.h,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadiusDirectional.circular(
-                                10.r,
-                              ),
-                              color: Colors.grey.withOpacity(
-                                0.5,
-                              ),
-                            ),
-                            child: SvgPicture.asset(
-                              "assets/images/icons/cart2.svg",
-                              width: 19.w,
-                              height: 20.h,
-                              fit: BoxFit.scaleDown,
+            ),
+            bottomNavigationBar: state.model.amount == 0
+                ? null
+                : BlocBuilder(
+                    bloc: addToCartBloc,
+                    builder: (context, ss) {
+                      if (ss is AddToCartDataLoadingState) {
+                        return LinearProgressIndicator(
+                          minHeight: 5.h,
+                        );
+                      } else {
+                        return GestureDetector(
+                          onTap: () {
+                            addToCartBloc.add(AddToCartDataEvent(
+                              productId: widget.id,
+                              amount: counter.toInt(),
+                            ));
+                          },
+                          child: Container(
+                            height: 60.h,
+                            color: Theme.of(context).primaryColor,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        margin: EdgeInsetsDirectional.all(
+                                          16.r,
+                                        ),
+                                        width: 35.w,
+                                        height: 32.h,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadiusDirectional.circular(
+                                            10.r,
+                                          ),
+                                          color: Colors.grey.withOpacity(
+                                            0.5,
+                                          ),
+                                        ),
+                                        child: SvgPicture.asset(
+                                          "assets/images/icons/cart2.svg",
+                                          width: 19.w,
+                                          height: 20.h,
+                                          fit: BoxFit.scaleDown,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 10.w,
+                                      ),
+                                      Text(
+                                        "إضافة إلي السلة",
+                                        style: TextStyle(
+                                          fontSize: 15.sp,
+                                          fontWeight: FontWeight.bold,
+                                          color: const Color(
+                                            0xffFFFFFF,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsetsDirectional.only(
+                                    end: 20.w,
+                                  ),
+                                  child: Text(
+                                    "${counter * widget.price} ر.س",
+                                    style: TextStyle(
+                                      fontSize: 15.sp,
+                                      fontWeight: FontWeight.bold,
+                                      color: const Color(
+                                        0xffFFFFFF,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          SizedBox(
-                            width: 10.w,
-                          ),
-                          Text(
-                            "إضافة إلي السلة",
-                            style: TextStyle(
-                              fontSize: 15.sp,
-                              fontWeight: FontWeight.bold,
-                              color: const Color(
-                                0xffFFFFFF,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsetsDirectional.only(
-                        end: 20.w,
-                      ),
-                      child: Text(
-                        "${counter * widget.price} ر.س",
-                        style: TextStyle(
-                          fontSize: 15.sp,
-                          fontWeight: FontWeight.bold,
-                          color: const Color(
-                            0xffFFFFFF,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          }
-        },
-      ),
+                        );
+                      }
+                    },
+                  ),
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
+      },
     );
   }
 

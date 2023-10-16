@@ -4,18 +4,23 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get_it/get_it.dart';
 import 'package:thimar_app/core/logic/cache_helper.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
 import 'package:thimar_app/generated/codegen_loader.g.dart';
 import 'package:thimar_app/views/auth/splash.dart';
 import 'core/logic/kiwi.dart';
+import 'core/logic/main_data.dart';
 import 'firebase_options.dart';
 
-
-
+GetIt getIt = GetIt.instance;
+void initServiceLocator() {
+  getIt.registerLazySingleton<AppGlobals>(() => AppGlobals());
+   }
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   initKiwi();
+  initServiceLocator();
   await EasyLocalization.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

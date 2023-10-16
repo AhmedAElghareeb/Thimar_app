@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:thimar_app/core/design/app_loading.dart';
 
 class AppButton extends StatelessWidget {
   const AppButton({
@@ -26,7 +27,7 @@ class AppButton extends StatelessWidget {
     return isLoading
         ? const FittedBox(
             fit: BoxFit.scaleDown,
-            child: CircularProgressIndicator(),
+            child: AppLoading(),
           )
         : Container(
             width: width,

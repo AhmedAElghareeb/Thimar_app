@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:thimar_app/core/design/app_empty.dart';
-import 'package:thimar_app/core/design/app_loading.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
 import 'package:thimar_app/features/orders/bloc.dart';
 import 'package:thimar_app/features/orders/events.dart';
@@ -23,7 +23,6 @@ class _OrdersScreenState extends State<OrdersScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _init();
   }
@@ -133,7 +132,97 @@ class _OrdersScreenState extends State<OrdersScreen> {
               bloc: bloc,
               builder: (context, state) {
                 if (state is GetOrdersDataLoadingState) {
-                  return const AppLoading();
+                  return ListView.separated(
+                    scrollDirection: Axis.vertical,
+                    // shrinkWrap: true,
+                    itemCount: 5,
+                    padding: EdgeInsetsDirectional.symmetric(
+                      horizontal: 16.w,
+                    ),
+                    // physics: const NeverScrollableScrollPhysics(),
+                    separatorBuilder: (context, index) => const SizedBox(),
+                    itemBuilder: (context, index) {
+                      return Shimmer.fromColors(
+                        baseColor: Colors.grey.withOpacity(0.4),
+                        highlightColor: Colors.grey.withOpacity(0.8),
+                        child: Container(
+                          padding: EdgeInsetsDirectional.symmetric(
+                            vertical: 10.h,
+                            horizontal: 14.w,
+                          ),
+                          margin: EdgeInsetsDirectional.symmetric(
+                            vertical: 10.h,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadiusDirectional.circular(
+                              15.r,
+                            ),
+                            color: Colors.black.withOpacity(
+                              0.005,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.02),
+                                blurRadius: 2.r,
+                                blurStyle: BlurStyle.inner,
+                              )
+                            ],
+                          ),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "رقم الطلب",
+                                        style: TextStyle(
+                                          fontSize: 17.sp,
+                                          fontWeight: FontWeight.bold,
+                                          color: Theme.of(context).primaryColor,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 8.h,
+                                      ),
+                                      Text(
+                                        "التاريخ",
+                                        style: TextStyle(
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.w300,
+                                          color: const Color(
+                                            0xff9C9C9C,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              const Divider(
+                                thickness: 1.5,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "السعر / ر.س",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w900,
+                                      fontSize: 15.sp,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
                 } else if (state is GetOrdersDataSuccessState) {
                   return state.data.isEmpty
                       ? const AppEmpty(
@@ -148,7 +237,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
                             horizontal: 16.w,
                           ),
                           // physics: const NeverScrollableScrollPhysics(),
-                          separatorBuilder: (context, index) => const SizedBox(),
+                          separatorBuilder: (context, index) =>
+                              const SizedBox(),
                           itemBuilder: (context, index) {
                             final item = state.data[index];
                             return GestureDetector(
@@ -168,7 +258,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                   vertical: 10.h,
                                 ),
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadiusDirectional.circular(
+                                  borderRadius:
+                                      BorderRadiusDirectional.circular(
                                     15.r,
                                   ),
                                   color: Colors.black.withOpacity(
@@ -226,8 +317,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                           ),
                                           decoration: BoxDecoration(
                                             borderRadius:
-                                                BorderRadiusDirectional.circular(
-                                                    7.r),
+                                                BorderRadiusDirectional
+                                                    .circular(7.r),
                                             color: getOrderStatusColor(
                                               item.status,
                                             ),
@@ -241,8 +332,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                                 fontSize: 11.sp,
                                                 fontWeight: FontWeight.bold,
                                                 color: getOrderStatusTextColor(
-                                                  item.status
-                                                ),
+                                                    item.status),
                                               ),
                                             ),
                                           ),
@@ -303,7 +393,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                                     "+${item.products.length - 3}",
                                                     style: TextStyle(
                                                       fontSize: 11.sp,
-                                                      fontWeight: FontWeight.bold,
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                       color: Theme.of(context)
                                                           .primaryColor,
                                                     ),
@@ -317,7 +408,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                           style: TextStyle(
                                             fontWeight: FontWeight.w900,
                                             fontSize: 15.sp,
-                                            color: Theme.of(context).primaryColor,
+                                            color:
+                                                Theme.of(context).primaryColor,
                                           ),
                                         ),
                                       ],

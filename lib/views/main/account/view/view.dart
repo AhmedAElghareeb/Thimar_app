@@ -341,11 +341,7 @@ class _AccountScreenState extends State<AccountScreen> {
               builder: (context, state) {
                 if (state is LogoutLoadingState) {
                   return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else if (state is LogoutFailedState) {
-                  return const Text(
-                    "Failed",
+                    child: LinearProgressIndicator(),
                   );
                 } else {
                   return Padding(
@@ -362,7 +358,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           const LoginScreen(),
                         );
                       },
-                      child: Row(
+                      child: CacheHelper.getCity().isNotEmpty ? Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
@@ -377,6 +373,16 @@ class _AccountScreenState extends State<AccountScreen> {
                             "assets/images/icons/accountIcons/exit.svg",
                           ),
                         ],
+                      ) : Align(
+                        alignment: AlignmentDirectional.centerStart,
+                        child: Text(
+                          LocaleKeys.Login.tr(),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15.sp,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                        ),
                       ),
                     ),
                   );

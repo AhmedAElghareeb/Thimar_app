@@ -7,8 +7,8 @@ class WalletData {
   late final String status;
   late final String message;
 
-  WalletData.fromJson(Map<String, dynamic> json){
-    data = List.from(json['data']).map((e)=>WalletModel.fromJson(e)).toList();
+  WalletData.fromJson(Map<String, dynamic> json) {
+    data = List.from(json['data']).map((e) => WalletModel.fromJson(e)).toList();
     links = Links.fromJson(json['links']);
     meta = Meta.fromJson(json['meta']);
     status = json['status'];
@@ -30,13 +30,11 @@ class WalletModel {
   late final String state;
   late final List<ImageModel> images;
 
-
-  WalletModel.fromJson(Map<String, dynamic> json){
+  WalletModel.fromJson(Map<String, dynamic> json) {
     id = json['id'] ?? 0;
     amount = json['amount'] ?? 0;
     beforeCharge = json['before_charge'] ?? 0;
-    images = List.from(json['images'] ?? []).map((e)=>ImageModel.fromJson(e)).toList();
-
+    images = List.from(json['images'] ?? []).map((e) => ImageModel.fromJson(e)).toList();
     afterCharge = json['after_charge'] ?? 0;
     date = json['date'] ?? "";
     statusTrans = json['status_trans'] ?? "";
@@ -54,7 +52,7 @@ class Links {
   late final Null prev;
   late final Null next;
 
-  Links.fromJson(Map<String, dynamic> json){
+  Links.fromJson(Map<String, dynamic> json) {
     first = json['first'] ?? "";
     last = json['last'] ?? "";
     prev = null;
@@ -72,11 +70,12 @@ class Meta {
   late final num to;
   late final num total;
 
-  Meta.fromJson(Map<String, dynamic> json){
+  Meta.fromJson(Map<String, dynamic> json) {
     currentPage = json['current_page'] ?? 0;
     from = json['from'] ?? 0;
     lastPage = json['last_page'] ?? 0;
-    links = List.from(json['links'] ?? []).map((e)=>Links.fromJson(e)).toList();
+    links =
+        List.from(json['links'] ?? []).map((e) => Links.fromJson(e)).toList();
     path = json['path'] ?? "";
     perPage = json['per_page'] ?? 0;
     to = json['to'] ?? 0;

@@ -60,9 +60,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                 child: Icon(
                   Icons.arrow_back_ios,
                   size: 16.r,
-                  color: Theme
-                      .of(context)
-                      .primaryColor,
+                  color: Theme.of(context).primaryColor,
                 ),
               ),
             ),
@@ -119,9 +117,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                     style: TextStyle(
                                       fontSize: 17.sp,
                                       fontWeight: FontWeight.bold,
-                                      color: Theme
-                                          .of(context)
-                                          .primaryColor,
+                                      color: Theme.of(context).primaryColor,
                                     ),
                                   ),
                                   SizedBox(
@@ -147,7 +143,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                               ),
                               decoration: BoxDecoration(
                                 borderRadius:
-                                BorderRadiusDirectional.circular(7.r),
+                                    BorderRadiusDirectional.circular(7.r),
                                 color: getOrderStatusColor(
                                   state.data.status,
                                 ),
@@ -161,8 +157,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                     fontSize: 11.sp,
                                     fontWeight: FontWeight.bold,
                                     color: getOrderStatusTextColor(
-                                        state.data.status
-                                    ),
+                                        state.data.status),
                                   ),
                                 ),
                               ),
@@ -177,30 +172,29 @@ class _OrderDetailsState extends State<OrderDetails> {
                               children: [
                                 ...List.generate(
                                   state.data.products.length,
-                                      (index) =>
-                                      Container(
-                                        width: 25.w,
-                                        height: 25.h,
-                                        clipBehavior: Clip.antiAlias,
-                                        margin: EdgeInsetsDirectional.only(
-                                          end: 3.w,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          borderRadius:
+                                  (index) => Container(
+                                    width: 25.w,
+                                    height: 25.h,
+                                    clipBehavior: Clip.antiAlias,
+                                    margin: EdgeInsetsDirectional.only(
+                                      end: 3.w,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      borderRadius:
                                           BorderRadiusDirectional.circular(7.r),
-                                          border: Border.all(
-                                            color: const Color(
-                                              0xff61B80C,
-                                            ).withOpacity(0.06),
-                                          ),
-                                        ),
-                                        child: Image.network(
-                                          state.data.products[index].url,
-                                          width: 25.w,
-                                          height: 25.h,
-                                          fit: BoxFit.fill,
-                                        ),
+                                      border: Border.all(
+                                        color: const Color(
+                                          0xff61B80C,
+                                        ).withOpacity(0.06),
                                       ),
+                                    ),
+                                    child: Image.network(
+                                      state.data.products[index].url,
+                                      width: 25.w,
+                                      height: 25.h,
+                                      fit: BoxFit.fill,
+                                    ),
+                                  ),
                                 ),
                                 if (state.data.products.length > 3)
                                   Container(
@@ -212,9 +206,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                                     ),
                                     decoration: BoxDecoration(
                                       borderRadius:
-                                      BorderRadiusDirectional.circular(7.r),
-                                      color: Theme
-                                          .of(context)
+                                          BorderRadiusDirectional.circular(7.r),
+                                      color: Theme.of(context)
                                           .primaryColor
                                           .withOpacity(0.13),
                                     ),
@@ -224,16 +217,23 @@ class _OrderDetailsState extends State<OrderDetails> {
                                         style: TextStyle(
                                           fontSize: 11.sp,
                                           fontWeight: FontWeight.bold,
-                                          color: Theme
-                                              .of(context)
-                                              .primaryColor,
+                                          color: Theme.of(context).primaryColor,
                                         ),
                                       ),
                                     ),
                                   ),
                               ],
                             ),
-                            Text(state.data.totalPrice.toString(),),
+                            Text(
+                              "${state.data.totalPrice} ر.س",
+                              style: TextStyle(
+                                fontSize: 15.sp,
+                                fontWeight: FontWeight.w400,
+                                color: Theme
+                                    .of(context)
+                                    .primaryColor,
+                              ),
+                            ),
                           ],
                         ),
                       ],
@@ -249,9 +249,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                         style: TextStyle(
                           fontSize: 17.sp,
                           fontWeight: FontWeight.bold,
-                          color: Theme
-                              .of(context)
-                              .primaryColor,
+                          color: Theme.of(context).primaryColor,
                         ),
                       ),
                       SizedBox(
@@ -292,9 +290,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                     style: TextStyle(
                                       fontSize: 15.sp,
                                       fontWeight: FontWeight.w400,
-                                      color: Theme
-                                          .of(context)
-                                          .primaryColor,
+                                      color: Theme.of(context).primaryColor,
                                     ),
                                   ),
                                   SizedBox(
@@ -342,9 +338,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                         style: TextStyle(
                           fontSize: 17.sp,
                           fontWeight: FontWeight.bold,
-                          color: Theme
-                              .of(context)
-                              .primaryColor,
+                          color: Theme.of(context).primaryColor,
                         ),
                       ),
                       SizedBox(
@@ -375,9 +369,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                   style: TextStyle(
                                     fontSize: 15.sp,
                                     fontWeight: FontWeight.w400,
-                                    color: Theme
-                                        .of(context)
-                                        .primaryColor,
+                                    color: Theme.of(context).primaryColor,
                                   ),
                                 ),
                                 Text(
@@ -385,9 +377,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                   style: TextStyle(
                                     fontSize: 15.sp,
                                     fontWeight: FontWeight.w400,
-                                    color: Theme
-                                        .of(context)
-                                        .primaryColor,
+                                    color: Theme.of(context).primaryColor,
                                   ),
                                 ),
                               ],
@@ -403,9 +393,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                   style: TextStyle(
                                     fontSize: 15.sp,
                                     fontWeight: FontWeight.w400,
-                                    color: Theme
-                                        .of(context)
-                                        .primaryColor,
+                                    color: Theme.of(context).primaryColor,
                                   ),
                                 ),
                                 Text(
@@ -413,9 +401,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                   style: TextStyle(
                                     fontSize: 15.sp,
                                     fontWeight: FontWeight.w400,
-                                    color: Theme
-                                        .of(context)
-                                        .primaryColor,
+                                    color: Theme.of(context).primaryColor,
                                   ),
                                 ),
                               ],
@@ -429,9 +415,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                   style: TextStyle(
                                     fontSize: 15.sp,
                                     fontWeight: FontWeight.w400,
-                                    color: Theme
-                                        .of(context)
-                                        .primaryColor,
+                                    color: Theme.of(context).primaryColor,
                                   ),
                                 ),
                                 Text(
@@ -439,9 +423,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                   style: TextStyle(
                                     fontSize: 15.sp,
                                     fontWeight: FontWeight.w400,
-                                    color: Theme
-                                        .of(context)
-                                        .primaryColor,
+                                    color: Theme.of(context).primaryColor,
                                   ),
                                 ),
                               ],
@@ -457,9 +439,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                   style: TextStyle(
                                     fontSize: 15.sp,
                                     fontWeight: FontWeight.w400,
-                                    color: Theme
-                                        .of(context)
-                                        .primaryColor,
+                                    color: Theme.of(context).primaryColor,
                                   ),
                                 ),
                                 Text(
@@ -467,9 +447,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                   style: TextStyle(
                                     fontSize: 15.sp,
                                     fontWeight: FontWeight.w400,
-                                    color: Theme
-                                        .of(context)
-                                        .primaryColor,
+                                    color: Theme.of(context).primaryColor,
                                   ),
                                 ),
                               ],
@@ -507,9 +485,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                   style: TextStyle(
                                     fontSize: 15.sp,
                                     fontWeight: FontWeight.w400,
-                                    color: Theme
-                                        .of(context)
-                                        .primaryColor,
+                                    color: Theme.of(context).primaryColor,
                                   ),
                                 ),
                                 Text(
@@ -517,9 +493,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                   style: TextStyle(
                                     fontSize: 15.sp,
                                     fontWeight: FontWeight.w400,
-                                    color: Theme
-                                        .of(context)
-                                        .primaryColor,
+                                    color: Theme.of(context).primaryColor,
                                   ),
                                 ),
                               ],
@@ -533,9 +507,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                   style: TextStyle(
                                     fontSize: 15.sp,
                                     fontWeight: FontWeight.w400,
-                                    color: Theme
-                                        .of(context)
-                                        .primaryColor,
+                                    color: Theme.of(context).primaryColor,
                                   ),
                                 ),
                                 SizedBox(
@@ -546,9 +518,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                   style: TextStyle(
                                     fontSize: 20.sp,
                                     fontWeight: FontWeight.w400,
-                                    color: Theme
-                                        .of(context)
-                                        .primaryColor,
+                                    color: Theme.of(context).primaryColor,
                                   ),
                                 ),
                               ],
@@ -559,38 +529,40 @@ class _OrderDetailsState extends State<OrderDetails> {
                       SizedBox(
                         height: 30.h,
                       ),
-                      state.data.status == "pending" ? BlocBuilder(
-                        bloc: cancelBloc,
-                        builder: (context, sC) {
-                          if (sC is CancelOrdersDataLoadingState) {
-                            return const AppLoading();
-                          } else {
-                            return SizedBox(
-                              width: double.infinity,
-                              height: 60.h,
-                              child: FilledButton(
-                                onPressed: () {
-                                  cancelBloc.add(
-                                    CancelOrderDataEvent(
-                                      orderNum: state.data.id,
+                      state.data.status == "pending"
+                          ? BlocBuilder(
+                              bloc: cancelBloc,
+                              builder: (context, sC) {
+                                if (sC is CancelOrdersDataLoadingState) {
+                                  return const AppLoading();
+                                } else {
+                                  return SizedBox(
+                                    width: double.infinity,
+                                    height: 60.h,
+                                    child: FilledButton(
+                                      onPressed: () {
+                                        cancelBloc.add(
+                                          CancelOrderDataEvent(
+                                            orderNum: state.data.id,
+                                          ),
+                                        );
+                                      },
+                                      child: Text(
+                                        "إلغاء الطلب",
+                                        style: TextStyle(
+                                          fontSize: 15.sp,
+                                          fontWeight: FontWeight.bold,
+                                          color: const Color(
+                                            0xffFF0000,
+                                          ),
+                                        ),
+                                      ),
                                     ),
                                   );
-                                },
-                                child: Text(
-                                  "إلغاء الطلب",
-                                  style: TextStyle(
-                                    fontSize: 15.sp,
-                                    fontWeight: FontWeight.bold,
-                                    color: const Color(
-                                      0xffFF0000,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            );
-                          }
-                        },
-                      ) : const SizedBox.shrink(),
+                                }
+                              },
+                            )
+                          : const SizedBox.shrink(),
                     ],
                   ),
                 ],

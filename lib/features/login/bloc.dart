@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:thimar_app/views/main/home/home/view.dart';
 
 import '../../core/logic/cache_helper.dart';
 import '../../core/logic/dio_helper.dart';
@@ -45,6 +46,8 @@ class LoginBloc extends Bloc<LoginEvents, LoginStates> {
     if (response.success) {
       await CacheHelper.saveLoginData(
           UserModel.fromJson(response.response!.data['data']));
+      print( '-=-=--==-=--=- ${response.response!.data['data']['user_cart_count'] }');
+      // setCartCount(response.response!.data['data']['user_cart_count'] ?? 0);
       showSnackBar(
         response.msg,
         typ: MessageType.success,

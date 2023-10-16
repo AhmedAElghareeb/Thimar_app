@@ -25,7 +25,9 @@ import '../../features/slider_images/bloc.dart';
 import '../../features/suggestions_and_complaints/bloc.dart';
 import '../../features/terms_conditions/bloc.dart';
 import '../../features/wallet/bloc.dart';
+import '../../views/main/home/home/view.dart';
 import 'dio_helper.dart';
+import 'main_data.dart';
 
 void initKiwi() {
   KiwiContainer container = KiwiContainer();

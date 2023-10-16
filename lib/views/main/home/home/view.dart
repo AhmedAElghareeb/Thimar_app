@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:thimar_app/core/design/app_button.dart';
 import 'package:thimar_app/core/design/app_input.dart';
 import 'package:thimar_app/core/design/app_loading.dart';
@@ -24,11 +26,13 @@ import 'package:thimar_app/features/slider_images/states.dart';
 import 'package:thimar_app/views/main/home/cart/view.dart';
 import 'package:thimar_app/views/main/home/category/view.dart';
 import 'package:thimar_app/views/main/home/product_details/view.dart';
+import '../../../../core/logic/main_data.dart';
 import '../../../../features/cart/bloc.dart';
 import '../../../../features/cart/events.dart';
 import '../../../../features/category/events.dart';
 import '../../../../features/category_products/events.dart';
 import '../../../../generated/locale_keys.g.dart';
+import '../../../../main.dart';
 import '../../account/address/address.dart';
 import '../search/view.dart';
 
@@ -42,10 +46,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
   final bloc = KiwiContainer().resolve<CategoryProductBloc>()
     ..add(GetCategoryProductsDataEvent());
-
-  final searchBloc = KiwiContainer().resolve<CategoryProductBloc>();
 
   final cartBloc = KiwiContainer().resolve<CartBloc>();
 
@@ -126,8 +129,152 @@ class _HomeScreenState extends State<HomeScreen> {
             BlocBuilder(
               bloc: bloc,
               builder: (context, state) {
-                if (state is CategoryProductsFailedState) {
-                  return const AppLoading();
+                if (state is CategoryProductsLoadingState) {
+                  return GridView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    padding: EdgeInsetsDirectional.symmetric(
+                      horizontal: 10.w,
+                    ),
+                    itemCount: 7,
+                    itemBuilder: (context, index) => Shimmer.fromColors(
+                      baseColor: Colors.grey.withOpacity(0.4),
+                      highlightColor: Colors.grey.withOpacity(0.8),
+                      child: Column(
+                        children: [
+                          Stack(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadiusDirectional.circular(
+                                    11.r,
+                                  ),
+                                ),
+                                margin: EdgeInsetsDirectional.only(
+                                  top: 20.h,
+                                  start: 9.w,
+                                  end: 20.w,
+                                ),
+                                clipBehavior: Clip.antiAliasWithSaveLayer,
+                                child: Center(
+                                  child: SvgPicture.asset(
+                                    "assets/images/logo/logo1.svg",
+                                    fit: BoxFit.scaleDown,
+                                    width: 70.w,
+                                    height: 70.h,
+                                  ),
+                                ),
+                              ),
+                              Align(
+                                alignment: AlignmentDirectional.topEnd,
+                                child: Container(
+                                  margin: EdgeInsetsDirectional.only(
+                                    top: 9.h,
+                                    end: 28.w,
+                                  ),
+                                  width: 54.w,
+                                  height: 20.h,
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).primaryColor,
+                                    borderRadius: BorderRadiusDirectional.only(
+                                      bottomStart: Radius.circular(25.r),
+                                      topEnd: Radius.circular(11.r),
+                                    ),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      "الخصم",
+                                      style: TextStyle(
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: EdgeInsetsDirectional.only(
+                              start: 10.w,
+                            ),
+                            child: Align(
+                              alignment: AlignmentDirectional.topStart,
+                              child: Text(
+                                "اسم المنتج",
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 4.h,
+                          ),
+                          Padding(
+                            padding: EdgeInsetsDirectional.only(
+                              start: 11.w,
+                            ),
+                            child: Align(
+                              alignment: AlignmentDirectional.topStart,
+                              child: Text(
+                                "السعر / كيلو",
+                                style: TextStyle(
+                                  fontSize: 12.sp,
+                                  color: const Color(0xFF808080),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 3.h,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Align(
+                                    alignment: AlignmentDirectional.topStart,
+                                    child: Text(
+                                      "السعر بعد \n الخصم ر.س",
+                                      style: TextStyle(
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.bold,
+                                        color: Theme.of(context).primaryColor,
+                                      ),
+                                    ),
+                                  ),
+                                  Align(
+                                    alignment: AlignmentDirectional.bottomStart,
+                                    child: Text(
+                                      "السعر قبل \n الخصم ر.س",
+                                      textAlign: TextAlign.justify,
+                                      style: TextStyle(
+                                        fontSize: 13.sp,
+                                        color: Theme.of(context).primaryColor,
+                                        decoration: TextDecoration.lineThrough,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 10.w,
+                      mainAxisSpacing: 10.h,
+                      childAspectRatio: 0.652,
+                    ),
+                    shrinkWrap: true,
+                  );
                 } else if (state is CategoryProductsSuccessState) {
                   return GridView.builder(
                     physics: const NeverScrollableScrollPhysics(),
@@ -309,25 +456,32 @@ class _HomeScreenState extends State<HomeScreen> {
                                 bottom: 10.h,
                               ),
                               child: state.list[index].amount != 0
-                                  ? AppButton(
-                                      isLoading:
-                                          state is AddToCartDataLoadingState,
-                                      onTap: () {
-                                        cartBloc.add(
-                                          AddToCartDataEvent(
-                                            productId: state.list[index].id,
-                                            amount: state.list[index].amount
-                                                .toInt(),
-                                          ),
-                                        );
+                                  ? BlocBuilder(
+                                      builder: (context, sA) {
+                                        if (sA is AddToCartDataLoadingState) {
+                                          return const Center(child: LinearProgressIndicator(),);
+                                        } else {
+                                          return AppButton(
+                                            onTap: () {
+                                              cartBloc.add(
+                                                AddToCartDataEvent(
+                                                  productId: state.list[index].id,
+                                                  amount: state.list[index].amount
+                                                      .toInt(),
+                                                ),
+                                              );
+                                            },
+                                            text: LocaleKeys.Add_To_Cart.tr(),
+                                            width: 120.w,
+                                            height: 30.h,
+                                            radius: 9.r,
+                                            backColor: const Color(
+                                              0xff61B80C,
+                                            ),
+                                          );
+                                        }
                                       },
-                                      text: LocaleKeys.Add_To_Cart.tr(),
-                                      width: 120.w,
-                                      height: 30.h,
-                                      radius: 9.r,
-                                      backColor: const Color(
-                                        0xff61B80C,
-                                      ),
+                                      bloc: cartBloc,
                                     )
                                   : AppButton(
                                       onTap: () {},
@@ -479,43 +633,56 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
               ),
             ),
-            Badge(
-              alignment: AlignmentDirectional.topEnd,
-              label: Text(
-                "3",
-                style: TextStyle(
-                  fontSize: 6.sp,
-                  fontWeight: FontWeight.bold,
-                  color: const Color(
-                    0xffFFFFFF,
-                  ),
-                ),
-              ),
-              backgroundColor: Theme.of(context).primaryColor,
-              child: GestureDetector(
-                onTap: () {
-                  navigateTo(
-                    const Cart(),
-                  );
-                },
-                child: Container(
-                  height: 33.h,
-                  width: 33.w,
-                  padding: EdgeInsetsDirectional.all(
-                    7.r,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor.withOpacity(.13),
-                    borderRadius: BorderRadiusDirectional.circular(
-                      9.r,
-                    ),
-                  ),
-                  child: SvgPicture.asset(
-                    "assets/images/icons/cart.svg",
-                  ),
-                ),
-              ),
-            )
+            // StreamBuilder(
+            //   initialData: 0,
+            //   stream:  getIt
+            //       .get<AppGlobals>().counterController.stream,
+            //   builder: (context, AsyncSnapshot snapshot) {
+            //     if(snapshot.hasData) {
+            //       return Badge(
+            //         alignment: AlignmentDirectional.topEnd,
+            //         label: Text(
+            //           "${snapshot.data}",
+            //           style: TextStyle(
+            //             fontSize: 6.sp,
+            //             fontWeight: FontWeight.bold,
+            //             color: const Color(
+            //               0xffFFFFFF,
+            //             ),
+            //           ),
+            //         ),
+            //         backgroundColor: Theme.of(context).primaryColor,
+            //         child: GestureDetector(
+            //           onTap: () {
+            //             getIt
+            //                 .get<AppGlobals>().counterController.sink.add(2);
+            //             // navigateTo(
+            //             //   const Cart(),
+            //             // );
+            //           },
+            //           child: Container(
+            //             height: 33.h,
+            //             width: 33.w,
+            //             padding: EdgeInsetsDirectional.all(
+            //               7.r,
+            //             ),
+            //             decoration: BoxDecoration(
+            //               color: Theme.of(context).primaryColor.withOpacity(.13),
+            //               borderRadius: BorderRadiusDirectional.circular(
+            //                 9.r,
+            //               ),
+            //             ),
+            //             child: SvgPicture.asset(
+            //               "assets/images/icons/cart.svg",
+            //             ),
+            //           ),
+            //         ),
+            //       );
+            //     } else {
+            //   return    const SizedBox.shrink();
+            //     }
+            //   },
+            // )
           ],
         ),
       ),
@@ -548,7 +715,17 @@ class _SliderImagesState extends State<SliderImages> {
       bloc: bloc,
       builder: (context, state) {
         if (state is GetSliderImagesLoadingState) {
-          return const AppLoading();
+          return SizedBox(
+            width: double.infinity,
+            height: 164.h,
+            child: Shimmer.fromColors(
+              baseColor: Colors.grey.withOpacity(0.4),
+              highlightColor: Colors.grey.withOpacity(0.8),
+              child: Container(
+                color: Colors.grey.withOpacity(0.4),
+              ),
+            ),
+          );
         } else if (state is GetSliderImagesSuccessState) {
           return StatefulBuilder(
             builder: (context, setState2) => Stack(
@@ -645,7 +822,55 @@ class _SectionsSliderState extends State<SectionsSlider> {
         bloc: bloc,
         builder: (context, state) {
           if (state is CategoryLoadingState) {
-            return const AppLoading();
+            return ListView.builder(
+              padding: EdgeInsetsDirectional.symmetric(
+                horizontal: 14.w,
+              ),
+              scrollDirection: Axis.horizontal,
+              itemCount: 4,
+              itemBuilder: (context, index) => Shimmer.fromColors(
+                baseColor: Colors.grey.withOpacity(0.4),
+                highlightColor: Colors.grey.withOpacity(0.8),
+                child: Column(
+                  children: [
+                    Container(
+                      margin: EdgeInsetsDirectional.only(
+                        end: 18.w,
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadiusDirectional.circular(
+                          30.r,
+                        ),
+                      ),
+                      child: Container(
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadiusDirectional.circular(
+                            15.r,
+                          ),
+                        ),
+                        child: SvgPicture.asset(
+                          "assets/images/logo/logo1.svg",
+                          width: 73.w,
+                          height: 73.h,
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10.h,
+                    ),
+                    Text(
+                      "اسم القسم",
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
           } else if (state is CategorySuccessState) {
             var model = state.list;
             return ListView.builder(
@@ -711,3 +936,8 @@ class _SectionsSliderState extends State<SectionsSlider> {
     );
   }
 }
+
+// void setCartCount(int number){
+//   getIt
+//       .get<AppGlobals>().counterController.sink.add( number);
+// }
