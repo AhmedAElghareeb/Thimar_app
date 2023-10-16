@@ -26,7 +26,7 @@ class OrdersModel {
   late final String phone;
   late final String location;
   late final String deliveryPayer;
-  late final List<Products> products;
+  late final List<ImageModel> products;
   late final String payType;
   late final String? note;
   late final num isVip;
@@ -44,7 +44,7 @@ class OrdersModel {
     phone = json['phone'] ?? "";
     location = json['location'] ?? "";
     deliveryPayer = json['delivery_payer'] ?? "";
-    products = List.from(json['products'] ?? []).map((e)=>Products.fromJson(e)).toList();
+    products = List.from(json['products'] ?? []).map((e)=>ImageModel.fromJson(e)).toList();
     payType = json['pay_type'] ?? "";
     note = null;
     isVip = json['is_vip'] ?? 0;
@@ -52,11 +52,11 @@ class OrdersModel {
   }
 }
 
-class Products {
+class ImageModel {
   late final String name;
   late final String url;
 
-  Products.fromJson(Map<String, dynamic> json){
+  ImageModel.fromJson(Map<String, dynamic> json){
     name = json['name'] ?? "";
     url = json['url'] ?? "";
   }

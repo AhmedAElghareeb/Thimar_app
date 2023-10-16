@@ -49,7 +49,24 @@ class _ProductDetailsState extends State<ProductDetails> {
   final ratesBloc = KiwiContainer().resolve<ProductsRatesBloc>();
   final favouritesBloc = KiwiContainer().resolve<FavouritesBloc>();
   final addToCartBloc = KiwiContainer().resolve<CartBloc>();
-
+void _init(){
+  bloc
+    .add(
+      GetProductsDetailsEvent(
+        id: widget.id,
+      ),
+    );
+  ratesBloc
+    .add(GetProductsRatesEvent(
+      id: widget.id,
+    ));
+}
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _init();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -137,13 +154,16 @@ class _ProductDetailsState extends State<ProductDetails> {
           ),
         ],
       ),
-      body: BlocBuilder(
+      body: BlocConsumer(
         bloc: bloc
-          ..add(
-            GetProductsDetailsEvent(
-              id: widget.id,
-            ),
-          ),
+         ,
+        listener: (c, s) {
+          if (s is ShowProductsDetailsSuccessState) {
+            categoryProductBloc.add(GetProductsDataEvent(
+              id: s.model.categoryId.toInt(),
+            ));
+          }
+        },
         builder: (context, state) {
           if (state is ShowProductsDetailsLoadingState) {
             return const AppLoading();
@@ -305,6 +325,10 @@ class _ProductDetailsState extends State<ProductDetails> {
                                 _FloatingActionButton(
                                   onPress: () {
                                     if (counter < state.model.amount) {
+                                      if(state.model.amount < 1) {
+                                        showSnackBar("لا توجد كمية كافية");
+                                      }
+                                    } else {
                                       counter++;
                                     }
                                     setState(() {});
@@ -327,6 +351,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                                   onPress: () {
                                     if (counter > 1) {
                                       counter--;
+                                    } else {
+                                      showSnackBar("يجب ان تكون الكمية = 1 على الأقل");
                                     }
                                     setState(() {});
                                   },
@@ -458,10 +484,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                         height: 12.h,
                       ),
                       BlocBuilder(
-                        bloc: ratesBloc
-                          ..add(GetProductsRatesEvent(
-                            id: widget.id,
-                          )),
+                        bloc: ratesBloc,
                         builder: (context, state) {
                           if (state is ProductsRatesLoadingState) {
                             return const Center(
@@ -576,10 +599,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                         height: 13.h,
                       ),
                       BlocBuilder(
-                        bloc: categoryProductBloc
-                          ..add(GetProductsDataEvent(
-                            id: widget.id,
-                          )),
+                        bloc: categoryProductBloc,
                         builder: (context, state2) {
                           if (state2 is GetProductsLoadingState) {
                             return const Center(
@@ -783,12 +803,11 @@ class _ProductDetailsState extends State<ProductDetails> {
       bottomNavigationBar: BlocBuilder(
         bloc: addToCartBloc,
         builder: (context, ss) {
-          if(ss is AddToCartDataLoadingState) {
+          if (ss is AddToCartDataLoadingState) {
             return const AppLoading();
           } else {
             return GestureDetector(
-              onTap: ()
-              {
+              onTap: () {
                 addToCartBloc.add(AddToCartDataEvent(
                   productId: widget.id,
                   amount: counter.toInt(),

@@ -73,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 isEnabled: false,
                 onPress: () {
                   navigateTo(
-                    SearchView(),
+                    const SearchView(),
                   );
                 },
                 labelText: LocaleKeys.Search_about_You_Want.tr(),
@@ -132,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   return GridView.builder(
                     physics: const NeverScrollableScrollPhysics(),
                     padding: EdgeInsetsDirectional.symmetric(
-                      horizontal: 16.w,
+                      horizontal: 10.w,
                     ),
                     itemCount: state.list.length,
                     itemBuilder: (context, index) => Container(
@@ -191,7 +191,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child: Container(
                                   margin: EdgeInsetsDirectional.only(
                                     top: 9.h,
-                                    end: 12.5.w,
+                                    end: 19.w,
                                   ),
                                   width: 54.w,
                                   height: 20.h,

@@ -1,3 +1,5 @@
+import 'orders.dart';
+
 class WalletData {
   late final List<WalletModel> data;
   late final Links links;
@@ -26,11 +28,15 @@ class WalletModel {
   late final String modelType;
   late final num modelId;
   late final String state;
+  late final List<ImageModel> images;
+
 
   WalletModel.fromJson(Map<String, dynamic> json){
     id = json['id'] ?? 0;
     amount = json['amount'] ?? 0;
     beforeCharge = json['before_charge'] ?? 0;
+    images = List.from(json['images'] ?? []).map((e)=>ImageModel.fromJson(e)).toList();
+
     afterCharge = json['after_charge'] ?? 0;
     date = json['date'] ?? "";
     statusTrans = json['status_trans'] ?? "";

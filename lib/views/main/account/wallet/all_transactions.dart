@@ -87,7 +87,7 @@ class _AllTransactionsState extends State<AllTransactions> {
                         width: 343.w,
                         height: state.list[index].transactionType == "charge"
                             ? 95.h
-                            : 185.h,
+                            : 200.h,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(
                             17.r,
@@ -180,7 +180,7 @@ class _AllTransactionsState extends State<AllTransactions> {
                                 : state.list[index].transactionType ==
                                         "withdraw"
                                     ? Container(
-                                        height: 105.h,
+                                        height: 120.h,
                                         padding:
                                             EdgeInsetsDirectional.symmetric(
                                           vertical: 10.h,
@@ -248,18 +248,76 @@ class _AllTransactionsState extends State<AllTransactions> {
                                             const Divider(
                                               thickness: 1.5,
                                             ),
-                                            Align(
-                                              alignment: AlignmentDirectional
-                                                  .centerEnd,
-                                              child: Text(
-                                                "${state.list[index].amount} ر.س",
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.w900,
-                                                  fontSize: 15.sp,
-                                                  color: Theme.of(context)
-                                                      .primaryColor,
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    ...List.generate(
+                                                      state.list[index].images.length,
+                                                          (i) => Container(
+                                                        width: 25.w,
+                                                        height: 25.h,
+                                                        clipBehavior: Clip.antiAlias,
+                                                        margin: EdgeInsetsDirectional.only(
+                                                          end: 3.w,
+                                                        ),
+                                                        decoration: BoxDecoration(
+                                                          borderRadius:
+                                                          BorderRadiusDirectional.circular(7.r),
+                                                          border: Border.all(
+                                                            color: const Color(
+                                                              0xff61B80C,
+                                                            ).withOpacity(0.06),
+                                                          ),
+                                                        ),
+                                                        child: Image.network(
+                                                          state.list[index].images[i].url,
+                                                          width: 25.w,
+                                                          height: 25.h,
+                                                          fit: BoxFit.fill,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    if (state.list[index].images.length > 3)
+                                                      Container(
+                                                        width: 25.w,
+                                                        height: 25.h,
+                                                        clipBehavior: Clip.antiAlias,
+                                                        margin: EdgeInsetsDirectional.only(
+                                                          end: 3.w,
+                                                        ),
+                                                        decoration: BoxDecoration(
+                                                          borderRadius:
+                                                          BorderRadiusDirectional.circular(7.r),
+                                                          color: Theme.of(context)
+                                                              .primaryColor
+                                                              .withOpacity(0.13),
+                                                        ),
+                                                        child: Center(
+                                                          child: Text(
+                                                            "+${state.list[index].images.length - 3}",
+                                                            style: TextStyle(
+                                                              fontSize: 11.sp,
+                                                              fontWeight: FontWeight.bold,
+                                                              color: Theme.of(context).primaryColor,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                  ],
                                                 ),
-                                              ),
+                                                Text(
+                                                  "${state.list[index].amount} ر.س",
+                                                  style: TextStyle(
+                                                    fontWeight:
+                                                    FontWeight.w900,
+                                                    fontSize: 15.sp,
+                                                    color: Theme.of(context)
+                                                        .primaryColor,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ],
                                         ),

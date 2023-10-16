@@ -28,7 +28,6 @@ class CategoryProducts extends StatefulWidget {
 }
 
 class _CategoryProductsState extends State<CategoryProducts> {
-
   final bloc = KiwiContainer().resolve<ProductsDataBloc>();
 
   @override
@@ -88,7 +87,7 @@ class _CategoryProductsState extends State<CategoryProducts> {
                 isEnabled: false,
                 onPress: () {
                   navigateTo(
-                    SearchView(),
+                    const SearchView(),
                   );
                 },
                 labelText: LocaleKeys.Search_about_You_Want.tr(),
@@ -115,7 +114,7 @@ class _CategoryProductsState extends State<CategoryProducts> {
                       : GridView.builder(
                           physics: const NeverScrollableScrollPhysics(),
                           padding: EdgeInsetsDirectional.symmetric(
-                            horizontal: 16.w,
+                            horizontal: 10.w,
                           ),
                           itemCount: state.list.length,
                           itemBuilder: (context, index) => Container(
@@ -177,7 +176,9 @@ class _CategoryProductsState extends State<CategoryProducts> {
                                       alignment: AlignmentDirectional.topEnd,
                                       child: Container(
                                         margin: EdgeInsetsDirectional.only(
-                                            top: 9.h, end: 12.5.w),
+                                          top: 9.h,
+                                          end: 18.w,
+                                        ),
                                         width: 54.w,
                                         height: 20.h,
                                         decoration: BoxDecoration(

@@ -45,7 +45,7 @@ class CategoryProductBloc
   void getSearchData(
       GetSearchDataEvent event, Emitter<CategoryProductsStates> emit) async {
     final response = await DioHelper().getFromServer(
-      url: "search/${event.keyWord}",
+      url: "search",
       params: {
         "keyword" : searchController.text,
       }
