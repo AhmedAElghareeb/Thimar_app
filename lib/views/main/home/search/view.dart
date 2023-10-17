@@ -315,8 +315,7 @@ class _SearchViewState extends State<SearchView> {
                                                               .data[index].id,
                                                           amount: state
                                                               .data[index]
-                                                              .amount
-                                                              .toInt(),
+                                                              .amount,
                                                         ),
                                                       );
                                                     },

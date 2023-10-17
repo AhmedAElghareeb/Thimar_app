@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:thimar_app/core/design/app_loading.dart';
+import 'package:lottie/lottie.dart';
 import 'package:thimar_app/features/get_faqs/bloc.dart';
 import 'package:thimar_app/features/get_faqs/events.dart';
 import 'package:thimar_app/features/get_faqs/states.dart';
@@ -66,7 +66,13 @@ class _FaqsState extends State<Faqs> {
           bloc: bloc,
           builder: (context, state) {
             if (state is GetFaqsLoadingState) {
-              return const AppLoading();
+              return Center(
+                child: Lottie.asset(
+                  "assets/lottie/loading.json",
+                  width: 100.w,
+                  height: 100.h,
+                ),
+              );
             } else if (state is GetFaqsSuccessState) {
               return state.list.isEmpty
                   ? const AppEmpty(

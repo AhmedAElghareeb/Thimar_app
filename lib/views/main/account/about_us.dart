@@ -4,8 +4,8 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:lottie/lottie.dart';
 import 'package:thimar_app/core/design/app_empty.dart';
-import 'package:thimar_app/core/design/app_loading.dart';
 import 'package:thimar_app/features/about_us/states.dart';
 
 import '../../../features/about_us/bloc.dart';
@@ -68,7 +68,13 @@ class _AboutUsState extends State<AboutUs> {
           bloc: bloc,
           builder: (context, state) {
             if (state is GetAboutUsLoadingState) {
-              return const AppLoading();
+              return Center(
+                child: Lottie.asset(
+                  "assets/lottie/loading.json",
+                  width: 100.w,
+                  height: 100.h,
+                ),
+              );
             } else if (state is GetAboutUsSuccessState) {
               return Padding(
                 padding: EdgeInsetsDirectional.symmetric(

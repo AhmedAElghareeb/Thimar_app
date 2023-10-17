@@ -1,3 +1,4 @@
+import 'package:thimar_app/core/logic/helper_methods.dart';
 import 'package:thimar_app/models/category_products.dart';
 
 import '../../models/search.dart';
@@ -21,3 +22,13 @@ class GetSearchDataSuccessState extends CategoryProductsStates {
 }
 
 class GetSearchDataFailedState extends CategoryProductsStates {}
+
+class GetDataFromPaginationLoadingState extends CategoryProductsStates{}
+class GetDataFromPaginationFailState extends CategoryProductsStates{
+  final String msg;
+
+  GetDataFromPaginationFailState({required this.msg}) {
+    showSnackBar(msg);
+  }
+}
+

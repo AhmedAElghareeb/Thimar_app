@@ -27,7 +27,7 @@ class SearchResult {
   late final num priceBeforeDiscount;
   late final num price;
   late final num discount;
-  late final num amount;
+  late final double amount;
   late final num isActive;
   late final bool isFavorite;
   late final Unit unit;

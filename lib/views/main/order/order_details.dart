@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:lottie/lottie.dart';
 import 'package:thimar_app/core/design/app_loading.dart';
 import 'package:thimar_app/features/orders/bloc.dart';
 import 'package:thimar_app/features/orders/events.dart';
@@ -79,7 +80,11 @@ class _OrderDetailsState extends State<OrderDetails> {
           ),
         builder: (context, state) {
           if (state is GetOrderDetailsDataLoadingState) {
-            return const AppLoading();
+            return Center(
+              child: Lottie.asset(
+                "assets/lottie/loading.json",
+              ),
+            );
           } else if (state is GetOrderDetailsDataSuccessState) {
             return SafeArea(
               child: ListView(

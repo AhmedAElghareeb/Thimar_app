@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:lottie/lottie.dart';
 import 'package:thimar_app/core/design/app_button.dart';
 import 'package:thimar_app/core/design/app_empty.dart';
 import 'package:thimar_app/core/design/app_input.dart';
@@ -90,7 +91,13 @@ class _WalletViewState extends State<WalletView> {
           bloc: getBloc,
           builder: (context, state) {
             if (state is GetWalletDataLoadingState) {
-              return const AppLoading();
+              return Center(
+                child: Lottie.asset(
+                  "assets/lottie/loading.json",
+                  width: 100.w,
+                  height: 100.h,
+                ),
+              );
             } else if (state is GetWalletDataSuccessState) {
               return ListView(
                 children: [
@@ -469,58 +476,90 @@ class _WalletViewState extends State<WalletView> {
                                                   thickness: 1.5,
                                                 ),
                                                 Row(
-                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
                                                   children: [
                                                     Row(
                                                       children: [
                                                         ...List.generate(
-                                                          state.list[index].images.length,
-                                                              (index) => Container(
+                                                          state.list[index]
+                                                              .images.length,
+                                                          (i) => Container(
                                                             width: 25.w,
                                                             height: 25.h,
-                                                            clipBehavior: Clip.antiAlias,
-                                                            margin: EdgeInsetsDirectional.only(
+                                                            clipBehavior:
+                                                                Clip.antiAlias,
+                                                            margin:
+                                                                EdgeInsetsDirectional
+                                                                    .only(
                                                               end: 3.w,
                                                             ),
-                                                            decoration: BoxDecoration(
+                                                            decoration:
+                                                                BoxDecoration(
                                                               borderRadius:
-                                                              BorderRadiusDirectional.circular(7.r),
-                                                              border: Border.all(
-                                                                color: const Color(
+                                                                  BorderRadiusDirectional
+                                                                      .circular(
+                                                                          7.r),
+                                                              border:
+                                                                  Border.all(
+                                                                color:
+                                                                    const Color(
                                                                   0xff61B80C,
-                                                                ).withOpacity(0.06),
+                                                                ).withOpacity(
+                                                                        0.06),
                                                               ),
                                                             ),
-                                                            child: Image.network(
-                                                              state.list[index].images[index].url,
+                                                            child:
+                                                                Image.network(
+                                                              state
+                                                                  .list[index]
+                                                                  .images[i]
+                                                                  .url,
                                                               width: 25.w,
                                                               height: 25.h,
                                                               fit: BoxFit.fill,
                                                             ),
                                                           ),
                                                         ),
-                                                        if (state.list[index].images.length > 3)
+                                                        if (state.list[index]
+                                                                .images.length >
+                                                            3)
                                                           Container(
                                                             width: 25.w,
                                                             height: 25.h,
-                                                            clipBehavior: Clip.antiAlias,
-                                                            margin: EdgeInsetsDirectional.only(
+                                                            clipBehavior:
+                                                                Clip.antiAlias,
+                                                            margin:
+                                                                EdgeInsetsDirectional
+                                                                    .only(
                                                               end: 3.w,
                                                             ),
-                                                            decoration: BoxDecoration(
+                                                            decoration:
+                                                                BoxDecoration(
                                                               borderRadius:
-                                                              BorderRadiusDirectional.circular(7.r),
-                                                              color: Theme.of(context)
+                                                                  BorderRadiusDirectional
+                                                                      .circular(
+                                                                          7.r),
+                                                              color: Theme.of(
+                                                                      context)
                                                                   .primaryColor
-                                                                  .withOpacity(0.13),
+                                                                  .withOpacity(
+                                                                      0.13),
                                                             ),
                                                             child: Center(
                                                               child: Text(
                                                                 "+${state.list[index].images.length - 3}",
-                                                                style: TextStyle(
-                                                                  fontSize: 11.sp,
-                                                                  fontWeight: FontWeight.bold,
-                                                                  color: Theme.of(context).primaryColor,
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontSize:
+                                                                      11.sp,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  color: Theme.of(
+                                                                          context)
+                                                                      .primaryColor,
                                                                 ),
                                                               ),
                                                             ),

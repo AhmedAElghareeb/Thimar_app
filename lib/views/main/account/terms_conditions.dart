@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:lottie/lottie.dart';
 import 'package:thimar_app/features/terms_conditions/bloc.dart';
 import 'package:thimar_app/features/terms_conditions/events.dart';
 import 'package:thimar_app/features/terms_conditions/states.dart';
@@ -67,8 +68,12 @@ class _TermsAndConditionsState extends State<TermsAndConditions> {
           bloc: bloc,
           builder: (context, state) {
             if (state is GetTermsLoadingState) {
-              return const Center(
-                child: CircularProgressIndicator(),
+              return Center(
+                child: Lottie.asset(
+                  "assets/lottie/loading.json",
+                  width: 100.w,
+                  height: 100.h,
+                ),
               );
             } else if (state is GetTermsSuccessState) {
               return Html(

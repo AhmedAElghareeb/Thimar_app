@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:lottie/lottie.dart';
 import 'package:thimar_app/features/products_rates/bloc.dart';
 import 'package:thimar_app/features/products_rates/events.dart';
 import 'package:thimar_app/features/products_rates/states.dart';
@@ -65,7 +66,11 @@ class _RatesViewState extends State<RatesView> {
         ),),
         builder: (context, state) {
           if(state is ProductsRatesLoadingState){
-            return const AppLoading();
+            return Center(
+              child: Lottie.asset(
+                "assets/lottie/loading.json",
+              ),
+            );;
           } else if (state is ProductsRatesSuccessState) {
             return ListView.separated(
               padding: EdgeInsetsDirectional.symmetric(

@@ -4,12 +4,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:thimar_app/core/logic/cache_helper.dart';
 import 'package:thimar_app/features/favourites/events.dart';
 import 'package:thimar_app/features/favourites/states.dart';
 import 'package:thimar_app/models/favourites.dart';
 
+import '../../../core/design/app_button.dart';
 import '../../../core/design/app_empty.dart';
 import '../../../core/logic/helper_methods.dart';
+import '../../../features/cart/bloc.dart';
+import '../../../features/cart/events.dart';
+import '../../../features/cart/states.dart';
 import '../../../features/favourites/bloc.dart';
 import '../home/product_details/view.dart';
 
@@ -23,10 +28,16 @@ class FavouritesScreen extends StatefulWidget {
 class _FavouritesScreenState extends State<FavouritesScreen> {
   final bloc = KiwiContainer().resolve<FavouritesBloc>();
 
+  void init() {
+    bloc.add(
+      GetFavouritesDataEvent(),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
-    bloc.add(GetFavouritesDataEvent());
+    init();
   }
 
   @override
@@ -56,10 +67,9 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                 mainAxisSpacing: 2.h,
                 childAspectRatio: 0.70,
               ),
-              shrinkWrap: true,
             );
           } else if (state is GetFavouritesDataSuccessState) {
-            return state.list.isEmpty
+            return state.list.isEmpty || CacheHelper.getToken().isEmpty
                 ? const AppEmpty(
                     assetsPath: "empty_favourites.json",
                     text: "لا توجد بيانات",
@@ -75,7 +85,6 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                       mainAxisSpacing: 2.h,
                       childAspectRatio: 0.70,
                     ),
-                    shrinkWrap: true,
                   );
           } else {
             return const SizedBox.shrink();
@@ -86,10 +95,24 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
   }
 }
 
-class _Item extends StatelessWidget {
+class _Item extends StatefulWidget {
   final FavouritesModel model;
 
   const _Item({required this.model});
+
+  @override
+  State<_Item> createState() => _ItemState();
+}
+
+class _ItemState extends State<_Item> {
+  final cartBloc = KiwiContainer().resolve<CartBloc>();
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    cartBloc.close();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +134,7 @@ class _Item extends StatelessWidget {
                 ),
                 clipBehavior: Clip.antiAliasWithSaveLayer,
                 child: Image.network(
-                  model.mainImage,
+                  widget.model.mainImage,
                   fit: BoxFit.cover,
                   width: 145.w,
                   height: 117.h,
@@ -120,9 +143,9 @@ class _Item extends StatelessWidget {
               onTap: () {
                 navigateTo(
                   ProductDetails(
-                    id: model.id,
-                    isFavorite: model.isFavorite,
-                    price: model.price,
+                    id: widget.model.id,
+                    isFavorite: widget.model.isFavorite,
+                    price: widget.model.price,
                   ),
                 );
               },
@@ -145,7 +168,7 @@ class _Item extends StatelessWidget {
                 ),
                 child: Center(
                   child: Text(
-                    "${model.discount * 100} %",
+                    "${widget.model.discount * 100} %",
                     style: TextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.bold,
@@ -166,7 +189,7 @@ class _Item extends StatelessWidget {
           child: Align(
             alignment: AlignmentDirectional.topStart,
             child: Text(
-              model.title,
+              widget.model.title,
               style: TextStyle(
                 fontSize: 16.sp,
                 fontWeight: FontWeight.bold,
@@ -185,7 +208,7 @@ class _Item extends StatelessWidget {
           child: Align(
             alignment: AlignmentDirectional.topStart,
             child: Text(
-              "السعر / ${model.unit.name}",
+              "السعر / ${widget.model.unit.name}",
               style: TextStyle(
                 fontSize: 12.sp,
                 color: const Color(0xFF808080),
@@ -206,7 +229,7 @@ class _Item extends StatelessWidget {
                   Align(
                     alignment: AlignmentDirectional.topStart,
                     child: Text(
-                      "${model.price} ر.س",
+                      "${widget.model.price} ر.س",
                       style: TextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.bold,
@@ -217,7 +240,7 @@ class _Item extends StatelessWidget {
                   Align(
                     alignment: AlignmentDirectional.bottomStart,
                     child: Text(
-                      "${model.priceBeforeDiscount} ر.س",
+                      "${widget.model.priceBeforeDiscount} ر.س",
                       textAlign: TextAlign.justify,
                       style: TextStyle(
                         fontSize: 13.sp,
@@ -230,6 +253,57 @@ class _Item extends StatelessWidget {
               ),
             ),
           ],
+        ),
+        SizedBox(
+          height: 19.h,
+        ),
+        Align(
+          alignment: AlignmentDirectional.center,
+          child: Padding(
+              padding: EdgeInsetsDirectional.only(
+                end: 24.w,
+                start: 24.w,
+                bottom: 10.h,
+              ),
+              child: widget.model.amount != 0
+                  ? BlocBuilder(
+                      builder: (context, sA) {
+                        if (sA is AddToCartDataLoadingState) {
+                          return const Center(
+                            child: LinearProgressIndicator(),
+                          );
+                        } else {
+                          return AppButton(
+                            onTap: () {
+                              cartBloc.add(
+                                AddToCartDataEvent(
+                                  productId: widget.model.id,
+                                  amount: widget.model.amount,
+                                ),
+                              );
+                            },
+                            text: "أضف للسلة",
+                            width: 120.w,
+                            height: 30.h,
+                            radius: 9.r,
+                            backColor: const Color(
+                              0xff61B80C,
+                            ),
+                          );
+                        }
+                      },
+                      bloc: cartBloc,
+                    )
+                  : AppButton(
+                      onTap: () {},
+                      text: "تم نفاذ الكمية",
+                      width: 120.w,
+                      height: 30.h,
+                      radius: 9.r,
+                      backColor: Colors.white,
+                      textColor: Colors.red,
+                    ),
+          ),
         ),
       ],
     );
@@ -339,9 +413,7 @@ class _LoadingItem extends StatelessWidget {
             height: 3.h,
           ),
           Padding(
-            padding: EdgeInsetsDirectional.symmetric(
-              horizontal: 10.w
-            ),
+            padding: EdgeInsetsDirectional.symmetric(horizontal: 10.w),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:lottie/lottie.dart';
 import 'package:thimar_app/core/design/app_empty.dart';
-import 'package:thimar_app/core/design/app_loading.dart';
 import 'package:thimar_app/core/design/dot_button.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
 import 'package:thimar_app/features/address/states.dart';
@@ -97,7 +97,13 @@ class _AddressesListViewState extends State<AddressesListView> {
       bloc: addressBloc,
       builder: (context, state) {
         if (state is GetUserAddressLoadingState) {
-          return const AppLoading();
+          return Center(
+            child: Lottie.asset(
+              "assets/lottie/loading.json",
+              width: 100.w,
+              height: 100.h,
+            ),
+          );
         } else if (state is GetUserAddressSuccessState) {
           return state.list.isEmpty
               ? const AppEmpty(

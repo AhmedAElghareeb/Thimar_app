@@ -24,7 +24,11 @@ class GetCartDataSuccessState extends CartStates {
 
 class GetCartDataFailedState extends CartStates {}
 
-class AddToCartDataLoadingState extends CartStates {}
+class AddToCartDataLoadingState extends CartStates {
+  final int id;
+
+  AddToCartDataLoadingState(this.id);
+}
 
 class AddToCartDataSuccessState extends CartStates {
   final String msg;

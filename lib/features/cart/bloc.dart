@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kiwi/kiwi.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
 import 'package:thimar_app/models/cart.dart';
+import 'package:thimar_app/views/main/home/home/view.dart';
 import '../../core/logic/dio_helper.dart';
 import 'events.dart';
 import 'states.dart';
+import 'dart:developer' as x;
 
 class CartBloc extends Bloc<CartEvents, CartStates> {
   final couponController = TextEditingController();
@@ -17,6 +20,20 @@ class CartBloc extends Bloc<CartEvents, CartStates> {
   }
 
   bool isInit = true;
+
+  void getCartCount() {
+    DioHelper()
+        .getFromServer(
+      url: "client/cart",
+    )
+        .then((value) {
+      if (value.success) {
+        int itemCount = (value.response?.data['data'] as List).length ?? 0;
+        setCartCount(itemCount);
+      }
+    });
+  }
+
   Future<void> getData(GetCartDataEvent event, Emitter<CartStates> emit) async {
     if (isInit) {
       emit(
@@ -53,7 +70,9 @@ class CartBloc extends Bloc<CartEvents, CartStates> {
   Future<void> addData(
       AddToCartDataEvent event, Emitter<CartStates> emit) async {
     emit(
-      AddToCartDataLoadingState(),
+      AddToCartDataLoadingState(
+        event.productId,
+      ),
     );
 
     final response = await DioHelper().sendToServer(url: "client/cart", body: {
@@ -67,6 +86,8 @@ class CartBloc extends Bloc<CartEvents, CartStates> {
           msg: response.msg,
         ),
       );
+      setMainCartCount();
+
     } else {
       emit(
         AddToCartDataFailedState(
@@ -76,7 +97,7 @@ class CartBloc extends Bloc<CartEvents, CartStates> {
     }
   }
 
-  deleteItem(CartModel item ,Function(bool)onSuccess) async {
+  deleteItem(CartModel item, Function(bool) onSuccess) async {
     final response = await DioHelper().removeFromServer(
       url: "client/cart/delete_item/${item.id}",
     );
@@ -136,4 +157,9 @@ class CartBloc extends Bloc<CartEvents, CartStates> {
       );
     }
   }
+}
+
+
+void setMainCartCount(){
+  KiwiContainer().resolve<CartBloc>().getCartCount();
 }

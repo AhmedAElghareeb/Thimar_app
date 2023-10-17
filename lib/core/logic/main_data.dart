@@ -11,7 +11,7 @@ class AppGlobals {
   /// Singleton instance.
   static final AppGlobals instance = AppGlobals._();
 
-  final StreamController<int> counterController = StreamController<int>();
+  final StreamController<int> counterController = StreamController.broadcast();
   void closeStream() {
     counterController.close();
   }

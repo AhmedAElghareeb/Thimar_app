@@ -3,7 +3,8 @@ class CartEvents {}
 class GetCartDataEvent extends CartEvents {}
 
 class AddToCartDataEvent extends CartEvents {
-  final int productId, amount;
+  final int productId;
+  final double amount;
 
   AddToCartDataEvent({required this.productId, required this.amount});
 }

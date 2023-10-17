@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:thimar_app/core/logic/dio_helper.dart';
 import 'package:thimar_app/models/orders.dart';
 import '../../models/order_details.dart';
+import '../cart/bloc.dart';
 import 'events.dart';
 import 'states.dart';
 
@@ -59,6 +60,8 @@ class OrdersBloc extends Bloc<OrdersEvents, OrdersStates> {
           msg: response.msg,
         ),
       );
+      setMainCartCount();
+
     } else {
       emit(
         PostOrdersDataFailedState(),

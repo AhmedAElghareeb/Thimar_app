@@ -5,7 +5,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:thimar_app/core/design/app_loading.dart';
+import 'package:lottie/lottie.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
 import 'package:thimar_app/features/cart/states.dart';
 import 'package:thimar_app/features/favourites/events.dart';
@@ -42,7 +42,7 @@ class ProductDetails extends StatefulWidget {
 
 class _ProductDetailsState extends State<ProductDetails> {
   int currentIndex = 0;
-  int counter = 1;
+  double counter = 1;
 
   final bloc = KiwiContainer().resolve<ProductDetailsBloc>();
   final categoryProductBloc = KiwiContainer().resolve<ProductsDataBloc>();
@@ -117,7 +117,13 @@ class _ProductDetailsState extends State<ProductDetails> {
                 ),
               ),
             ),
-            body: const AppLoading(),
+            body: Center(
+              child: Lottie.asset(
+                "assets/lottie/loading.json",
+                width: 100.w,
+                height: 100.h
+              ),
+            ),
           );
         } else if (state is ShowProductsDetailsSuccessState) {
           return Scaffold(
@@ -848,7 +854,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                           onTap: () {
                             addToCartBloc.add(AddToCartDataEvent(
                               productId: widget.id,
-                              amount: counter.toInt(),
+                              amount: counter,
                             ));
                           },
                           child: Container(

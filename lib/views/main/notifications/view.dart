@@ -9,6 +9,7 @@ import 'package:thimar_app/features/notifications/states.dart';
 import 'package:thimar_app/models/notifications.dart';
 
 import '../../../core/design/app_empty.dart';
+import '../../../core/logic/cache_helper.dart';
 import '../../../features/notifications/bloc.dart';
 
 class NotificationsScreen extends StatefulWidget {
@@ -51,7 +52,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
               itemCount: 8,
             );
           } else if (state is GetNotificationsSuccessState) {
-            return state.list.isEmpty ? const AppEmpty(
+            return state.list.isEmpty || CacheHelper.getToken().isEmpty ? const AppEmpty(
               assetsPath: "empty_notifications.json",
               text: "لا توجد بيانات",
             ) : ListView.builder(

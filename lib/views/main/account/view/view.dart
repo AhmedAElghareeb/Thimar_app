@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:share/share.dart';
 import 'package:thimar_app/core/design/account_widgets.dart';
+import 'package:thimar_app/core/design/app_loading.dart';
 import 'package:thimar_app/core/logic/cache_helper.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
 import 'package:thimar_app/features/logout/bloc.dart';
@@ -94,7 +95,7 @@ class _AccountScreenState extends State<AccountScreen> {
                     height: 2.h,
                   ),
                   Text(
-                    CacheHelper.getFullName(),
+                    CacheHelper.getToken().isNotEmpty ? CacheHelper.getFullName() : "اسم المستخدم",
                     style: TextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.bold,
@@ -122,7 +123,7 @@ class _AccountScreenState extends State<AccountScreen> {
             SizedBox(
               height: 20.h,
             ),
-            Container(
+            CacheHelper.getToken().isNotEmpty ? Container(
               width: 342.w,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(
@@ -177,7 +178,7 @@ class _AccountScreenState extends State<AccountScreen> {
                   ),
                 ],
               ),
-            ),
+            ) : const SizedBox.shrink(),
             SizedBox(
               height: 20.h,
             ),
@@ -341,7 +342,7 @@ class _AccountScreenState extends State<AccountScreen> {
               builder: (context, state) {
                 if (state is LogoutLoadingState) {
                   return const Center(
-                    child: LinearProgressIndicator(),
+                    child: AppLoading(),
                   );
                 } else {
                   return Padding(
@@ -358,7 +359,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           const LoginScreen(),
                         );
                       },
-                      child: CacheHelper.getCity().isNotEmpty ? Row(
+                      child: CacheHelper.getToken().isNotEmpty ? Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
