@@ -69,6 +69,8 @@ class _RatesViewState extends State<RatesView> {
             return Center(
               child: Lottie.asset(
                 "assets/lottie/loading.json",
+                width: 100.w,
+                height: 100.h,
               ),
             );;
           } else if (state is ProductsRatesSuccessState) {

@@ -47,7 +47,7 @@ class LoginBloc extends Bloc<LoginEvents, LoginStates> {
       await CacheHelper.saveLoginData(
           UserModel.fromJson(response.response!.data['data']));
       print( '-=-=--==-=--=- ${response.response!.data['data']['user_cart_count'] }');
-      // setCartCount(response.response!.data['data']['user_cart_count'] ?? 0);
+      setCartCount(response.response!.data['data']['user_cart_count'] ?? 0);
       showSnackBar(
         response.msg,
         typ: MessageType.success,

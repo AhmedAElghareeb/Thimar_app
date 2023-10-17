@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:lottie/lottie.dart';
+import 'package:map_launcher/map_launcher.dart';
 import 'package:thimar_app/core/design/app_loading.dart';
 import 'package:thimar_app/features/orders/bloc.dart';
 import 'package:thimar_app/features/orders/events.dart';
@@ -23,6 +25,18 @@ class _OrderDetailsState extends State<OrderDetails> {
   final bloc = KiwiContainer().resolve<OrdersBloc>();
 
   final cancelBloc = KiwiContainer().resolve<OrdersBloc>();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    bloc.add(
+      GetOrderDetailsDataEvent(
+        num: widget.id,
+      ),
+    );
+  }
 
   @override
   void dispose() {
@@ -72,18 +86,12 @@ class _OrderDetailsState extends State<OrderDetails> {
         ),
       ),
       body: BlocBuilder(
-        bloc: bloc
-          ..add(
-            GetOrderDetailsDataEvent(
-              num: widget.id,
-            ),
-          ),
+        bloc: bloc,
         builder: (context, state) {
           if (state is GetOrderDetailsDataLoadingState) {
             return Center(
-              child: Lottie.asset(
-                "assets/lottie/loading.json",
-              ),
+              child: Lottie.asset("assets/lottie/loading.json",
+                  width: 100.w, height: 100.h),
             );
           } else if (state is GetOrderDetailsDataSuccessState) {
             return SafeArea(
@@ -234,9 +242,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                               style: TextStyle(
                                 fontSize: 15.sp,
                                 fontWeight: FontWeight.w400,
-                                color: Theme
-                                    .of(context)
-                                    .primaryColor,
+                                color: Theme.of(context).primaryColor,
                               ),
                             ),
                           ],
@@ -262,10 +268,10 @@ class _OrderDetailsState extends State<OrderDetails> {
                       ),
                       Container(
                         width: 343.w,
-                        height: 100.h,
+                        height: 150.h,
                         padding: EdgeInsetsDirectional.symmetric(
                           horizontal: 15.w,
-                          vertical: 10.h,
+                          vertical: 15.h,
                         ),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadiusDirectional.circular(
@@ -315,6 +321,19 @@ class _OrderDetailsState extends State<OrderDetails> {
                                     height: 5.h,
                                   ),
                                   Text(
+                                    "رقم الجوال : ${state.data.address.phone}",
+                                    style: TextStyle(
+                                      fontSize: 12.sp,
+                                      fontWeight: FontWeight.w300,
+                                      color: const Color(
+                                        0xff000000,
+                                      ).withOpacity(0.2),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 5.h,
+                                  ),
+                                  Text(
                                     "الوصف : ${state.data.address.description}",
                                     style: TextStyle(
                                       fontSize: 12.sp,
@@ -327,6 +346,29 @@ class _OrderDetailsState extends State<OrderDetails> {
                                 ],
                               ),
                             ),
+                            Container(
+                              width: 72.w,
+                              height: 62.h,
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadiusDirectional.circular(
+                                  15.r,
+                                ),
+                              ),
+                              child: GestureDetector(
+                                onTap: ()
+                                {
+                                  openMap(
+                                    title: state.data.address.location,
+                                    lat: state.data.address.lat,
+                                    long: state.data.address.lng,
+                                  );
+                                },
+                                child: SvgPicture.asset(
+                                  "assets/images/map.svg",
+                                ),
+                              ),
+                            )
                           ],
                         ),
                       ),
@@ -580,4 +622,15 @@ class _OrderDetailsState extends State<OrderDetails> {
       ),
     );
   }
+}
+
+Future<void> openMap({String? title, lat, long}) async {
+  final availableMaps = await MapLauncher.installedMaps;
+  await availableMaps.first.showMarker(
+    coords: Coords(
+      lat,
+      long,
+    ),
+    title: title!,
+  );
 }

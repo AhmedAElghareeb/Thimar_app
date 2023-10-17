@@ -14,17 +14,22 @@ class OrdersBloc extends Bloc<OrdersEvents, OrdersStates> {
     on<CancelOrderDataEvent>(cancelOrder);
   }
 
+  bool isLoading = true;
+
   Future<void> getData(
       GetOrdersDataEvent event, Emitter<OrdersStates> emit) async {
-    emit(
-      GetOrdersDataLoadingState(),
-    );
+    if(isLoading) {
+      emit(
+        GetOrdersDataLoadingState(),
+      );
+    }
 
     final response = await DioHelper().getFromServer(
       url: "client/orders/${event.type}",
     );
     if (response.success) {
       final list = OrdersData.fromJson(response.response!.data).data;
+      isLoading = false;
       emit(
         GetOrdersDataSuccessState(
           data: list,

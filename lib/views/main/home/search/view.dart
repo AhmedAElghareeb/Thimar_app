@@ -85,6 +85,7 @@ class _SearchViewState extends State<SearchView> {
               child: AppInput(
                 controller: bloc.searchController,
                 isFilled: true,
+                isSearch: true,
                 labelText: LocaleKeys.Search_about_You_Want.tr(),
                 prefixIcon: "assets/images/icons/Search.svg",
                 onChanged: (value) {

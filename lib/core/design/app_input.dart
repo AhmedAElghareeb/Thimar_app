@@ -9,6 +9,7 @@ class AppInput extends StatefulWidget {
     this.prefixIcon,
     this.keyboardType = TextInputType.text,
     this.isPassword = false,
+    this.isSearch = false,
     this.isFilled = false,
     this.isEnabled = true,
     this.labelText,
@@ -22,7 +23,7 @@ class AppInput extends StatefulWidget {
   });
 
   final TextEditingController? controller;
-  final bool isPassword, isEnabled, isFilled;
+  final bool isPassword, isEnabled, isFilled, isSearch;
   final String? labelText, prefixIcon;
   final TextInputType keyboardType;
   final FormFieldValidator<String?>? validator;
@@ -146,6 +147,7 @@ class _AppInputState extends State<AppInput> {
         enabled: widget.isEnabled,
         minLines: widget.minLines,
         maxLines: widget.maxLines,
+        autofocus: widget.isSearch,
         onTapOutside: (event) {
           FocusManager.instance.primaryFocus?.unfocus();
         },
