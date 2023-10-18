@@ -61,12 +61,6 @@ class AddressBloc extends Bloc<AddressesEvents, AddressesStates> {
     );
     if (response.success) {
       final list = AddressesData.fromJson(response.response!.data).data;
-      if (list.isEmpty) {
-        showSnackBar(
-          response.msg,
-          typ: MessageType.warning,
-        );
-      }
       withLoading = false;
       emit(
         GetUserAddressSuccessState(

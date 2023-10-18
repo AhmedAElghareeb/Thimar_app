@@ -30,9 +30,6 @@ class NotificationsBloc extends Bloc<NotificationsEvents, NotificationsStates> {
         ),
       );
     } else {
-      showSnackBar(
-        response.msg,
-      );
       emit(
         GetNotificationsFailedState(),
       );

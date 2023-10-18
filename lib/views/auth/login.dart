@@ -5,11 +5,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:thimar_app/core/design/app_button.dart';
 import 'package:thimar_app/core/design/app_input.dart';
+import 'package:thimar_app/core/design/app_loading.dart';
 import 'package:thimar_app/core/design/auth_header.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
 import 'package:thimar_app/features/login/states.dart';
 import 'package:thimar_app/views/auth/forget_password.dart';
 import 'package:thimar_app/views/auth/register.dart';
+import 'package:thimar_app/views/main/view.dart';
 
 import '../../features/login/bloc.dart';
 import '../../features/login/events.dart';
@@ -128,10 +130,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       bloc: bloc,
                       builder: (context, state) {
                         if (state is LoginLoadingState) {
-                          return Center(
-                            child: CircularProgressIndicator(
-                              color: Theme.of(context).primaryColor,
-                            ),
+                          return const Center(
+                            child: AppLoading(),
                           );
                         } else {
                           return AppButton(
@@ -149,6 +149,20 @@ class _LoginScreenState extends State<LoginScreen> {
                           );
                         }
                       },
+                    ),
+                    SizedBox(
+                      height: 22.h,
+                    ),
+                    AppButton(
+                      onTap: () {
+                        navigateTo(
+                          const HomeView(),
+                        );
+                      },
+                      text: "تسجيل الدخول كزائر",
+                      radius: 15.r,
+                      height: 60.h,
+                      width: 343.w,
                     ),
                     SizedBox(
                       height: 45.h,

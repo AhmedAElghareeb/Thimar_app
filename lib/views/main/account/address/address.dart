@@ -105,21 +105,21 @@ class _AddressesListViewState extends State<AddressesListView> {
             ),
           );
         } else if (state is GetUserAddressSuccessState) {
-          return state.list.isEmpty
-              ? const AppEmpty(
-                  assetsPath: "empty.json",
-                  text: "لا توجد بيانات",
-                )
-              : SafeArea(
-                  child: ListView(
-                    padding: EdgeInsetsDirectional.symmetric(
-                      horizontal: 12.w,
-                      vertical: 28.h,
-                    ),
-                    children: [
-                      Column(
-                        children: [
-                          ListView.separated(
+          return SafeArea(
+            child: ListView(
+              padding: EdgeInsetsDirectional.symmetric(
+                horizontal: 12.w,
+                vertical: 28.h,
+              ),
+              children: [
+                Column(
+                  children: [
+                    state.list.isEmpty
+                        ? const AppEmpty(
+                            assetsPath: "empty.json",
+                            text: "لا توجد بيانات",
+                          )
+                        : ListView.separated(
                             scrollDirection: Axis.vertical,
                             physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
@@ -262,25 +262,25 @@ class _AddressesListViewState extends State<AddressesListView> {
                             ),
                             itemCount: state.list.length,
                           ),
-                          SizedBox(
-                            height: 20.h,
-                          ),
-                          DotButton(
-                            text: "إضافة عنوان",
-                            onTap: () {
-                              navigateTo(
-                                const AddAddress(),
-                              ).then((x) {
-                                print('-==-=-= here');
-                                _init();
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                );
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    DotButton(
+                      text: "إضافة عنوان",
+                      onTap: () {
+                        navigateTo(
+                          const AddAddress(),
+                        ).then((x) {
+                          print('-==-=-= here');
+                          _init();
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          );
         } else {
           return const SizedBox.shrink();
         }

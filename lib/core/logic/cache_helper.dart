@@ -9,7 +9,7 @@ class CacheHelper {
   }
 
   static String getToken() {
-    return _prefs.getString("token") ?? "Static";
+    return _prefs.getString("token") ?? "";
   }
 
   static Future<bool> saveImageProfile(String url) async {
@@ -51,16 +51,6 @@ class CacheHelper {
   }
 
   static Future removeLoginData() async {
-    await _prefs.remove("image");
-    await _prefs.remove("id");
-    await _prefs.remove("phone");
-    await _prefs.remove("email");
-    await _prefs.remove("fullname");
-    await _prefs.remove("token");
-    await _prefs.remove("cityId");
-    await _prefs.remove("cityName");
-    await _prefs.remove("isActive");
-    await _prefs.remove("userCartCount");
-    await _prefs.remove("unreadNotifications");
+    await _prefs.clear();
   }
 }

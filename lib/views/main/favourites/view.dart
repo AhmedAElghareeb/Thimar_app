@@ -54,31 +54,18 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
           "المفضلة",
         ),
       ),
-      body: BlocBuilder(
-        bloc: bloc,
-        builder: (context, state) {
-          if (state is GetFavouritesDataLoadingState) {
-            return GridView.builder(
-              itemBuilder: (context, index) => const _LoadingItem(),
-              itemCount: 3,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 11.w,
-                mainAxisSpacing: 2.h,
-                childAspectRatio: 0.70,
-              ),
-            );
-          } else if (state is GetFavouritesDataSuccessState) {
-            return state.list.isEmpty || CacheHelper.getToken().isEmpty
-                ? const AppEmpty(
-                    assetsPath: "empty_favourites.json",
-                    text: "لا توجد بيانات",
-                  )
-                : GridView.builder(
-                    itemBuilder: (context, index) => _Item(
-                      model: state.list[index],
-                    ),
-                    itemCount: state.list.length,
+      body: CacheHelper.getToken().isEmpty
+          ? const AppEmpty(
+              assetsPath: "empty.json",
+              text: "الرجاء تسجيل الدخول اولا",
+            )
+          : BlocBuilder(
+              bloc: bloc,
+              builder: (context, state) {
+                if (state is GetFavouritesDataLoadingState) {
+                  return GridView.builder(
+                    itemBuilder: (context, index) => const _LoadingItem(),
+                    itemCount: 3,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       crossAxisSpacing: 11.w,
@@ -86,11 +73,30 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                       childAspectRatio: 0.70,
                     ),
                   );
-          } else {
-            return const SizedBox.shrink();
-          }
-        },
-      ),
+                } else if (state is GetFavouritesDataSuccessState) {
+                  return state.list.isEmpty
+                      ? const AppEmpty(
+                          assetsPath: "empty_favourites.json",
+                          text: "لا توجد بيانات",
+                        )
+                      : GridView.builder(
+                          itemBuilder: (context, index) => _Item(
+                            model: state.list[index],
+                          ),
+                          itemCount: state.list.length,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 11.w,
+                            mainAxisSpacing: 2.h,
+                            childAspectRatio: 0.70,
+                          ),
+                        );
+                } else {
+                  return const SizedBox.shrink();
+                }
+              },
+            ),
     );
   }
 }
@@ -260,49 +266,49 @@ class _ItemState extends State<_Item> {
         Align(
           alignment: AlignmentDirectional.center,
           child: Padding(
-              padding: EdgeInsetsDirectional.only(
-                end: 24.w,
-                start: 24.w,
-                bottom: 10.h,
-              ),
-              child: widget.model.amount != 0
-                  ? BlocBuilder(
-                      builder: (context, sA) {
-                        if (sA is AddToCartDataLoadingState) {
-                          return const Center(
-                            child: LinearProgressIndicator(),
-                          );
-                        } else {
-                          return AppButton(
-                            onTap: () {
-                              cartBloc.add(
-                                AddToCartDataEvent(
-                                  productId: widget.model.id,
-                                  amount: widget.model.amount,
-                                ),
-                              );
-                            },
-                            text: "أضف للسلة",
-                            width: 120.w,
-                            height: 30.h,
-                            radius: 9.r,
-                            backColor: const Color(
-                              0xff61B80C,
-                            ),
-                          );
-                        }
-                      },
-                      bloc: cartBloc,
-                    )
-                  : AppButton(
-                      onTap: () {},
-                      text: "تم نفاذ الكمية",
-                      width: 120.w,
-                      height: 30.h,
-                      radius: 9.r,
-                      backColor: Colors.white,
-                      textColor: Colors.red,
-                    ),
+            padding: EdgeInsetsDirectional.only(
+              end: 24.w,
+              start: 24.w,
+              bottom: 10.h,
+            ),
+            child: widget.model.amount != 0
+                ? BlocBuilder(
+                    builder: (context, sA) {
+                      if (sA is AddToCartDataLoadingState) {
+                        return const Center(
+                          child: LinearProgressIndicator(),
+                        );
+                      } else {
+                        return AppButton(
+                          onTap: () {
+                            cartBloc.add(
+                              AddToCartDataEvent(
+                                productId: widget.model.id,
+                                amount: widget.model.amount,
+                              ),
+                            );
+                          },
+                          text: "أضف للسلة",
+                          width: 120.w,
+                          height: 30.h,
+                          radius: 9.r,
+                          backColor: const Color(
+                            0xff61B80C,
+                          ),
+                        );
+                      }
+                    },
+                    bloc: cartBloc,
+                  )
+                : AppButton(
+                    onTap: () {},
+                    text: "تم نفاذ الكمية",
+                    width: 120.w,
+                    height: 30.h,
+                    radius: 9.r,
+                    backColor: Colors.white,
+                    textColor: Colors.red,
+                  ),
           ),
         ),
       ],

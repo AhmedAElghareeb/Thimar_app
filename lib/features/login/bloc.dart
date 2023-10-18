@@ -21,13 +21,9 @@ class LoginBloc extends Bloc<LoginEvents, LoginStates> {
     on<LoginUserDataEvent>(userLogin);
   }
 
-  final phoneNumberController = TextEditingController(
-    text: "966123456789009",
-  );
+  final phoneNumberController = TextEditingController();
 
-  final passwordController = TextEditingController(
-    text: "123456789",
-  );
+  final passwordController = TextEditingController();
 
   void userLogin(LoginUserDataEvent event, Emitter<LoginStates> emit) async {
     emit(

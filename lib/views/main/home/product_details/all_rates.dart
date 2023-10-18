@@ -4,6 +4,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:lottie/lottie.dart';
+import 'package:thimar_app/core/design/app_empty.dart';
 import 'package:thimar_app/features/products_rates/bloc.dart';
 import 'package:thimar_app/features/products_rates/events.dart';
 import 'package:thimar_app/features/products_rates/states.dart';
@@ -61,110 +62,115 @@ class _RatesViewState extends State<RatesView> {
         ),
       ),
       body: BlocBuilder(
-        bloc: rateBloc..add(GetProductsRatesEvent(
-          id: widget.id,
-        ),),
+        bloc: rateBloc
+          ..add(
+            GetProductsRatesEvent(
+              id: widget.id,
+            ),
+          ),
         builder: (context, state) {
-          if(state is ProductsRatesLoadingState){
+          if (state is ProductsRatesLoadingState) {
             return Center(
               child: Lottie.asset(
                 "assets/lottie/loading.json",
                 width: 100.w,
                 height: 100.h,
               ),
-            );;
-          } else if (state is ProductsRatesSuccessState) {
-            return ListView.separated(
-              padding: EdgeInsetsDirectional.symmetric(
-                vertical: 20.h,
-              ),
-              itemBuilder: (context, index) => SizedBox(
-                width: double.infinity,
-                height: 87.h,
-                child: Container(
-                  padding: EdgeInsetsDirectional.only(
-                    start: 13.w,
-                    top: 6.h,
-                  ),
-                  margin: EdgeInsetsDirectional.only(
-                    start: 13.w,
-                    end: 13.w,
-                  ),
-                  width: 267.w,
-                  height: 87.h,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadiusDirectional.circular(20.r),
-                    color: const Color(
-                      0xff707070,
-                    ).withOpacity(0.008),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                state.list[index].clientName,
-                                style: TextStyle(
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 7.w,
-                              ),
-                              RatingBar.builder(
-                                initialRating:
-                                state.list[index].value,
-                                minRating:
-                                state.list[index].value,
-                                maxRating:
-                                state.list[index].value,
-                                ignoreGestures: true,
-                                direction: Axis.horizontal,
-                                allowHalfRating: true,
-                                itemCount: 5,
-                                itemSize: 18,
-                                itemBuilder: (context, _) =>
-                                const Icon(
-                                  Icons.star,
-                                  color: Colors.amber,
-                                ),
-                                onRatingUpdate: (rating) {},
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 6.h,
-                          ),
-                          Text(
-                            state.list[index].comment,
-                            style: TextStyle(
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w400,
-                            ),
-                            maxLines: 3,
-                            overflow: TextOverflow.fade,
-                          ),
-                        ],
-                      ),
-                      Image.network(
-                        state.list[index].clientImage,
-                        width: 55.w,
-                        height: 55.h,
-                        fit: BoxFit.fill,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              separatorBuilder: (context, index) => Divider(
-                color: Theme.of(context).primaryColor,
-              ),
-              itemCount: state.list.length,
             );
+            ;
+          } else if (state is ProductsRatesSuccessState) {
+            return state.list.isEmpty
+                ? const AppEmpty(
+                    assetsPath: "empty.json",
+                    text: "لا توجد بيانات",
+                  )
+                : ListView.separated(
+                    padding: EdgeInsetsDirectional.symmetric(
+                      vertical: 20.h,
+                    ),
+                    itemBuilder: (context, index) => SizedBox(
+                      width: double.infinity,
+                      height: 87.h,
+                      child: Container(
+                        padding: EdgeInsetsDirectional.only(
+                          start: 13.w,
+                          top: 6.h,
+                        ),
+                        margin: EdgeInsetsDirectional.only(
+                          start: 13.w,
+                          end: 13.w,
+                        ),
+                        width: 267.w,
+                        height: 87.h,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadiusDirectional.circular(20.r),
+                          color: const Color(
+                            0xff707070,
+                          ).withOpacity(0.008),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      state.list[index].clientName,
+                                      style: TextStyle(
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 7.w,
+                                    ),
+                                    RatingBar.builder(
+                                      initialRating: state.list[index].value,
+                                      minRating: state.list[index].value,
+                                      maxRating: state.list[index].value,
+                                      ignoreGestures: true,
+                                      direction: Axis.horizontal,
+                                      allowHalfRating: true,
+                                      itemCount: 5,
+                                      itemSize: 18,
+                                      itemBuilder: (context, _) => const Icon(
+                                        Icons.star,
+                                        color: Colors.amber,
+                                      ),
+                                      onRatingUpdate: (rating) {},
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 6.h,
+                                ),
+                                Text(
+                                  state.list[index].comment,
+                                  style: TextStyle(
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                  maxLines: 3,
+                                  overflow: TextOverflow.fade,
+                                ),
+                              ],
+                            ),
+                            Image.network(
+                              state.list[index].clientImage,
+                              width: 55.w,
+                              height: 55.h,
+                              fit: BoxFit.fill,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    separatorBuilder: (context, index) => Divider(
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    itemCount: state.list.length,
+                  );
           } else {
             return const SizedBox.shrink();
           }

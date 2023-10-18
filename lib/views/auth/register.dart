@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:thimar_app/core/design/app_button.dart';
 import 'package:thimar_app/core/design/app_input.dart';
+import 'package:thimar_app/core/design/app_loading.dart';
 import 'package:thimar_app/core/design/auth_header.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
 import 'package:thimar_app/features/register/states.dart';
@@ -193,10 +194,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       Builder(
                         builder: (context) {
                           if (state is RegisterLoadingState) {
-                            return Center(
-                              child: CircularProgressIndicator(
-                                color: Theme.of(context).primaryColor,
-                              ),
+                            return const Center(
+                              child: AppLoading(),
                             );
                           }
                           return AppButton(

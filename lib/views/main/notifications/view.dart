@@ -39,37 +39,44 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
           "الإشعارات",
         ),
       ),
-      body: BlocBuilder(
-        bloc: bloc,
-        builder: (context, state) {
-          if (state is GetNotificationsLoadingState) {
-            return ListView.builder(
-              padding: EdgeInsetsDirectional.symmetric(
-                horizontal: 16.w,
-                vertical: 16.h,
-              ),
-              itemBuilder: (context, index) => _LoadingItem(),
-              itemCount: 8,
-            );
-          } else if (state is GetNotificationsSuccessState) {
-            return state.list.isEmpty || CacheHelper.getToken().isEmpty ? const AppEmpty(
-              assetsPath: "empty_notifications.json",
-              text: "لا توجد بيانات",
-            ) : ListView.builder(
-              padding: EdgeInsetsDirectional.symmetric(
-                horizontal: 16.w,
-                vertical: 16.h,
-              ),
-              itemBuilder: (context, index) => _Item(
-                model: state.list[index],
-              ),
-              itemCount: state.list.length,
-            );
-          } else {
-            return const SizedBox.shrink();
-          }
-        },
-      ),
+      body: CacheHelper.getToken().isEmpty
+          ? const AppEmpty(
+              assetsPath: "empty.json",
+              text: "لالرجاء تسجيل الدخول اولا",
+            )
+          : BlocBuilder(
+              bloc: bloc,
+              builder: (context, state) {
+                if (state is GetNotificationsLoadingState) {
+                  return ListView.builder(
+                    padding: EdgeInsetsDirectional.symmetric(
+                      horizontal: 16.w,
+                      vertical: 16.h,
+                    ),
+                    itemBuilder: (context, index) => _LoadingItem(),
+                    itemCount: 8,
+                  );
+                } else if (state is GetNotificationsSuccessState) {
+                  return state.list.isEmpty
+                      ? const AppEmpty(
+                          assetsPath: "empty_notifications.json",
+                          text: "لا توجد بيانات",
+                        )
+                      : ListView.builder(
+                          padding: EdgeInsetsDirectional.symmetric(
+                            horizontal: 16.w,
+                            vertical: 16.h,
+                          ),
+                          itemBuilder: (context, index) => _Item(
+                            model: state.list[index],
+                          ),
+                          itemCount: state.list.length,
+                        );
+                } else {
+                  return const SizedBox.shrink();
+                }
+              },
+            ),
       // bottomNavigationBar: HomeNavBar(),
     );
   }
@@ -144,7 +151,6 @@ class _Item extends StatelessWidget {
 }
 
 class _LoadingItem extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return Shimmer.fromColors(

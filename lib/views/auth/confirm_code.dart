@@ -12,13 +12,18 @@ import 'package:thimar_app/features/confirm_code/events.dart';
 import 'package:thimar_app/features/confirm_code/states.dart';
 import 'package:thimar_app/views/auth/login.dart';
 
+import '../../core/design/app_loading.dart';
 import '../../features/confirm_code/bloc.dart';
 
 class ConfirmCode extends StatefulWidget {
   final bool isActive;
   final String phone, pinCode;
 
-  const ConfirmCode({super.key, required this.isActive, required this.phone, required this.pinCode});
+  const ConfirmCode(
+      {super.key,
+      required this.isActive,
+      required this.phone,
+      required this.pinCode});
 
   @override
   State<ConfirmCode> createState() => _ConfirmCodeState();
@@ -78,8 +83,7 @@ class _ConfirmCodeState extends State<ConfirmCode> {
                             ),
                           ),
                           TextButton(
-                            onPressed: ()
-                            {
+                            onPressed: () {
                               Navigator.pop(context);
                             },
                             child: Text(
@@ -127,7 +131,7 @@ class _ConfirmCodeState extends State<ConfirmCode> {
                         builder: (context, state) {
                           if (state is ConfirmCodeLoadingState) {
                             return const Center(
-                              child: CircularProgressIndicator(),
+                              child: AppLoading(),
                             );
                           } else {
                             return AppButton(

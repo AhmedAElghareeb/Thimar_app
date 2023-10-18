@@ -95,7 +95,7 @@ class _AccountScreenState extends State<AccountScreen> {
                     height: 2.h,
                   ),
                   Text(
-                    CacheHelper.getToken().isNotEmpty ? CacheHelper.getFullName() : "اسم المستخدم",
+                    CacheHelper.getToken().isEmpty ? "اسم المستخدم" : CacheHelper.getFullName(),
                     style: TextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.bold,
@@ -108,7 +108,7 @@ class _AccountScreenState extends State<AccountScreen> {
                     height: 4.h,
                   ),
                   Text(
-                    CacheHelper.getPhone(),
+                    CacheHelper.getToken().isEmpty ? "" : CacheHelper.getPhone(),
                     style: TextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w400,
@@ -123,7 +123,8 @@ class _AccountScreenState extends State<AccountScreen> {
             SizedBox(
               height: 20.h,
             ),
-            CacheHelper.getToken().isNotEmpty ? Container(
+            if(CacheHelper.getToken().isNotEmpty)
+              Container(
               width: 342.w,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(
@@ -178,7 +179,7 @@ class _AccountScreenState extends State<AccountScreen> {
                   ),
                 ],
               ),
-            ) : const SizedBox.shrink(),
+            ),
             SizedBox(
               height: 20.h,
             ),
@@ -359,7 +360,17 @@ class _AccountScreenState extends State<AccountScreen> {
                           const LoginScreen(),
                         );
                       },
-                      child: CacheHelper.getToken().isNotEmpty ? Row(
+                      child: CacheHelper.getToken().isEmpty ? Align(
+                        alignment: AlignmentDirectional.centerStart,
+                        child: Text(
+                          LocaleKeys.Login.tr(),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15.sp,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                        ),
+                      ) : Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
@@ -374,16 +385,6 @@ class _AccountScreenState extends State<AccountScreen> {
                             "assets/images/icons/accountIcons/exit.svg",
                           ),
                         ],
-                      ) : Align(
-                        alignment: AlignmentDirectional.centerStart,
-                        child: Text(
-                          LocaleKeys.Login.tr(),
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15.sp,
-                            color: Theme.of(context).primaryColor,
-                          ),
-                        ),
                       ),
                     ),
                   );
