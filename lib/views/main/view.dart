@@ -8,6 +8,8 @@ import 'package:thimar_app/views/main/home/home/view.dart';
 import 'package:thimar_app/views/main/notifications/view.dart';
 import 'package:thimar_app/views/main/order/view.dart';
 
+import '../../generated/locale_keys.g.dart';
+
 class HomeView extends StatefulWidget {
   final int index;
   const HomeView({super.key,this.index =0});
@@ -28,11 +30,11 @@ class _HomeViewState extends State<HomeView> {
   ];
 
   List<String> titles = [
-    "الرئيسية",
-    "طلباتي",
-    "الإشعارات",
-    "المفضلة",
-    "حسابي",
+    LocaleKeys.Home,
+    LocaleKeys.My_Orders,
+    LocaleKeys.Notifications,
+    LocaleKeys.Favorites,
+    LocaleKeys.My_Account,
   ];
 
   List<String> icons = [
@@ -64,7 +66,7 @@ class _HomeViewState extends State<HomeView> {
               "assets/images/icons/homeNavBarIcons/${icons[index]}.svg",
               color: currentIndex == index ? Colors.white : const Color(0xFFB9C9A8),
             ),
-            label: titles[index],
+            label: titles[index].tr(),
           ),
         ),
         elevation: 0.0,

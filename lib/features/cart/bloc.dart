@@ -77,7 +77,7 @@ class CartBloc extends Bloc<CartEvents, CartStates> {
 
     final response = await DioHelper().sendToServer(url: "client/cart", body: {
       "product_id": event.productId,
-      "amount": 1,
+      "amount": event.amount,
     });
 
     if (response.success) {

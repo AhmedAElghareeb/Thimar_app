@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,6 +9,7 @@ import 'package:thimar_app/features/get_faqs/events.dart';
 import 'package:thimar_app/features/get_faqs/states.dart';
 
 import '../../../core/design/app_empty.dart';
+import '../../../generated/locale_keys.g.dart';
 
 class Faqs extends StatefulWidget {
   const Faqs({super.key});
@@ -17,7 +19,6 @@ class Faqs extends StatefulWidget {
 }
 
 class _FaqsState extends State<Faqs> {
-
   final bloc = KiwiContainer().resolve<FaqsBloc>()..add(GetFaqsEvent());
 
   @override
@@ -25,11 +26,14 @@ class _FaqsState extends State<Faqs> {
     super.dispose();
     bloc.close();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("أسئلة متكررة"),
+        title: Text(
+          LocaleKeys.Repeated_Questions.tr(),
+        ),
         leading: Padding(
           padding: EdgeInsetsDirectional.all(
             10.r,
@@ -76,105 +80,105 @@ class _FaqsState extends State<Faqs> {
             } else if (state is GetFaqsSuccessState) {
               return state.list.isEmpty
                   ? const AppEmpty(
-                assetsPath: "empty_cart.json",
-                text: "لا توجد بيانات",
-              )
+                      assetsPath: "empty_cart.json",
+                      text: "لا توجد بيانات",
+                    )
                   : ListView.builder(
-                padding: EdgeInsetsDirectional.symmetric(
-                  horizontal: 16.w,
-                  vertical: 44.h,
-                ),
-                itemCount: state.list.length,
-                itemBuilder: (context, index) => Container(
-                  width: 342.w,
-                  height: 50.h,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(11.r),
-                    color: const Color(
-                      0xffffffff,
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        blurRadius: 5.r,
-                        offset: Offset(0.w, 5.h),
-                        color: const Color(
-                          0xfff5f5f5,
-                        ),
+                      padding: EdgeInsetsDirectional.symmetric(
+                        horizontal: 16.w,
+                        vertical: 44.h,
                       ),
-                    ],
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: EdgeInsetsDirectional.only(
-                          start: 10.w,
-                        ),
-                        child: Text(
-                          state.list[index].question,
-                          style: TextStyle(
-                            fontSize: 15.sp,
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).primaryColor,
+                      itemCount: state.list.length,
+                      itemBuilder: (context, index) => Container(
+                        width: 342.w,
+                        height: 50.h,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(11.r),
+                          color: const Color(
+                            0xffffffff,
                           ),
-                        ),
-                      ),
-                      GestureDetector(
-                        child: Container(
-                          width: 25.w,
-                          height: 25.h,
-                          margin: EdgeInsetsDirectional.only(
-                            end: 10.w,
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5.r),
-                            color: const Color(
-                              0xffB2BCA8,
-                            ).withOpacity(0.3),
-                          ),
-                          child: Icon(
-                            Icons.keyboard_arrow_down,
-                            size: 18.r,
-                            color: Theme.of(context).primaryColor,
-                          ),
-                        ),
-                        onTap: () {
-                          showDialog(
-                            context: context,
-                            builder: (context) => SimpleDialog(
-                              title: Center(
-                                child: Text(
-                                  state.list[index].question,
-                                ),
+                          boxShadow: [
+                            BoxShadow(
+                              blurRadius: 5.r,
+                              offset: Offset(0.w, 5.h),
+                              color: const Color(
+                                0xfff5f5f5,
                               ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                  15.r,
-                                ),
-                              ),
-                              children: [
-                                Center(
-                                  child: Padding(
-                                    padding: EdgeInsetsDirectional.all(
-                                      5.r,
-                                    ),
-                                    child: Text(
-                                      state.list[index].answer,
-                                      style: TextStyle(
-                                          fontSize: 18.sp,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                ),
-                              ],
                             ),
-                          );
-                        },
+                          ],
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: EdgeInsetsDirectional.only(
+                                start: 10.w,
+                              ),
+                              child: Text(
+                                state.list[index].question,
+                                style: TextStyle(
+                                  fontSize: 15.sp,
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                              ),
+                            ),
+                            GestureDetector(
+                              child: Container(
+                                width: 25.w,
+                                height: 25.h,
+                                margin: EdgeInsetsDirectional.only(
+                                  end: 10.w,
+                                ),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5.r),
+                                  color: const Color(
+                                    0xffB2BCA8,
+                                  ).withOpacity(0.3),
+                                ),
+                                child: Icon(
+                                  Icons.keyboard_arrow_down,
+                                  size: 18.r,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                              ),
+                              onTap: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => SimpleDialog(
+                                    title: Center(
+                                      child: Text(
+                                        state.list[index].question,
+                                      ),
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                        15.r,
+                                      ),
+                                    ),
+                                    children: [
+                                      Center(
+                                        child: Padding(
+                                          padding: EdgeInsetsDirectional.all(
+                                            5.r,
+                                          ),
+                                          child: Text(
+                                            state.list[index].answer,
+                                            style: TextStyle(
+                                                fontSize: 18.sp,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
                       ),
-                    ],
-                  ),
-                ),
-              );
+                    );
             } else {
               return const SizedBox.shrink();
             }

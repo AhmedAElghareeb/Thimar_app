@@ -103,7 +103,6 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        builder: (context, child) => child!,
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
         locale: context.locale,
