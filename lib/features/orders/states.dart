@@ -28,7 +28,15 @@ class PostOrdersDataSuccessState extends OrdersStates {
   }
 }
 
-class PostOrdersDataFailedState extends OrdersStates {}
+class PostOrdersDataFailedState extends OrdersStates {
+  final String msg;
+
+  PostOrdersDataFailedState({required this.msg}) {
+    showSnackBar(
+      msg,
+    );
+  }
+}
 
 class GetOrderDetailsDataLoadingState extends OrdersStates {}
 

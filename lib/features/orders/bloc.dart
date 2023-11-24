@@ -66,10 +66,11 @@ class OrdersBloc extends Bloc<OrdersEvents, OrdersStates> {
         ),
       );
       setMainCartCount();
-
     } else {
       emit(
-        PostOrdersDataFailedState(),
+        PostOrdersDataFailedState(
+          msg: response.msg,
+        ),
       );
     }
   }

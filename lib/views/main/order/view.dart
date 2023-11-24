@@ -350,7 +350,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                                           FontWeight.bold,
                                                       color:
                                                           getOrderStatusTextColor(
-                                                              item.status),
+                                                              item.status,
+                                                          ),
                                                     ),
                                                   ),
                                                 ),

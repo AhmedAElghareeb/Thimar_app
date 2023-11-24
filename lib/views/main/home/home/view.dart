@@ -507,9 +507,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   AddToCartDataEvent(
                                                     productId: bloc
                                                         .productsList[index].id,
-                                                    amount: bloc
-                                                        .productsList[index]
-                                                        .amount,
+                                                    amount: 1,
                                                   ),
                                                 );
                                               },

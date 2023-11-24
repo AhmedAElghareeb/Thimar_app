@@ -71,9 +71,7 @@ Future<String> getLocationFromLatLong(LatLng latLng) async {
   return x;
 }
 
-String getOrderStatus(
-  String status,
-) {
+String getOrderStatus(String status) {
   switch (status) {
     case 'pending':
       return "بإنتظار الموافقة";

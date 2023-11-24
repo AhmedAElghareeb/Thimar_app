@@ -42,7 +42,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       body: CacheHelper.getToken().isEmpty
           ? const AppEmpty(
               assetsPath: "empty.json",
-              text: "لالرجاء تسجيل الدخول اولا",
+              text: "الرجاء تسجيل الدخول اولا",
             )
           : BlocBuilder(
               bloc: bloc,
