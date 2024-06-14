@@ -26,13 +26,20 @@ void initServiceLocator() {
    }
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  //initializing di
   initKiwi();
+  //service locator for cart item number
   initServiceLocator();
+  //lang localize
   await EasyLocalization.ensureInitialized();
+  //shared prefs instance for notifications
   Prefs = await SharedPreferences.getInstance();
+  //initializing firebase
   await Firebase.initializeApp();
   await GlobalNotification().setUpFirebase();
+  //initializing cached data
   CacheHelper.init();
+  //change status bar color
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
       statusBarColor: getMaterialColor(),
@@ -60,6 +67,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
+  //handling notifications permission
   void getNotificationsPermissions() async {
     var requestResult = await Permission.notification.request();
     if (requestResult.isPermanentlyDenied || requestResult.isDenied) {
@@ -73,6 +81,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
+    //init it
     getNotificationsPermissions();
     super.initState();
   }
