@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geocoding/geocoding.dart';
@@ -64,9 +65,10 @@ Future<String> getLocationFromLatLong(LatLng latLng) async {
 
   String x = '';
   if (placemarks.isNotEmpty) {
-    print('-==-=-=-=-=-=-- ${placemarks.first.toJson()}');
-    x =
-        '${placemarks.first.street ?? ''} - ${placemarks.first.subAdministrativeArea ?? ''}';
+    if (kDebugMode) {
+      print('-==-=-=-=-=-=-- ${placemarks.first.toJson()}');
+    }
+    x = '${placemarks.first.street ?? ''} - ${placemarks.first.subAdministrativeArea ?? ''}';
   }
   return x;
 }
@@ -83,6 +85,8 @@ String getOrderStatus(String status) {
       return "منتهي";
     case 'canceled':
       return "طلب ملغي";
+    case 'accepted':
+      return "تم قبول الطلب";
     default:
       return "";
   }
@@ -100,9 +104,16 @@ Color getOrderStatusColor(String status) {
       return const Color(0xff707070);
     case 'canceled':
       return const Color(0xffFFCFCF);
+    case 'accepted':
+      return Theme.of(navigatorKey.currentState!.context)
+          .primaryColor;
 
     default:
-      return Theme.of(navigatorKey.currentState!.context).primaryColor.withOpacity(0.5,);
+      return Theme.of(navigatorKey.currentState!.context)
+          .primaryColor
+          .withOpacity(
+            0.5,
+          );
   }
 }
 
@@ -115,11 +126,17 @@ Color getOrderStatusTextColor(String status) {
     case 'on_the_way':
       return const Color(0xff2D9E78);
     case 'finished':
-      return const Color(0xffA1A1A1);
+      return const Color(0xffFFFFFF);
     case 'canceled':
       return const Color(0xffFF0000);
+    case 'accepted':
+      return const Color(0xffFFFFFF);
 
     default:
-      return Theme.of(navigatorKey.currentState!.context).primaryColor.withOpacity(0.5,);
+      return Theme.of(navigatorKey.currentState!.context)
+          .primaryColor
+          .withOpacity(
+            0.5,
+          );
   }
 }

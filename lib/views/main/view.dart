@@ -12,7 +12,11 @@ import '../../generated/locale_keys.g.dart';
 
 class HomeView extends StatefulWidget {
   final int index;
-  const HomeView({super.key,this.index =0});
+
+  const HomeView({
+    super.key,
+    this.index = 0,
+  });
 
   @override
   State<HomeView> createState() => _HomeViewState();
@@ -44,16 +48,18 @@ class _HomeViewState extends State<HomeView> {
     "favs",
     "my_account",
   ];
-@override
+
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    if(widget.index!=0){
+    if (widget.index != 0) {
       setState(() {
-        currentIndex=widget.index;
+        currentIndex = widget.index;
       });
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,7 +70,9 @@ class _HomeViewState extends State<HomeView> {
           (index) => BottomNavigationBarItem(
             icon: SvgPicture.asset(
               "assets/images/icons/homeNavBarIcons/${icons[index]}.svg",
-              color: currentIndex == index ? Colors.white : const Color(0xFFB9C9A8),
+              color: currentIndex == index
+                  ? Colors.white
+                  : const Color(0xFFB9C9A8),
             ),
             label: titles[index].tr(),
           ),

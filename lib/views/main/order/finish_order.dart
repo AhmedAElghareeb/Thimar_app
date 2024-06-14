@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,7 +13,6 @@ import 'package:thimar_app/features/orders/events.dart';
 import 'package:thimar_app/views/main/account/address/address.dart';
 import 'package:thimar_app/views/main/order/widgets/address_item.dart';
 import 'package:thimar_app/views/main/view.dart';
-
 import '../../../features/address/bloc.dart';
 import '../../../features/address/events.dart';
 import '../../../features/address/states.dart';
@@ -40,7 +40,6 @@ class _FinishOrderState extends State<FinishOrder> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     addressBloc.close();
     completeBloc.close();
@@ -254,7 +253,9 @@ class _FinishOrderState extends State<FinishOrder> {
                         );
                         if (day != null) {
                           _event.date = DateFormat('yyyy-MM-dd').format(day);
-                          print("_____=====____$day");
+                          if (kDebugMode) {
+                            print("_____=====____$day");
+                          }
                           setState(() {});
                         } else {
                           showSnackBar(
@@ -314,7 +315,9 @@ class _FinishOrderState extends State<FinishOrder> {
                           initialTime: TimeOfDay.now(),
                         );
                         if (time1 != null) {
-                          print('=--=-=-=-=-=  ${time1.toString()}');
+                          if (kDebugMode) {
+                            print('=--=-=-=-=-=  ${time1.toString()}');
+                          }
                           _event.time = time1
                               .toString()
                               .replaceAll(')', '')
@@ -721,101 +724,9 @@ class _FinishOrderState extends State<FinishOrder> {
                       );
                     } else {
                       completeBloc.add(_event);
-                      // showModalBottomSheet(
-                      //   context: context,
-                      //   shape: RoundedRectangleBorder(
-                      //     borderRadius: BorderRadiusDirectional.only(
-                      //       topStart: Radius.circular(
-                      //         35.r,
-                      //       ),
-                      //       topEnd: Radius.circular(
-                      //         35.r,
-                      //       ),
-                      //     ),
-                      //   ),
-                      //   builder: (context) => Column(
-                      //     mainAxisAlignment: MainAxisAlignment.center,
-                      //     children: [
-                      //       SvgPicture.asset(
-                      //         "assets/images/thanks_for_order.svg",
-                      //       ),
-                      //       SizedBox(
-                      //         height: 22.h,
-                      //       ),
-                      //       Text(
-                      //         "شكرا لك لقد تم تنفيذ طلبك بنجاح",
-                      //         style: TextStyle(
-                      //             fontSize: 20.sp,
-                      //             fontWeight: FontWeight.bold,
-                      //             color: Theme.of(context).primaryColor),
-                      //       ),
-                      //       SizedBox(
-                      //         height: 13.h,
-                      //       ),
-                      //       Text(
-                      //         "يمكنك متابعة حالة الطلب او الرجوع للرئسيية",
-                      //         style: TextStyle(
-                      //           fontSize: 17.sp,
-                      //           fontWeight: FontWeight.w500,
-                      //           color: const Color(
-                      //             0xffACACAC,
-                      //           ),
-                      //         ),
-                      //       ),
-                      //       SizedBox(
-                      //         height: 31.h,
-                      //       ),
-                      //       Padding(
-                      //         padding: EdgeInsets.symmetric(
-                      //           horizontal: 16.w,
-                      //         ),
-                      //         child: Row(
-                      //           children: [
-                      //             AppButton(
-                      //               onTap: () {
-                      //                 navigateTo(
-                      //                   const HomeView(
-                      //                     index: 1,
-                      //                   ),
-                      //                 );
-                      //               },
-                      //               text: "طلباتي",
-                      //               width: 163.w,
-                      //               height: 60.h,
-                      //               radius: 15.r,
-                      //             ),
-                      //             SizedBox(
-                      //               width: 16.w,
-                      //             ),
-                      //             OutlinedButton(
-                      //               onPressed: () {
-                      //                 navigateTo(
-                      //                   const HomeView(
-                      //                     index: 0,
-                      //                   ),
-                      //                 );
-                      //               },
-                      //               style: OutlinedButton.styleFrom(
-                      //                 fixedSize: Size(
-                      //                   163.w,
-                      //                   60.h,
-                      //                 ),
-                      //               ),
-                      //               child: Text(
-                      //                 "الرئيسية",
-                      //                 style: TextStyle(
-                      //                   fontSize: 15.sp,
-                      //                   fontWeight: FontWeight.bold,
-                      //                   color: Theme.of(context).primaryColor,
-                      //                 ),
-                      //               ),
-                      //             ),
-                      //           ],
-                      //         ),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // );
+                      navigateTo(
+                        const HomeView(),
+                      );
                     }
                   },
                   text: "إتمام الطلب",
