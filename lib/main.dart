@@ -45,6 +45,8 @@ Future<void> main() async {
       statusBarColor: getMaterialColor(),
     ),
   );
+  //fix screenutils issues
+  await ScreenUtil.ensureScreenSize();
   runApp(
     EasyLocalization(
         supportedLocales: const [Locale('en'), Locale('ar')],
@@ -90,6 +92,8 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: const Size(375, 812),
+      minTextAdapt: true,
+      splitScreenMode: true,
       builder: (context, child) => MaterialApp(
         debugShowCheckedModeBanner: false,
         navigatorKey: navigatorKey,
