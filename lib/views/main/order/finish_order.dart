@@ -252,7 +252,7 @@ class _FinishOrderState extends State<FinishOrder> {
                           ),
                         );
                         if (day != null) {
-                          _event.date = DateFormat('yyyy-MM-dd').format(day);
+                          _event.date = DateFormat('yyyy-MM-dd').format(day).toString();
                           if (kDebugMode) {
                             print("_____=====____$day");
                           }
@@ -318,11 +318,11 @@ class _FinishOrderState extends State<FinishOrder> {
                           if (kDebugMode) {
                             print('=--=-=-=-=-=  ${time1.toString()}');
                           }
-                          _event.time = time1
-                              .toString()
-                              .replaceAll(')', '')
-                              .replaceAll('TimeOfDay(', '');
-
+                          _event.time = '${time1.hour.toString().padLeft(2, '0')}:${time1.minute.toString().padLeft(2, '0')}';
+                              // time1
+                              // .toString()
+                              // .replaceAll(')', '')
+                              // .replaceAll('TimeOfDay(', '');
                           setState(() {});
                         } else {
                           showSnackBar(
@@ -722,6 +722,8 @@ class _FinishOrderState extends State<FinishOrder> {
                         "يجب تحديد وقت",
                         typ: MessageType.warning,
                       );
+                    } else if (state is PostOrdersDataFailedState) {
+                      showSnackBar(state.msg);
                     } else {
                       completeBloc.add(_event);
                       navigateTo(
