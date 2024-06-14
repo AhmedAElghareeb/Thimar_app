@@ -253,7 +253,7 @@ class _FinishOrderState extends State<FinishOrder> {
                           ),
                         );
                         if (day != null) {
-                          _event.date = DateFormat('y-M-d', 'en').format(day);
+                          _event.date = DateFormat('yyyy-MM-dd').format(day);
                           print("_____=====____$day");
                           setState(() {});
                         } else {
@@ -721,101 +721,101 @@ class _FinishOrderState extends State<FinishOrder> {
                       );
                     } else {
                       completeBloc.add(_event);
-                      showModalBottomSheet(
-                        context: context,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadiusDirectional.only(
-                            topStart: Radius.circular(
-                              35.r,
-                            ),
-                            topEnd: Radius.circular(
-                              35.r,
-                            ),
-                          ),
-                        ),
-                        builder: (context) => Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SvgPicture.asset(
-                              "assets/images/thanks_for_order.svg",
-                            ),
-                            SizedBox(
-                              height: 22.h,
-                            ),
-                            Text(
-                              "شكرا لك لقد تم تنفيذ طلبك بنجاح",
-                              style: TextStyle(
-                                  fontSize: 20.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color: Theme.of(context).primaryColor),
-                            ),
-                            SizedBox(
-                              height: 13.h,
-                            ),
-                            Text(
-                              "يمكنك متابعة حالة الطلب او الرجوع للرئسيية",
-                              style: TextStyle(
-                                fontSize: 17.sp,
-                                fontWeight: FontWeight.w500,
-                                color: const Color(
-                                  0xffACACAC,
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 31.h,
-                            ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 16.w,
-                              ),
-                              child: Row(
-                                children: [
-                                  AppButton(
-                                    onTap: () {
-                                      navigateTo(
-                                        const HomeView(
-                                          index: 1,
-                                        ),
-                                      );
-                                    },
-                                    text: "طلباتي",
-                                    width: 163.w,
-                                    height: 60.h,
-                                    radius: 15.r,
-                                  ),
-                                  SizedBox(
-                                    width: 16.w,
-                                  ),
-                                  OutlinedButton(
-                                    onPressed: () {
-                                      navigateTo(
-                                        const HomeView(
-                                          index: 0,
-                                        ),
-                                      );
-                                    },
-                                    style: OutlinedButton.styleFrom(
-                                      fixedSize: Size(
-                                        163.w,
-                                        60.h,
-                                      ),
-                                    ),
-                                    child: Text(
-                                      "الرئيسية",
-                                      style: TextStyle(
-                                        fontSize: 15.sp,
-                                        fontWeight: FontWeight.bold,
-                                        color: Theme.of(context).primaryColor,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
+                      // showModalBottomSheet(
+                      //   context: context,
+                      //   shape: RoundedRectangleBorder(
+                      //     borderRadius: BorderRadiusDirectional.only(
+                      //       topStart: Radius.circular(
+                      //         35.r,
+                      //       ),
+                      //       topEnd: Radius.circular(
+                      //         35.r,
+                      //       ),
+                      //     ),
+                      //   ),
+                      //   builder: (context) => Column(
+                      //     mainAxisAlignment: MainAxisAlignment.center,
+                      //     children: [
+                      //       SvgPicture.asset(
+                      //         "assets/images/thanks_for_order.svg",
+                      //       ),
+                      //       SizedBox(
+                      //         height: 22.h,
+                      //       ),
+                      //       Text(
+                      //         "شكرا لك لقد تم تنفيذ طلبك بنجاح",
+                      //         style: TextStyle(
+                      //             fontSize: 20.sp,
+                      //             fontWeight: FontWeight.bold,
+                      //             color: Theme.of(context).primaryColor),
+                      //       ),
+                      //       SizedBox(
+                      //         height: 13.h,
+                      //       ),
+                      //       Text(
+                      //         "يمكنك متابعة حالة الطلب او الرجوع للرئسيية",
+                      //         style: TextStyle(
+                      //           fontSize: 17.sp,
+                      //           fontWeight: FontWeight.w500,
+                      //           color: const Color(
+                      //             0xffACACAC,
+                      //           ),
+                      //         ),
+                      //       ),
+                      //       SizedBox(
+                      //         height: 31.h,
+                      //       ),
+                      //       Padding(
+                      //         padding: EdgeInsets.symmetric(
+                      //           horizontal: 16.w,
+                      //         ),
+                      //         child: Row(
+                      //           children: [
+                      //             AppButton(
+                      //               onTap: () {
+                      //                 navigateTo(
+                      //                   const HomeView(
+                      //                     index: 1,
+                      //                   ),
+                      //                 );
+                      //               },
+                      //               text: "طلباتي",
+                      //               width: 163.w,
+                      //               height: 60.h,
+                      //               radius: 15.r,
+                      //             ),
+                      //             SizedBox(
+                      //               width: 16.w,
+                      //             ),
+                      //             OutlinedButton(
+                      //               onPressed: () {
+                      //                 navigateTo(
+                      //                   const HomeView(
+                      //                     index: 0,
+                      //                   ),
+                      //                 );
+                      //               },
+                      //               style: OutlinedButton.styleFrom(
+                      //                 fixedSize: Size(
+                      //                   163.w,
+                      //                   60.h,
+                      //                 ),
+                      //               ),
+                      //               child: Text(
+                      //                 "الرئيسية",
+                      //                 style: TextStyle(
+                      //                   fontSize: 15.sp,
+                      //                   fontWeight: FontWeight.bold,
+                      //                   color: Theme.of(context).primaryColor,
+                      //                 ),
+                      //               ),
+                      //             ),
+                      //           ],
+                      //         ),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // );
                     }
                   },
                   text: "إتمام الطلب",
