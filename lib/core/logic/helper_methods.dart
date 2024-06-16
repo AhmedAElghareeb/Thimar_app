@@ -79,7 +79,7 @@ String getOrderStatus(String status) {
       return "بإنتظار الموافقة";
     case 'preparation':
       return "جاري التحضير";
-    case 'on_the_way':
+    case 'in_way':
       return "فى الطريق";
     case 'finished':
       return "منتهي";
@@ -98,7 +98,7 @@ Color getOrderStatusColor(String status) {
       return const Color(0xffE8F2DF);
     case 'preparation':
       return const Color(0xffC7F697);
-    case 'on_the_way':
+    case 'in_way':
       return const Color(0xff96A9F6);
     case 'finished':
       return const Color(0xff707070);
@@ -123,7 +123,7 @@ Color getOrderStatusTextColor(String status) {
       return const Color(0xff4C8613);
     case 'preparation':
       return const Color(0xff72C720);
-    case 'on_the_way':
+    case 'in_way':
       return const Color(0xff2D9E78);
     case 'finished':
       return const Color(0xffFFFFFF);
