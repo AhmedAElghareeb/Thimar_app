@@ -59,7 +59,7 @@ Thimar is an ECommerce application that specializes in selling fresh fruits and 
 ### Prerequisites
 
 - Flutter SDK
-- Firebase (for Authentication and Database)
+- Firebase (for token & notifications)
 - Android Studio or Xcode (for building the mobile app)
 - Node.js (if you have a backend for the eCommerce operations)
 
