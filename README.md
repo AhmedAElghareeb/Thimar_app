@@ -15,7 +15,7 @@ Thimar is an ECommerce application that specializes in selling fresh fruits and 
 </p>
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/98713a05-bfa2-4130-b595-14d2f8c3aeb8" alt="Image 1" width="150"/>
+  <img src="https://github.com/user-attachments/assets/74b04a8d-126b-4a50-9550-37e74b502381" alt="Image 1" width="150"/>
   <img src="https://github.com/user-attachments/assets/1d70b6b0-c554-4123-8f4d-39f95bdc79d3" alt="Image 2" width="150"/>
   <img src="https://github.com/user-attachments/assets/d70de0ee-9357-42ce-8fb8-6aed96b58727" alt="Image 3" width="150"/>
 </p>
