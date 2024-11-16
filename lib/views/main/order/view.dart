@@ -34,7 +34,6 @@ class _OrdersScreenState extends State<OrdersScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     bloc.close();
   }
@@ -47,14 +46,15 @@ class _OrdersScreenState extends State<OrdersScreen> {
       ),
       body: CacheHelper.getToken().isEmpty
           ? const AppEmpty(
-            assetsPath: "empty.json",
-            text: "الرجاء تسجيل الدخول اولا",
-          )
+              assetsPath: "empty.json",
+              text: "الرجاء تسجيل الدخول اولا",
+            )
           : Column(
               children: [
                 Container(
                   height: 55.h,
                   width: 343.w,
+                  padding: EdgeInsetsDirectional.only(start: 3.w),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadiusDirectional.circular(10.r),
                     border: Border.all(
@@ -140,12 +140,10 @@ class _OrdersScreenState extends State<OrdersScreen> {
                       if (state is GetOrdersDataLoadingState) {
                         return ListView.separated(
                           scrollDirection: Axis.vertical,
-                          // shrinkWrap: true,
                           itemCount: 5,
                           padding: EdgeInsetsDirectional.symmetric(
                             horizontal: 16.w,
                           ),
-                          // physics: const NeverScrollableScrollPhysics(),
                           separatorBuilder: (context, index) =>
                               const SizedBox(),
                           itemBuilder: (context, index) {
@@ -244,12 +242,10 @@ class _OrdersScreenState extends State<OrdersScreen> {
                               )
                             : ListView.separated(
                                 scrollDirection: Axis.vertical,
-                                // shrinkWrap: true,
                                 itemCount: state.data.length,
                                 padding: EdgeInsetsDirectional.symmetric(
                                   horizontal: 16.w,
                                 ),
-                                // physics: const NeverScrollableScrollPhysics(),
                                 separatorBuilder: (context, index) =>
                                     const SizedBox(),
                                 itemBuilder: (context, index) {
@@ -350,8 +346,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                                           FontWeight.bold,
                                                       color:
                                                           getOrderStatusTextColor(
-                                                              item.status,
-                                                          ),
+                                                        item.status,
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
@@ -427,7 +423,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                                 ],
                                               ),
                                               Text(
-                                                "${item.totalPrice} ر.س",
+                                                "${item.orderPrice} ر.س",
                                                 style: TextStyle(
                                                   fontWeight: FontWeight.w900,
                                                   fontSize: 15.sp,

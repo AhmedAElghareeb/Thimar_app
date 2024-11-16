@@ -140,3 +140,20 @@ Color getOrderStatusTextColor(String status) {
           );
   }
 }
+
+void onShowBottomSheet(
+    BuildContext context, {
+      required Widget bottomSheet,
+      double? maxHeight,
+    }) =>
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      enableDrag: false,
+      constraints: BoxConstraints(
+        minHeight: 200.h,
+        maxHeight: maxHeight ?? MediaQuery.of(context).size.height * 0.55,
+      ),
+      backgroundColor: Colors.transparent,
+      builder: (_) => bottomSheet,
+    );

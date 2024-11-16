@@ -17,7 +17,9 @@ class UpdateUserDataEvent extends EditProfileEvents {
 }
 
 class EditUserPasswordEvent extends EditProfileEvents {
-  final String oldPass, pass, confirmPass;
+  final String oldPass;
+  final String pass;
+  final String confirmPass;
 
   EditUserPasswordEvent({
     required this.oldPass,

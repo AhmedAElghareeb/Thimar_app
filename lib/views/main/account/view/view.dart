@@ -34,7 +34,6 @@ class AccountScreen extends StatefulWidget {
 }
 
 class _AccountScreenState extends State<AccountScreen> {
-
   final bloc = KiwiContainer().resolve<LogoutBloc>();
 
   @override
@@ -51,7 +50,7 @@ class _AccountScreenState extends State<AccountScreen> {
           children: [
             Container(
               width: 375.w,
-              height: 217.h,
+              // height: 217.h,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
                   bottomRight: Radius.circular(40.r),
@@ -62,6 +61,9 @@ class _AccountScreenState extends State<AccountScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
+                  SizedBox(
+                    height: 50.h,
+                  ),
                   Text(
                     "حسابي",
                     style: TextStyle(
@@ -73,7 +75,7 @@ class _AccountScreenState extends State<AccountScreen> {
                     ),
                   ),
                   SizedBox(
-                    height: 23.h,
+                    height: 20.h,
                   ),
                   Container(
                     width: 76.w,
@@ -92,30 +94,52 @@ class _AccountScreenState extends State<AccountScreen> {
                     ),
                   ),
                   SizedBox(
-                    height: 2.h,
+                    height: 15.h,
                   ),
-                  Text(
-                    CacheHelper.getToken().isEmpty ? "اسم المستخدم" : CacheHelper.getFullName(),
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.bold,
-                      color: const Color(
-                        0xffFFFFFF,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      if (CacheHelper.getIsActive() == true)
+                        Icon(
+                          Icons.verified,
+                          color: Colors.blue,
+                          size: 16.sp,
+                        ),
+                      if (CacheHelper.getIsActive() == true)
+                        SizedBox(
+                          width: 5.w,
+                        ),
+                      Text(
+                        CacheHelper.getToken().isEmpty
+                            ? "اسم المستخدم"
+                            : CacheHelper.getFullName(),
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.bold,
+                          color: const Color(
+                            0xffFFFFFF,
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                   SizedBox(
-                    height: 4.h,
+                    height: 10.h,
                   ),
                   Text(
-                    CacheHelper.getToken().isEmpty ? "" : CacheHelper.getPhone(),
+                    CacheHelper.getToken().isEmpty
+                        ? ""
+                        : CacheHelper.getPhone(),
                     style: TextStyle(
-                      fontSize: 14.sp,
+                      fontSize: 16.sp,
                       fontWeight: FontWeight.w400,
                       color: const Color(
                         0xffA2D273,
                       ),
                     ),
+                  ),
+                  SizedBox(
+                    height: 10.h,
                   ),
                 ],
               ),
@@ -123,63 +147,63 @@ class _AccountScreenState extends State<AccountScreen> {
             SizedBox(
               height: 20.h,
             ),
-            if(CacheHelper.getToken().isNotEmpty)
+            if (CacheHelper.getToken().isNotEmpty)
               Container(
-              width: 342.w,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(
-                  17.r,
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: const Color(
-                      0xff000000,
-                    ).withOpacity(0.16),
-                    blurStyle: BlurStyle.outer,
-                    blurRadius: 3.r,
+                width: 342.w,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(
+                    17.r,
                   ),
-                ],
-                color: const Color(
-                  0xffFFFFFF,
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(
+                        0xff000000,
+                      ).withOpacity(0.16),
+                      blurStyle: BlurStyle.outer,
+                      blurRadius: 3.r,
+                    ),
+                  ],
+                  color: const Color(
+                    0xffFFFFFF,
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    AccountWidgets(
+                      onPress: () {
+                        navigateTo(
+                          const EditProfile(),
+                        );
+                      },
+                      title: LocaleKeys.Personal_Data.tr(),
+                      imageName: "person.svg",
+                      isLogout: true,
+                    ),
+                    const Divider(),
+                    AccountWidgets(
+                      onPress: () {
+                        navigateTo(
+                          const WalletView(),
+                        );
+                      },
+                      title: LocaleKeys.Wallet.tr(),
+                      imageName: "wallet.svg",
+                      isLogout: true,
+                    ),
+                    const Divider(),
+                    AccountWidgets(
+                      onPress: () {
+                        navigateTo(
+                          const Address(),
+                        );
+                      },
+                      title: LocaleKeys.Addresses.tr(),
+                      imageName: "address.svg",
+                      isLogout: true,
+                    ),
+                  ],
                 ),
               ),
-              child: Column(
-                children: [
-                  AccountWidgets(
-                    onPress: () {
-                      navigateTo(
-                        const EditProfile(),
-                      );
-                    },
-                    title: LocaleKeys.Personal_Data.tr(),
-                    imageName: "person.svg",
-                    isLogout: true,
-                  ),
-                  const Divider(),
-                  AccountWidgets(
-                    onPress: () {
-                      navigateTo(
-                        const WalletView(),
-                      );
-                    },
-                    title: LocaleKeys.Wallet.tr(),
-                    imageName: "wallet.svg",
-                    isLogout: true,
-                  ),
-                  const Divider(),
-                  AccountWidgets(
-                    onPress: () {
-                      navigateTo(
-                        const Address(),
-                      );
-                    },
-                    title: LocaleKeys.Addresses.tr(),
-                    imageName: "address.svg",
-                    isLogout: true,
-                  ),
-                ],
-              ),
-            ),
             SizedBox(
               height: 20.h,
             ),
@@ -360,32 +384,34 @@ class _AccountScreenState extends State<AccountScreen> {
                           const LoginScreen(),
                         );
                       },
-                      child: CacheHelper.getToken().isEmpty ? Align(
-                        alignment: AlignmentDirectional.centerStart,
-                        child: Text(
-                          LocaleKeys.Login.tr(),
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15.sp,
-                            color: Theme.of(context).primaryColor,
-                          ),
-                        ),
-                      ) : Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            LocaleKeys.LogOut.tr(),
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15.sp,
-                              color: Theme.of(context).primaryColor,
+                      child: CacheHelper.getToken().isEmpty
+                          ? Align(
+                              alignment: AlignmentDirectional.centerStart,
+                              child: Text(
+                                LocaleKeys.Login.tr(),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15.sp,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                              ),
+                            )
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  LocaleKeys.LogOut.tr(),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15.sp,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                ),
+                                SvgPicture.asset(
+                                  "assets/images/icons/accountIcons/exit.svg",
+                                ),
+                              ],
                             ),
-                          ),
-                          SvgPicture.asset(
-                            "assets/images/icons/accountIcons/exit.svg",
-                          ),
-                        ],
-                      ),
                     ),
                   );
                 }

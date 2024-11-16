@@ -60,9 +60,7 @@ class _EditPasswordState extends State<EditPassword> {
                 child: Icon(
                   Icons.arrow_back_ios,
                   size: 16.r,
-                  color: Theme
-                      .of(context)
-                      .primaryColor,
+                  color: Theme.of(context).primaryColor,
                 ),
               ),
             ),
@@ -146,13 +144,12 @@ class _EditPasswordState extends State<EditPassword> {
                 return AppButton(
                   onTap: () {
                     if (_formKey.currentState!.validate()) {
-                      bloc.add(
-                        EditUserPasswordEvent(
-                          oldPass: oldPassword.text,
-                          pass: newPassword.text,
-                          confirmPass: confirmNewPassword.text,
-                        ),
+                      final event = EditUserPasswordEvent(
+                        oldPass: oldPassword.text.trim(),
+                        pass: newPassword.text.trim(),
+                        confirmPass: confirmNewPassword.text.trim(),
                       );
+                      bloc.add(event);
                     }
                   },
                   text: "تغيير كلمة المرور",

@@ -7,7 +7,6 @@ import '../../models/login.dart';
 import 'events.dart';
 import 'states.dart';
 
-
 class EditProfileBloc extends Bloc<EditProfileEvents, EditProfileStates> {
   EditProfileBloc()
       : super(
@@ -17,7 +16,8 @@ class EditProfileBloc extends Bloc<EditProfileEvents, EditProfileStates> {
     on<EditUserPasswordEvent>(editPassword);
   }
 
-  void update(UpdateUserDataEvent event, Emitter<EditProfileStates> emit) async {
+  void update(
+      UpdateUserDataEvent event, Emitter<EditProfileStates> emit) async {
     emit(
       EditProfileLoadingState(),
     );
@@ -52,29 +52,25 @@ class EditProfileBloc extends Bloc<EditProfileEvents, EditProfileStates> {
     }
   }
 
-  void editPassword(EditUserPasswordEvent event, Emitter<EditProfileStates> emit) async {
-    emit(
-      EditUserPasswordLoadingState(),
+  void editPassword(
+      EditUserPasswordEvent event, Emitter<EditProfileStates> emit) async {
+    emit(EditUserPasswordLoadingState());
+    final response = await DioHelper().putToServer(
+      url: "edit_password",
+      body: {
+        "old_password": event.oldPass,
+        "password": event.pass,
+        "password_confirmation": event.confirmPass,
+      },
     );
-
-    final response =
-    await DioHelper().putToServer(url: "edit_password", body: {
-      "old_password" : event.oldPass,
-      "password" : event.pass,
-      "password_confirmation" : event.confirmPass,
-    });
     if (response.success) {
-      emit(
-        EditUserPasswordSuccessState(),
-      );
+      emit(EditUserPasswordSuccessState());
       showSnackBar(
         response.msg,
         typ: MessageType.success,
       );
     } else {
-      emit(
-        EditProfileFailedState(),
-      );
+      emit(EditProfileFailedState());
       showSnackBar(response.msg);
     }
   }

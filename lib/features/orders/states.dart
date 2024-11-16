@@ -17,16 +17,7 @@ class GetOrdersDataFailedState extends OrdersStates {}
 
 class PostOrdersDataLoadingState extends OrdersStates {}
 
-class PostOrdersDataSuccessState extends OrdersStates {
-  final String msg;
-
-  PostOrdersDataSuccessState({required this.msg}) {
-    showSnackBar(
-      msg,
-      typ: MessageType.success,
-    );
-  }
-}
+class PostOrdersDataSuccessState extends OrdersStates {}
 
 class PostOrdersDataFailedState extends OrdersStates {
   final String msg;

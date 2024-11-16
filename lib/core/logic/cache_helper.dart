@@ -36,6 +36,10 @@ class CacheHelper {
     return int.parse(_prefs.getString("cityId") ?? "0");
   }
 
+  static bool getIsActive() {
+    return _prefs.getBool("isActive") ?? false;
+  }
+
   static Future saveLoginData(UserModel user) async {
     await _prefs.setString("image", user.image);
     await _prefs.setInt("id", user.id);

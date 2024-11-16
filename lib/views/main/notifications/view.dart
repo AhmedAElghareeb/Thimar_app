@@ -93,13 +93,13 @@ class _Item extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsetsDirectional.only(
-        bottom: 16.h,
+        bottom: 20.h,
       ),
       child: Row(
         children: [
           Container(
-            height: 33.h,
-            width: 33.w,
+            height: 55.h,
+            width: 45.w,
             padding: EdgeInsetsDirectional.symmetric(
                 horizontal: 6.5.w, vertical: 6.5.h),
             decoration: BoxDecoration(
@@ -121,23 +121,28 @@ class _Item extends StatelessWidget {
                 Text(
                   model.title,
                   style: TextStyle(
-                    fontSize: 12.sp,
+                    fontSize: 15.sp,
                     fontWeight: FontWeight.w500,
                   ),
+                ),
+                SizedBox(
+                  height: 5.h,
                 ),
                 Text(
                   model.body,
                   style: TextStyle(
-                      fontSize: 10.sp,
-                      fontWeight: FontWeight.w300,
-                      color: const Color(
-                        0xff989898,
-                      )),
+                    fontSize: 13.sp,
+                    fontWeight: FontWeight.w300,
+                    color: const Color(0xff989898),
+                  ),
+                ),
+                SizedBox(
+                  height: 5.h,
                 ),
                 Text(
                   model.createdAt,
                   style: TextStyle(
-                    fontSize: 10.sp,
+                    fontSize: 12.sp,
                     fontWeight: FontWeight.w400,
                   ),
                 ),

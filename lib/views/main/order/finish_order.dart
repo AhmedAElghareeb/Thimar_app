@@ -7,10 +7,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:thimar_app/core/design/app_button.dart';
 import 'package:thimar_app/core/design/app_input.dart';
+import 'package:thimar_app/core/design/bottom_sheet.dart';
 import 'package:thimar_app/core/logic/cache_helper.dart';
 import 'package:thimar_app/core/logic/helper_methods.dart';
 import 'package:thimar_app/features/orders/events.dart';
 import 'package:thimar_app/views/main/account/address/address.dart';
+import 'package:thimar_app/views/main/order/view.dart';
 import 'package:thimar_app/views/main/order/widgets/address_item.dart';
 import 'package:thimar_app/views/main/view.dart';
 import '../../../features/address/bloc.dart';
@@ -252,7 +254,8 @@ class _FinishOrderState extends State<FinishOrder> {
                           ),
                         );
                         if (day != null) {
-                          _event.date = DateFormat('yyyy-MM-dd').format(day).toString();
+                          _event.date =
+                              DateFormat('yyyy-MM-dd').format(day).toString();
                           if (kDebugMode) {
                             print("_____=====____$day");
                           }
@@ -318,11 +321,12 @@ class _FinishOrderState extends State<FinishOrder> {
                           if (kDebugMode) {
                             print('=--=-=-=-=-=  ${time1.toString()}');
                           }
-                          _event.time = '${time1.hour.toString().padLeft(2, '0')}:${time1.minute.toString().padLeft(2, '0')}';
-                              // time1
-                              // .toString()
-                              // .replaceAll(')', '')
-                              // .replaceAll('TimeOfDay(', '');
+                          _event.time =
+                              '${time1.hour.toString().padLeft(2, '0')}:${time1.minute.toString().padLeft(2, '0')}';
+                          // time1
+                          // .toString()
+                          // .replaceAll(')', '')
+                          // .replaceAll('TimeOfDay(', '');
                           setState(() {});
                         } else {
                           showSnackBar(
@@ -726,9 +730,6 @@ class _FinishOrderState extends State<FinishOrder> {
                       showSnackBar(state.msg);
                     } else {
                       completeBloc.add(_event);
-                      navigateTo(
-                        const HomeView(),
-                      );
                     }
                   },
                   text: "إتمام الطلب",

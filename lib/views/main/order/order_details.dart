@@ -28,19 +28,12 @@ class _OrderDetailsState extends State<OrderDetails> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-
-    bloc.add(
-      GetOrderDetailsDataEvent(
-        num: widget.id,
-      ),
-    );
+    bloc.add(GetOrderDetailsDataEvent(num: widget.id));
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     bloc.close();
     cancelBloc.close();
@@ -238,7 +231,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                               ],
                             ),
                             Text(
-                              "${state.data.totalPrice} ر.س",
+                              "${state.data.orderPrice} ر.س",
                               style: TextStyle(
                                 fontSize: 15.sp,
                                 fontWeight: FontWeight.w400,
@@ -356,8 +349,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                 ),
                               ),
                               child: GestureDetector(
-                                onTap: ()
-                                {
+                                onTap: () {
                                   openMap(
                                     title: state.data.address.location,
                                     lat: state.data.address.lat,
@@ -458,7 +450,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  "الإجمالى بعد خصم المنتجات",
+                                  "الإجمالى بعد الخصم",
                                   style: TextStyle(
                                     fontSize: 15.sp,
                                     fontWeight: FontWeight.w400,
@@ -536,7 +528,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                   ),
                                 ),
                                 Text(
-                                  "${state.data.totalPrice} ر.س",
+                                  "${(state.data.deliveryPrice + state.data.orderPrice) - state.data.vipDiscount} ر.س",
                                   style: TextStyle(
                                     fontSize: 15.sp,
                                     fontWeight: FontWeight.w400,
